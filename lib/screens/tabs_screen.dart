@@ -19,6 +19,7 @@ class TabsScreen extends StatefulWidget {
 class _TabsScreenState extends State<TabsScreen> {
   int _selectedIndex = 0;
   Widget _chosenScreen = HomeScreen();
+  String _chosenScreenName = 'Home';
 
   void _onItemTap(int index) {
     setState(() {
@@ -26,18 +27,23 @@ class _TabsScreenState extends State<TabsScreen> {
       switch (index) {
         case 0:
           _chosenScreen = HomeScreen();
+          _chosenScreenName = 'Home';
           break;
         case 1:
           _chosenScreen = PracticeScreen();
+          _chosenScreenName = 'Practice';
           break;
         case 2:
           _chosenScreen = JourneyScreen();
+          _chosenScreenName = 'Journey';
           break;
         case 3:
           _chosenScreen = LeaderboardScreen();
+          _chosenScreenName = 'Leaderboard';
           break;
         case 4:
           _chosenScreen = ProfileScreen();
+          _chosenScreenName = 'Profile';
           break;
         default:
           print("Error");
@@ -67,11 +73,17 @@ class _TabsScreenState extends State<TabsScreen> {
     // );
 
     return Scaffold(
+        appBar: AppBar(
+          title: Text(_chosenScreenName),
+        ),
         backgroundColor: Colors.white,
         body: Stack(
           children: [
             _chosenScreen,
-            BottomNavBar1(onIconPressed: _onItemTap),
+            BottomNavBar1(
+              onIconPressed: _onItemTap,
+              chosenScreen: _selectedIndex,
+            ),
           ],
         ));
   }

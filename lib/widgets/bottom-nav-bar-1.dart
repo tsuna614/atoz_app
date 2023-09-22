@@ -3,9 +3,12 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
 class BottomNavBar1 extends StatelessWidget {
-  const BottomNavBar1({super.key, required this.onIconPressed});
+  const BottomNavBar1(
+      {super.key, required this.onIconPressed, required this.chosenScreen});
 
   final void Function(int index) onIconPressed;
+
+  final int chosenScreen;
 
   @override
   Widget build(BuildContext context) {
@@ -25,15 +28,28 @@ class BottomNavBar1 extends StatelessWidget {
             ),
             Center(
               heightFactor: 0.5,
-              child: SizedBox(
-                width: 65,
-                height: 65,
-                child: FittedBox(
-                  child: FloatingActionButton(
-                    onPressed: () {},
-                    backgroundColor: Colors.blue,
-                    child: Icon(Icons.add),
-                    elevation: 0.1,
+              child: Container(
+                child: SizedBox(
+                  width: 65,
+                  height: 65,
+                  child: FittedBox(
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        onIconPressed(2);
+                      },
+                      backgroundColor: Colors.blue,
+                      elevation: 0.1,
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: chosenScreen == 2
+                            ? BoxDecoration(
+                                border: Border.all(color: Colors.white),
+                                borderRadius: BorderRadius.circular(100),
+                              )
+                            : BoxDecoration(),
+                        child: Icon(Icons.add),
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -44,36 +60,77 @@ class BottomNavBar1 extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  IconButton(
-                    color: Colors.white,
-                    icon: Icon(Icons.home),
-                    onPressed: () {
-                      onIconPressed(0);
-                    },
+                  Container(
+                    // margin: const EdgeInsets.all(15.0),
+                    // padding: const EdgeInsets.all(3.0),
+                    decoration: chosenScreen == 0
+                        ? BoxDecoration(
+                            border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.circular(10),
+                          )
+                        : BoxDecoration(),
+                    child: IconButton(
+                      color: Colors.white,
+                      icon: Icon(Icons.home),
+                      onPressed: () {
+                        onIconPressed(0);
+                      },
+                    ),
                   ),
-                  IconButton(
-                    color: Colors.white,
-                    icon: Icon(Icons.menu_book_rounded),
-                    onPressed: () {
-                      onIconPressed(1);
-                    },
+                  // IconButton(
+                  //   color: Colors.white,
+                  //   icon: Icon(Icons.home),
+                  //   onPressed: () {
+                  //     onIconPressed(0);
+                  //   },
+                  // ),
+                  Container(
+                    decoration: chosenScreen == 1
+                        ? BoxDecoration(
+                            border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.circular(10),
+                          )
+                        : BoxDecoration(),
+                    child: IconButton(
+                      color: Colors.white,
+                      icon: Icon(Icons.menu_book_rounded),
+                      onPressed: () {
+                        onIconPressed(1);
+                      },
+                    ),
                   ),
                   SizedBox(
                     width: deviceSize.width * 0.20,
                   ),
-                  IconButton(
-                    color: Colors.white,
-                    icon: Icon(Icons.leaderboard),
-                    onPressed: () {
-                      onIconPressed(3);
-                    },
+                  Container(
+                    decoration: chosenScreen == 3
+                        ? BoxDecoration(
+                            border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.circular(10),
+                          )
+                        : BoxDecoration(),
+                    child: IconButton(
+                      color: Colors.white,
+                      icon: Icon(Icons.leaderboard),
+                      onPressed: () {
+                        onIconPressed(3);
+                      },
+                    ),
                   ),
-                  IconButton(
-                    color: Colors.white,
-                    icon: Icon(Icons.person),
-                    onPressed: () {
-                      onIconPressed(4);
-                    },
+                  Container(
+                    decoration: chosenScreen == 4
+                        ? BoxDecoration(
+                            border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.circular(10),
+                          )
+                        : BoxDecoration(),
+                    child: IconButton(
+                      color: Colors.white,
+                      icon: Icon(Icons.person),
+                      onPressed: () {
+                        onIconPressed(4);
+                      },
+                    ),
                   ),
                 ],
               ),
