@@ -14,7 +14,7 @@ class BottomNavBar1 extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size deviceSize = MediaQuery.of(context).size;
     return Positioned(
-      bottom: 0,
+      bottom: 10,
       left: 0,
       child: Container(
         width: deviceSize.width,
@@ -155,8 +155,8 @@ class BNBCustomPainter extends CustomPainter {
         radius: Radius.circular(10.0), clockwise: false);
     path.quadraticBezierTo(size.width * 0.60, 0, size.width * 0.65, 0);
     path.quadraticBezierTo(size.width * 0.80, 0, size.width, 0);
-    path.lineTo(size.width, size.height);
-    path.lineTo(0, size.height);
+    path.lineTo(size.width, size.height + 100);
+    path.lineTo(0, size.height + 100);
     path.close();
     canvas.drawShadow(path, Colors.black, 5, true);
     canvas.drawPath(path, paint);
