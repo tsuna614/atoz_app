@@ -1,9 +1,9 @@
-import 'package:atoz_app/screens/home_screen.dart';
-import 'package:atoz_app/screens/journey_screen.dart';
-import 'package:atoz_app/screens/leaderboard_screen.dart';
+import 'package:atoz_app/screens/app-screens/home_screen.dart';
+import 'package:atoz_app/screens/app-screens/journey_screen.dart';
+import 'package:atoz_app/screens/app-screens/leaderboard_screen.dart';
 import 'package:atoz_app/screens/main_screen.dart';
-import 'package:atoz_app/screens/practice_screen.dart';
-import 'package:atoz_app/screens/profile_screen.dart';
+import 'package:atoz_app/screens/app-screens/practice_screen.dart';
+import 'package:atoz_app/screens/app-screens/profile_screen.dart';
 import 'package:atoz_app/widgets/bottom-nav-bar-1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
