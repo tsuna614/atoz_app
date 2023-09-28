@@ -1,9 +1,20 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:atoz_app/screens/authentication-screens/login_screen.dart';
 import 'package:atoz_app/screens/main_screen.dart';
 import 'package:atoz_app/screens/tabs_screen.dart';
-import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-void main() {
+// void main() {
+//   runApp(const MyApp());
+// }
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+      // options: DefaultFirebaseOptions.currentPlatform,
+      // code from hma project
+      );
   runApp(const MyApp());
 }
 
