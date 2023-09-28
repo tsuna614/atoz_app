@@ -1,6 +1,12 @@
+import 'package:atoz_app/screens/authentication-screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+final _firebase = FirebaseAuth.instance;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -10,12 +16,13 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  var _isLoading = false;
   final _loginForm = GlobalKey<FormState>();
 
   var _enteredEmail = '';
   var _enteredPassword = '';
 
-  void _submit() {
+  void _submit() async {
     final isValid = _loginForm.currentState!.validate();
 
     if (!isValid) {
@@ -26,6 +33,30 @@ class _LoginScreenState extends State<LoginScreen> {
 
     print(_enteredEmail);
     print(_enteredPassword);
+
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      // log user in
+      await _firebase.signInWithEmailAndPassword(
+          email: _enteredEmail, password: _enteredPassword);
+    } on FirebaseAuthException catch (error) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error.message ?? 'Authentication failed.'),
+        ),
+      );
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  void _navigateToSignUp(BuildContext context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const SignUpScreen()));
   }
 
   @override
@@ -87,12 +118,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(height: 12),
                           ElevatedButton(
                             onPressed: _submit,
-                            child: const Text('Sign up'),
+                            child: const Text('Log in'),
                           ),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              _navigateToSignUp(context);
+                            },
                             child:
-                                const Text('Already have an account? Log in.'),
+                                const Text('Don\'t have an account? Sign up.'),
                           ),
                         ],
                       ),
