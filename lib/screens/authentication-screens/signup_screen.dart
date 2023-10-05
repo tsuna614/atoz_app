@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:flutter/src/widgets/framework.dart';
+// import 'package:flutter/src/widgets/placeholder.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 
 final _firebase = FirebaseAuth.instance;
 
@@ -30,15 +30,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     _loginForm.currentState!.save();
 
-    print(_enteredEmail);
-    print(_enteredPassword);
-
     try {
       setState(() {
         _isLoading = true;
       });
       // create new user
-      final userCredential = await _firebase.createUserWithEmailAndPassword(
+      await _firebase.createUserWithEmailAndPassword(
           email: _enteredEmail, password: _enteredPassword);
 
       // await FirebaseFirestore.instance
@@ -67,18 +64,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: Colors.indigo[900],
       body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                margin:
-                    EdgeInsets.only(top: 30, bottom: 20, left: 20, right: 20),
-                width: 200,
-                child: Text('Image'),
-              ),
-              Card(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Card(
                 margin: EdgeInsets.all(20),
                 child: SingleChildScrollView(
                   child: Padding(
@@ -120,24 +114,54 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             },
                             onSaved: (newValue) => _enteredPassword = newValue!,
                           ),
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              labelText: 'Confirm password',
+                            ),
+                            obscureText: true,
+                            validator: (value) {
+                              if (value == null ||
+                                  value.trim().isEmpty ||
+                                  value.trim().length < 6) {
+                                return 'Please enter a valid password';
+                              }
+                              return null;
+                            },
+                            onSaved: (newValue) => _enteredPassword = newValue!,
+                          ),
                           const SizedBox(height: 12),
                           ElevatedButton(
                             onPressed: _submit,
                             child: const Text('Sign up'),
                           ),
-                          TextButton(
-                            onPressed: () {},
-                            child:
-                                const Text('Already have an account? Log in.'),
-                          ),
+                          // TextButton(
+                          //   onPressed: () {
+                          //     Navigator.of(context).pop();
+                          //   },
+                          //   child:
+                          //       const Text('Already have an account? Log in.'),
+                          // ),
                         ],
                       ),
                     ),
                   ),
                 ),
-              )
-            ],
-          ),
+              ),
+            ),
+            // Expanded(child: SizedBox()),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: Align(
+                alignment: FractionalOffset.bottomCenter,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Already have an account? Log in.'),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

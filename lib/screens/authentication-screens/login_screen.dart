@@ -1,10 +1,6 @@
 import 'package:atoz_app/screens/authentication-screens/signup_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 final _firebase = FirebaseAuth.instance;
 
@@ -31,9 +27,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
     _loginForm.currentState!.save();
 
-    print(_enteredEmail);
-    print(_enteredPassword);
-
     try {
       setState(() {
         _isLoading = true;
@@ -43,11 +36,9 @@ class _LoginScreenState extends State<LoginScreen> {
           email: _enteredEmail, password: _enteredPassword);
     } on FirebaseAuthException catch (error) {
       ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(error.message ?? 'Authentication failed.'),
-        ),
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Incorrect username or password.'),
+      ));
       setState(() {
         _isLoading = false;
       });

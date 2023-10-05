@@ -1,6 +1,7 @@
+import 'package:atoz_app/screens/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:atoz_app/screens/authentication-screens/login_screen.dart';
-import 'package:atoz_app/screens/main_screen.dart';
+// import 'package:atoz_app/screens/main_screen.dart';
 import 'package:atoz_app/screens/tabs_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,10 +26,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        title: 'Atoz App',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const LoginScreen());
+        home: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const LoadingScreen();
+              }
+              if (snapshot.hasData) {
+                return const TabsScreen();
+              }
+              return const LoginScreen();
+            }));
   }
 }

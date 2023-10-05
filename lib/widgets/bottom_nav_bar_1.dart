@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+// import 'package:flutter/src/widgets/framework.dart';
+// import 'package:flutter/src/widgets/placeholder.dart';
 
 class BottomNavBar1 extends StatelessWidget {
   const BottomNavBar1(
@@ -16,7 +16,7 @@ class BottomNavBar1 extends StatelessWidget {
     return Positioned(
       bottom: 10,
       left: 0,
-      child: Container(
+      child: SizedBox(
         width: deviceSize.width,
         height: 80,
         // color: Colors.white,
@@ -34,34 +34,32 @@ class BottomNavBar1 extends StatelessWidget {
             // 2nd layer: the floating action button
             Center(
               heightFactor: 0.5,
-              child: Container(
-                child: SizedBox(
-                  width: 65,
-                  height: 65,
-                  child: FittedBox(
-                    child: FloatingActionButton(
-                      onPressed: () {
-                        onIconPressed(2);
-                      },
-                      backgroundColor: Colors.blue,
-                      elevation: 0.1,
-                      child: Container(
-                        padding: EdgeInsets.all(8),
-                        decoration: chosenScreen == 2
-                            ? BoxDecoration(
-                                border: Border.all(color: Colors.white),
-                                borderRadius: BorderRadius.circular(100),
-                              )
-                            : BoxDecoration(),
-                        child: Icon(Icons.add),
-                      ),
+              child: SizedBox(
+                width: 65,
+                height: 65,
+                child: FittedBox(
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      onIconPressed(2);
+                    },
+                    backgroundColor: Colors.blue,
+                    elevation: 0.1,
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: chosenScreen == 2
+                          ? BoxDecoration(
+                              border: Border.all(color: Colors.white),
+                              borderRadius: BorderRadius.circular(100),
+                            )
+                          : const BoxDecoration(),
+                      child: const Icon(Icons.add),
                     ),
                   ),
                 ),
               ),
             ),
             // 3rd layer: the items ON the 1st layer, the curvy appbar
-            Container(
+            SizedBox(
               width: deviceSize.width,
               height: 80,
               child: Material(
@@ -75,11 +73,11 @@ class BottomNavBar1 extends StatelessWidget {
                               border: Border.all(color: Colors.white),
                               borderRadius: BorderRadius.circular(100),
                             )
-                          : BoxDecoration(),
+                          : const BoxDecoration(),
                       child: IconButton(
                         splashRadius: 25,
                         color: Colors.white,
-                        icon: Icon(Icons.home),
+                        icon: const Icon(Icons.home),
                         onPressed: () {
                           onIconPressed(0);
                         },
@@ -91,11 +89,11 @@ class BottomNavBar1 extends StatelessWidget {
                               border: Border.all(color: Colors.white),
                               borderRadius: BorderRadius.circular(100),
                             )
-                          : BoxDecoration(),
+                          : const BoxDecoration(),
                       child: IconButton(
                         splashRadius: 25,
                         color: Colors.white,
-                        icon: Icon(Icons.menu_book_rounded),
+                        icon: const Icon(Icons.menu_book_rounded),
                         onPressed: () {
                           onIconPressed(1);
                         },
@@ -110,11 +108,11 @@ class BottomNavBar1 extends StatelessWidget {
                               border: Border.all(color: Colors.white),
                               borderRadius: BorderRadius.circular(100),
                             )
-                          : BoxDecoration(),
+                          : const BoxDecoration(),
                       child: IconButton(
                         splashRadius: 25,
                         color: Colors.white,
-                        icon: Icon(Icons.leaderboard),
+                        icon: const Icon(Icons.leaderboard),
                         onPressed: () {
                           onIconPressed(3);
                         },
@@ -126,11 +124,11 @@ class BottomNavBar1 extends StatelessWidget {
                               border: Border.all(color: Colors.white),
                               borderRadius: BorderRadius.circular(100),
                             )
-                          : BoxDecoration(),
+                          : const BoxDecoration(),
                       child: IconButton(
                         splashRadius: 25,
                         color: Colors.white,
-                        icon: Icon(Icons.person),
+                        icon: const Icon(Icons.person),
                         onPressed: () {
                           onIconPressed(4);
                         },
