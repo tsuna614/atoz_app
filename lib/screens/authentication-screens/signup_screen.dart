@@ -247,9 +247,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: const Text(
-                  'Already have an account? Sign In.',
-                  style: TextStyle(color: Colors.white),
+                child: Text.rich(
+                  TextSpan(
+                    style: TextStyle(color: Colors.white),
+                    children: const [
+                      TextSpan(text: 'Already have an account? '),
+                      TextSpan(
+                          text: 'Sign In.',
+                          style: TextStyle(fontWeight: FontWeight.bold))
+                    ],
+                  ),
                 ),
               ),
             )

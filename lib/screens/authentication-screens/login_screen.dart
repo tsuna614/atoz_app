@@ -232,9 +232,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   _navigateToSignUp(context);
                 },
-                child: const Text(
-                  'Don\'t have an account? Sign up.',
-                  style: TextStyle(color: Colors.white),
+                child: Text.rich(
+                  TextSpan(
+                    style: TextStyle(color: Colors.white),
+                    children: const [
+                      TextSpan(text: 'Already have an account? '),
+                      TextSpan(
+                          text: 'Sign Up.',
+                          style: TextStyle(fontWeight: FontWeight.bold))
+                    ],
+                  ),
                 ),
               ),
             )
