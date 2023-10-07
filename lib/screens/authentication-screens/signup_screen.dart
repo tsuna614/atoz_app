@@ -20,11 +20,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   var _enteredEmail = '';
   var _enteredPassword = '';
+  var _enteredConfirmPassword = '';
 
   void _submit() async {
     final isValid = _loginForm.currentState!.validate();
 
     if (!isValid) {
+      return;
+    }
+
+    // check if password == confirmPassword
+    if (_enteredPassword != _enteredConfirmPassword) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: const [
+              Icon(
+                Icons.error,
+                color: Colors.white,
+              ),
+              SizedBox(
+                width: 15,
+              ),
+              Text('Confirm password error.'),
+            ],
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
       return;
     }
 
@@ -64,15 +88,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.indigo[900],
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        backgroundColor: Color.fromARGB(255, 31, 72, 105),
+        body: Stack(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Card(
+            Align(
+              alignment: Alignment.center,
+              child: Container(
                 margin: EdgeInsets.all(20),
                 child: SingleChildScrollView(
                   child: Padding(
@@ -82,9 +103,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: const Text(
+                              'Email address',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          ),
+                          SizedBox(height: 6),
                           TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: 'Email address',
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(10)),
+                              filled: true,
+                              fillColor: Colors.white.withOpacity(0.1),
+                              prefixIcon: Icon(
+                                Icons.mail_outline,
+                                color: Colors.white,
+                              ),
+                              hintText: 'Enter your email address',
+                              hintStyle: TextStyle(
+                                  color: Colors.white.withOpacity(0.5)),
                             ),
                             keyboardType: TextInputType.emailAddress,
                             autocorrect: false,
@@ -99,9 +141,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             },
                             onSaved: (newValue) => _enteredEmail = newValue!,
                           ),
+                          SizedBox(height: 30),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: const Text(
+                              'Password',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          ),
+                          SizedBox(height: 6),
                           TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: 'Password',
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(10)),
+                              filled: true,
+                              fillColor: Colors.white.withOpacity(0.1),
+                              prefixIcon: Icon(
+                                Icons.key,
+                                color: Colors.white,
+                              ),
+                              hintText: 'Enter your password',
+                              hintStyle: TextStyle(
+                                  color: Colors.white.withOpacity(0.5)),
                             ),
                             obscureText: true,
                             validator: (value) {
@@ -114,9 +178,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             },
                             onSaved: (newValue) => _enteredPassword = newValue!,
                           ),
+                          SizedBox(height: 30),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: const Text(
+                              'Confirm password',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          ),
+                          SizedBox(height: 6),
                           TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: 'Confirm password',
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(10)),
+                              filled: true,
+                              fillColor: Colors.white.withOpacity(0.1),
+                              prefixIcon: Icon(
+                                Icons.key,
+                                color: Colors.white,
+                              ),
+                              hintText: 'Confirm your password',
+                              hintStyle: TextStyle(
+                                  color: Colors.white.withOpacity(0.5)),
                             ),
                             obscureText: true,
                             validator: (value) {
@@ -127,20 +213,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               }
                               return null;
                             },
-                            onSaved: (newValue) => _enteredPassword = newValue!,
+                            onSaved: (newValue) =>
+                                _enteredConfirmPassword = newValue!,
                           ),
-                          const SizedBox(height: 12),
-                          ElevatedButton(
-                            onPressed: _submit,
-                            child: const Text('Sign up'),
-                          ),
-                          // TextButton(
-                          //   onPressed: () {
-                          //     Navigator.of(context).pop();
-                          //   },
-                          //   child:
-                          //       const Text('Already have an account? Log in.'),
-                          // ),
+                          const SizedBox(height: 60),
+                          if (_isLoading)
+                            const CircularProgressIndicator()
+                          else
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  minimumSize: Size.fromHeight(40)),
+                              onPressed: _submit,
+                              child: const Text(
+                                'Sign Up',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 0, 28, 112),
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 3,
+                                ),
+                              ),
+                            ),
                         ],
                       ),
                     ),
@@ -148,22 +241,161 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
             ),
-            // Expanded(child: SizedBox()),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: Align(
-                alignment: FractionalOffset.bottomCenter,
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('Already have an account? Log in.'),
+            Align(
+              alignment: Alignment(0, 0.9),
+              child: TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text(
+                  'Already have an account? Sign In.',
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
-            ),
+            )
           ],
-        ),
-      ),
-    );
+        ));
+    // return Scaffold(
+    //   backgroundColor: Color.fromARGB(255, 31, 72, 105),
+    //   body: Stack(
+    //     children: [
+    //       Column(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         crossAxisAlignment: CrossAxisAlignment.center,
+    //         children: [
+    //           Padding(
+    //             padding: const EdgeInsets.all(20.0),
+    //             child: Container(
+    //               margin: EdgeInsets.all(20),
+    //               child: SingleChildScrollView(
+    //                 child: Padding(
+    //                   padding: EdgeInsets.all(16),
+    //                   child: Form(
+    //                     key: _loginForm,
+    //                     child: Column(
+    //                       mainAxisSize: MainAxisSize.min,
+    //                       children: [
+    //                         TextFormField(
+    //                           style: TextStyle(color: Colors.white),
+    //                           decoration: InputDecoration(
+    //                             border: OutlineInputBorder(
+    //                                 borderSide: BorderSide.none,
+    //                                 borderRadius: BorderRadius.circular(10)),
+    //                             filled: true,
+    //                             fillColor: Colors.white.withOpacity(0.1),
+    //                             prefixIcon: Icon(
+    //                               Icons.mail_outline,
+    //                               color: Colors.white,
+    //                             ),
+    //                             hintText: 'Enter your email address',
+    //                             hintStyle: TextStyle(
+    //                                 color: Colors.white.withOpacity(0.5)),
+    //                           ),
+    //                           keyboardType: TextInputType.emailAddress,
+    //                           autocorrect: false,
+    //                           textCapitalization: TextCapitalization.none,
+    //                           validator: (value) {
+    //                             if (value == null ||
+    //                                 value.trim().isEmpty ||
+    //                                 !value.contains('@')) {
+    //                               return 'Please enter a valid email';
+    //                             }
+    //                             return null;
+    //                           },
+    //                           onSaved: (newValue) => _enteredEmail = newValue!,
+    //                         ),
+    //                         TextFormField(
+    //                           style: TextStyle(color: Colors.white),
+    //                           decoration: InputDecoration(
+    //                             border: OutlineInputBorder(
+    //                                 borderSide: BorderSide.none,
+    //                                 borderRadius: BorderRadius.circular(10)),
+    //                             filled: true,
+    //                             fillColor: Colors.white.withOpacity(0.1),
+    //                             prefixIcon: Icon(
+    //                               Icons.mail_outline,
+    //                               color: Colors.white,
+    //                             ),
+    //                             hintText: 'Enter your password',
+    //                             hintStyle: TextStyle(
+    //                                 color: Colors.white.withOpacity(0.5)),
+    //                           ),
+    //                           obscureText: true,
+    //                           validator: (value) {
+    //                             if (value == null ||
+    //                                 value.trim().isEmpty ||
+    //                                 value.trim().length < 6) {
+    //                               return 'Please enter a valid password';
+    //                             }
+    //                             return null;
+    //                           },
+    //                           onSaved: (newValue) =>
+    //                               _enteredPassword = newValue!,
+    //                         ),
+    //                         TextFormField(
+    //                           style: TextStyle(color: Colors.white),
+    //                           decoration: InputDecoration(
+    //                             border: OutlineInputBorder(
+    //                                 borderSide: BorderSide.none,
+    //                                 borderRadius: BorderRadius.circular(10)),
+    //                             filled: true,
+    //                             fillColor: Colors.white.withOpacity(0.1),
+    //                             prefixIcon: Icon(
+    //                               Icons.mail_outline,
+    //                               color: Colors.white,
+    //                             ),
+    //                             hintText: 'Confirm your password',
+    //                             hintStyle: TextStyle(
+    //                                 color: Colors.white.withOpacity(0.5)),
+    //                           ),
+    // obscureText: true,
+    // validator: (value) {
+    //   if (value == null ||
+    //       value.trim().isEmpty ||
+    //       value.trim().length < 6) {
+    //     return 'Please enter a valid password';
+    //   }
+    //   return null;
+    // },
+    // onSaved: (newValue) =>
+    //     _enteredPassword = newValue!,
+    //                         ),
+    //                         const SizedBox(height: 12),
+    //                         ElevatedButton(
+    //                           onPressed: _submit,
+    //                           child: const Text('Sign up'),
+    //                         ),
+    //                         // TextButton(
+    //                         //   onPressed: () {
+    //                         //     Navigator.of(context).pop();
+    //                         //   },
+    //                         //   child:
+    //                         //       const Text('Already have an account? Log in.'),
+    //                         // ),
+    //                       ],
+    //                     ),
+    //                   ),
+    //                 ),
+    //               ),
+    //             ),
+    //           ),
+    //           // Expanded(child: SizedBox()),
+    //           Padding(
+    //             padding: const EdgeInsets.only(bottom: 20),
+    //             child: Align(
+    //               alignment: FractionalOffset.bottomCenter,
+    //               child: TextButton(
+    //                 onPressed: () {
+    //                   Navigator.of(context).pop();
+    //                 },
+    //                 child: Text('Already have an account? Log in.'),
+    //               ),
+    //             ),
+    //           ),
+    //         ],
+    //       ),
+    //     ],
+    //   ),
+    // );
   }
 }

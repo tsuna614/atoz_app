@@ -1,4 +1,5 @@
 import 'package:atoz_app/screens/authentication-screens/signup_screen.dart';
+import 'package:atoz_app/screens/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -53,18 +54,12 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                margin:
-                    EdgeInsets.only(top: 30, bottom: 20, left: 20, right: 20),
-                width: 200,
-                child: Text('Image'),
-              ),
-              Card(
+        backgroundColor: Color.fromARGB(255, 31, 72, 105),
+        body: Stack(
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: Container(
                 margin: EdgeInsets.all(20),
                 child: SingleChildScrollView(
                   child: Padding(
@@ -74,9 +69,30 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: const Text(
+                              'Email address',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          ),
+                          SizedBox(height: 6),
                           TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: 'Email address',
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(10)),
+                              filled: true,
+                              fillColor: Colors.white.withOpacity(0.1),
+                              prefixIcon: Icon(
+                                Icons.mail_outline,
+                                color: Colors.white,
+                              ),
+                              hintText: 'Enter your email address',
+                              hintStyle: TextStyle(
+                                  color: Colors.white.withOpacity(0.5)),
                             ),
                             keyboardType: TextInputType.emailAddress,
                             autocorrect: false,
@@ -91,9 +107,31 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                             onSaved: (newValue) => _enteredEmail = newValue!,
                           ),
+                          SizedBox(height: 30),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: const Text(
+                              'Password',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          ),
+                          SizedBox(height: 6),
                           TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: 'Password',
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(10)),
+                              filled: true,
+                              fillColor: Colors.white.withOpacity(0.1),
+                              prefixIcon: Icon(
+                                Icons.key,
+                                color: Colors.white,
+                              ),
+                              hintText: 'Enter your password',
+                              hintStyle: TextStyle(
+                                  color: Colors.white.withOpacity(0.5)),
                             ),
                             obscureText: true,
                             validator: (value) {
@@ -106,28 +144,101 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                             onSaved: (newValue) => _enteredPassword = newValue!,
                           ),
-                          const SizedBox(height: 12),
-                          ElevatedButton(
-                            onPressed: _submit,
-                            child: const Text('Log in'),
+                          const SizedBox(height: 30),
+                          if (_isLoading)
+                            const CircularProgressIndicator()
+                          else
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  minimumSize: Size.fromHeight(40)),
+                              onPressed: _submit,
+                              child: const Text(
+                                'Sign In',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 0, 28, 112),
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 3,
+                                ),
+                              ),
+                            ),
+                          SizedBox(height: 20),
+                          const Text(
+                            '- O R -',
+                            style: TextStyle(color: Colors.white),
                           ),
-                          TextButton(
-                            onPressed: () {
-                              _navigateToSignUp(context);
-                            },
-                            child:
-                                const Text('Don\'t have an account? Sign up.'),
+                          SizedBox(height: 20),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                minimumSize: Size.fromHeight(40)),
+                            onPressed: () {},
+                            child: Ink(
+                              child: Padding(
+                                padding: EdgeInsets.all(6),
+                                child: Wrap(
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  children: const [
+                                    Icon(
+                                      Icons.android,
+                                      color: Colors.black,
+                                    ),
+                                    SizedBox(width: 12),
+                                    Text(
+                                      'Sign in with Google',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                minimumSize: Size.fromHeight(40)),
+                            onPressed: () {},
+                            child: Ink(
+                              child: Padding(
+                                padding: EdgeInsets.all(6),
+                                child: Wrap(
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  children: const [
+                                    Icon(
+                                      Icons.facebook,
+                                      color: Colors.black,
+                                    ),
+                                    SizedBox(width: 12),
+                                    Text(
+                                      'Sign in with Facebook',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
                     ),
                   ),
                 ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+              ),
+            ),
+            Align(
+              alignment: Alignment(0, 0.9),
+              child: TextButton(
+                onPressed: () {
+                  _navigateToSignUp(context);
+                },
+                child: const Text(
+                  'Don\'t have an account? Sign up.',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            )
+          ],
+        ));
   }
 }
