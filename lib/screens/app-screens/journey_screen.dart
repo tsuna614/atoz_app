@@ -1,3 +1,4 @@
+import 'package:atoz_app/screens/app-screens/quiz-screens/quiz_screen.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/src/widgets/framework.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
@@ -7,8 +8,17 @@ class JourneyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Journey Screen'),
+    return Scaffold(
+      body: Column(children: [
+        ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const QuizScreen()),
+              );
+            },
+            child: Text('Question Page'))
+      ]),
     );
   }
 }

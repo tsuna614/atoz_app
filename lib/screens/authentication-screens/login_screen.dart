@@ -236,7 +236,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextSpan(
                     style: TextStyle(color: Colors.white),
                     children: const [
-                      TextSpan(text: 'Already have an account? '),
+                      TextSpan(text: 'Don\'t have an account? '),
                       TextSpan(
                           text: 'Sign Up.',
                           style: TextStyle(fontWeight: FontWeight.bold))
