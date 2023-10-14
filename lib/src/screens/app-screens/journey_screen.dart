@@ -1,4 +1,4 @@
-import 'package:atoz_app/screens/app-screens/quiz-screens/quiz_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/quiz-screens/quiz_screen.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/src/widgets/framework.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';

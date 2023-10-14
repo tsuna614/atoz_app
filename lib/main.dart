@@ -1,12 +1,12 @@
-import 'package:atoz_app/screens/loading_screen.dart';
+import 'package:atoz_app/src/screens/loading_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:atoz_app/screens/authentication-screens/login_screen.dart';
+import 'package:atoz_app/src/screens/authentication-screens/login_screen.dart';
 // import 'package:atoz_app/screens/main_screen.dart';
-import 'package:atoz_app/screens/tabs_screen.dart';
+import 'package:atoz_app/src/screens/tabs_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'firebase_options.dart';
+import 'src/firebase/firebase_options.dart';
 
 // void main() {
 //   runApp(const MyApp());
