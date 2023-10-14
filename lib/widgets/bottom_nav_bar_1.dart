@@ -42,7 +42,7 @@ class BottomNavBar1 extends StatelessWidget {
                     onPressed: () {
                       onIconPressed(2);
                     },
-                    backgroundColor: Colors.blue,
+                    // backgroundColor: Colors.blue,
                     elevation: 0.1,
                     child: Container(
                       padding: const EdgeInsets.all(8),
