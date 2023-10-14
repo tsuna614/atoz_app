@@ -2,6 +2,7 @@ import 'package:atoz_app/src/screens/authentication-screens/signup_screen.dart';
 import 'package:atoz_app/src/screens/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 final _firebase = FirebaseAuth.instance;
 
@@ -69,6 +70,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          Image.asset(
+                            'assets/images/logo2.png',
+                            color: Colors.white,
+                            width: 250,
+                          ),
+                          SizedBox(height: 50),
                           Align(
                             alignment: Alignment.centerLeft,
                             child: const Text(
@@ -180,7 +187,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   crossAxisAlignment: WrapCrossAlignment.center,
                                   children: const [
                                     Icon(
-                                      Icons.android,
+                                      FontAwesomeIcons.google,
                                       color: Colors.black,
                                     ),
                                     SizedBox(width: 12),

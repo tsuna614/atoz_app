@@ -103,6 +103,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          Text(
+                            'Let\'s get started!',
+                            style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          SizedBox(height: 6),
+                          Text(
+                            'Create a new account and start your journey.',
+                            style: TextStyle(fontSize: 14, color: Colors.white),
+                          ),
+                          SizedBox(height: 100),
                           Align(
                             alignment: Alignment.centerLeft,
                             child: const Text(
