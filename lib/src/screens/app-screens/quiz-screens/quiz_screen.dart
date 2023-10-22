@@ -52,7 +52,7 @@ class _QuizScreenState extends State<QuizScreen> {
                   ),
                   // SizedBox(height: 100),
                   Expanded(child: SizedBox()),
-                  ...questions[currentQuestionIndex].answers.map(
+                  ...questions[currentQuestionIndex].getShuffledAnswers().map(
                         (e) => Padding(
                           padding: const EdgeInsets.symmetric(vertical: 6),
                           child: ElevatedButton(

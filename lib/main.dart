@@ -9,12 +9,43 @@ import 'package:google_fonts/google_fonts.dart';
 import 'src/firebase/firebase_options.dart';
 
 final theme = ThemeData(
-  useMaterial3: true,
-  colorScheme: ColorScheme.fromSeed(
-    brightness: Brightness.dark,
-    seedColor: const Color.fromARGB(255, 131, 57, 0),
-  ),
+  // useMaterial3: true,
+  // colorScheme: ColorScheme.fromSeed(
+  //   brightness: Brightness.dark,
+  //   seedColor: const Color.fromARGB(255, 131, 57, 0),
+  // ),
+  primaryColor: Color.fromARGB(255, 0, 70, 149),
+  colorScheme: ThemeData().colorScheme.copyWith(
+        primary: Color.fromARGB(255, 0, 70, 149),
+      ),
   textTheme: GoogleFonts.latoTextTheme(),
+);
+
+final theme2 = ThemeData(
+  useMaterial3: true,
+
+  // Define the default brightness and colors.
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: Colors.purple,
+    // ···
+    brightness: Brightness.dark,
+  ),
+
+  // Define the default `TextTheme`. Use this to specify the default
+  // text styling for headlines, titles, bodies of text, and more.
+  textTheme: TextTheme(
+    displayLarge: const TextStyle(
+      fontSize: 72,
+      fontWeight: FontWeight.bold,
+    ),
+    // ···
+    titleLarge: GoogleFonts.oswald(
+      fontSize: 30,
+      // fontStyle: FontStyle.italic,
+    ),
+    bodyMedium: GoogleFonts.merriweather(),
+    displaySmall: GoogleFonts.pacifico(),
+  ),
 );
 
 Future<void> main() async {
@@ -31,53 +62,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return MaterialApp(
-    //     title: 'Atoz',
-    //     theme: ThemeData(
-    //       useMaterial3: true,
-
-    //       // Define the default brightness and colors.
-    //       colorScheme: ColorScheme.fromSeed(
-    //         seedColor: Colors.purple,
-    //         // ···
-    //         brightness: Brightness.dark,
-    //       ),
-
-    //       // Define the default `TextTheme`. Use this to specify the default
-    //       // text styling for headlines, titles, bodies of text, and more.
-    //       textTheme: TextTheme(
-    //         displayLarge: const TextStyle(
-    //           fontSize: 72,
-    //           fontWeight: FontWeight.bold,
-    //         ),
-    //         // ···
-    //         titleLarge: GoogleFonts.oswald(
-    //           fontSize: 30,
-    //           // fontStyle: FontStyle.italic,
-    //         ),
-    //         bodyMedium: GoogleFonts.merriweather(),
-    //         displaySmall: GoogleFonts.pacifico(),
-    //       ),
-    //     ),
-    //     home: StreamBuilder(
-    //         stream: FirebaseAuth.instance.authStateChanges(),
-    //         builder: (context, snapshot) {
-    //           if (snapshot.connectionState == ConnectionState.waiting) {
-    //             return const LoadingScreen();
-    //           }
-    //           if (snapshot.hasData) {
-    //             return const TabsScreen();
-    //           }
-    //           return const LoginScreen();
-    //         }));
-
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Atoz App',
-        theme: ThemeData(
-          primarySwatch: Colors.green,
-        ),
-        // theme: theme,
+        // theme: ThemeData(
+        //   primarySwatch: Colors.green,
+        // ),
+        theme: theme,
         home: StreamBuilder(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {

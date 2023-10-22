@@ -17,8 +17,8 @@ class TabsScreen extends StatefulWidget {
 
 class _TabsScreenState extends State<TabsScreen> {
   int _selectedIndex = 0;
-  Widget _chosenScreen = HomeScreen();
-  String _chosenScreenName = 'Home';
+  Widget _chosenScreen = JourneyScreen();
+  String _chosenScreenName = 'Journey';
 
   void _onItemTap(int index) {
     setState(() {
@@ -70,7 +70,7 @@ class _TabsScreenState extends State<TabsScreen> {
       appBar: AppBar(
         title: Text(_chosenScreenName),
       ),
-      backgroundColor: Color.fromARGB(255, 223, 255, 228),
+      backgroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
       // body: Stack(
       //   children: [
       //     _chosenScreen,
