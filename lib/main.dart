@@ -1,3 +1,4 @@
+import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_connect_string.dart';
 import 'package:atoz_app/src/screens/loading_screen.dart';
 import 'package:atoz_app/src/screens/test.dart';
 import 'package:flutter/material.dart';
@@ -93,7 +94,10 @@ class MyApp extends StatelessWidget {
           return const LoginScreen();
         },
       ),
-      // home: TestWidget(),
+      // home: ConnectString(
+      //     question: 'This is the question?',
+      //     answers: ['Answer 1', 'Answer 2', 'Answer 3'],
+      //     correctAnswer: 'This is the correct answer'),
     );
   }
 }

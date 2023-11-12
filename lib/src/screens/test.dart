@@ -8,7 +8,7 @@ class TestWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final questions = ref.watch(mealsProvider);
+    final questions = ref.watch(questionsProvider);
 
     return Scaffold(
       body: Container(
