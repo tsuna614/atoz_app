@@ -36,115 +36,125 @@ class _MultipleChoiceState extends ConsumerState<MultipleChoice> {
       return shuffledAnswers;
     }
 
-    // void handleAnswerClick(String chosenAnswer) {
-    //   setState(() {
-    //     currentAnswer = chosenAnswer;
-    //   });
-    // }
-
-    return Padding(
-        padding: EdgeInsets.symmetric(vertical: 100, horizontal: 20),
-        child: Stack(
-          children: [
-            Text(
-              widget.question,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            // Expanded(child: SizedBox()),
-            // ...dummyQuestions[currentQuestionIndex].getShuffledAnswers().map(
-            // ...getShuffledAnswers(widget.answers).map(
-            //   (e) => Padding(
-            //     padding: const EdgeInsets.symmetric(vertical: 6),
-            //     child: MultipleChoiceButton(answerText: e),
-            //   ),
-            // ),
-            MultipleChoiceButton(
-                shuffledAnswersList: getShuffledAnswers(widget.answers)),
-            // Expanded(child: SizedBox()),
-            Positioned(
-              bottom: 100,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: Text('Check'),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size.fromHeight(50),
-                ),
+    void handleCheckClick(String chosenAnswer) {
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            height: 200,
+            color: chosenAnswer == widget.correctAnswer
+                ? Colors.green
+                : Color.fromRGBO(244, 67, 54, 1),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const Text('Modal BottomSheet'),
+                  ElevatedButton(
+                      child: const Text('Close BottomSheet'),
+                      onPressed: () {
+                        widget.handleCheckButton(chosenAnswer);
+                        Navigator.pop(context);
+                      }),
+                ],
               ),
             ),
-          ],
-        ));
+          );
+        },
+      );
+    }
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        children: [
+          SizedBox(
+            height: 50,
+          ),
+          Text(
+            widget.question,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+          Expanded(child: SizedBox()),
+          // call the Answers buttons and Check button Widget
+          MultipleChoiceButton(
+            shuffledAnswersList: getShuffledAnswers(widget.answers),
+            handleCheckButton: handleCheckClick,
+          ),
+          SizedBox(
+            height: 50,
+          ),
+        ],
+      ),
+    );
   }
 }
 
-String currentAnswer = '';
-
 class MultipleChoiceButton extends StatefulWidget {
-  MultipleChoiceButton({super.key, required this.shuffledAnswersList});
+  MultipleChoiceButton(
+      {super.key,
+      required this.shuffledAnswersList,
+      required this.handleCheckButton});
 
   List<String> shuffledAnswersList;
+
+  final void Function(String chosenAnswer) handleCheckButton;
 
   @override
   State<MultipleChoiceButton> createState() => _MultipleChoiceButtonState();
 }
 
 class _MultipleChoiceButtonState extends State<MultipleChoiceButton> {
+  String currentAnswer = '';
+
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      itemCount: widget.shuffledAnswersList.length,
-      itemBuilder: (BuildContext context, int index) {
-        return ElevatedButton(
-          style: widget.shuffledAnswersList[index] == currentAnswer
-              ? ElevatedButton.styleFrom(
-                  minimumSize: Size.fromHeight(40),
-                  backgroundColor: Colors.green,
-                )
-              : ElevatedButton.styleFrom(
-                  minimumSize: Size.fromHeight(
-                      40), // fromHeight use double.infinity as width and 40 is the height
-                  // backgroundColor: Colors.blue,
-                ),
-          onPressed: () {
-            setState(() {
-              currentAnswer = widget.shuffledAnswersList[index];
-            });
+    return Column(
+      children: [
+        // build the listview buttons from the answers list
+        ListView.builder(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: widget.shuffledAnswersList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ElevatedButton(
+              style: widget.shuffledAnswersList[index] == currentAnswer
+                  ? ElevatedButton.styleFrom(
+                      minimumSize: Size.fromHeight(40),
+                      backgroundColor: Colors.green,
+                    )
+                  : ElevatedButton.styleFrom(
+                      minimumSize: Size.fromHeight(
+                          40), // fromHeight use double.infinity as width and 40 is the height
+                      backgroundColor: Colors.blue,
+                    ),
+              onPressed: () {
+                setState(() {
+                  currentAnswer = widget.shuffledAnswersList[index];
+                });
+              },
+              child: Text(
+                widget.shuffledAnswersList[index],
+                textAlign: TextAlign.center,
+              ),
+            );
           },
-          child: Text(
-            widget.shuffledAnswersList[index],
-            textAlign: TextAlign.center,
+        ),
+        ElevatedButton(
+          // if there is no answer chosen yet, button function is set to null (grey out)
+          onPressed: currentAnswer.trim().isEmpty
+              ? null
+              : () {
+                  widget.handleCheckButton(currentAnswer);
+                },
+          style: ElevatedButton.styleFrom(
+            minimumSize: Size.fromHeight(50),
           ),
-        );
-      },
+          child: Text('Check'),
+        ),
+      ],
     );
   }
 }
-
-// showModalBottomSheet(
-//   context: context,
-//   builder: (BuildContext context) {
-//     return Container(
-//       height: 200,
-//       color: e == widget.correctAnswer
-//           ? Colors.green
-//           : Color.fromRGBO(244, 67, 54, 1),
-//       child: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           mainAxisSize: MainAxisSize.min,
-//           children: <Widget>[
-//             const Text('Modal BottomSheet'),
-//             ElevatedButton(
-//                 child: const Text('Close BottomSheet'),
-//                 onPressed: () {
-//                   widget.handleCheckButton(e);
-//                   Navigator.pop(context);
-//                 }),
-//           ],
-//         ),
-//       ),
-//     );
-//   },
-// );
