@@ -22,34 +22,55 @@ class ConnectString extends StatefulWidget {
 }
 
 class _ConnectStringState extends State<ConnectString> {
-  final List myTiles = ['A', 'B', 'C', 'D'];
+  // final List myTiles = ['A', 'B', 'C', 'D'];
 
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   body: Column(
-    //     // mainAxisAlignment: MainAxisAlignment.center,
-    //     crossAxisAlignment: CrossAxisAlignment.center,
-    //     children: [
-    //       Text(question),
-    //       // ListView.builder(
-    //       //   shrinkWrap: true,
-    //       //   itemCount: answers.length,
-    //       //   itemBuilder: (context, index) =>
-    //       //       DraggableAnswer(answer: answers[index]),
-    //       ReorderableListView.builder(
-    //         shrinkWrap: true,
-    //         itemBuilder: (context, index) => ListTile(
-    //           key: ValueKey(answers[index]),
-    //           tileColor: Colors.grey,
-    //           title: Text(answers[index]),
-    //         ),
-    //         itemCount: answers.length,
-    //         onReorder: ((oldIndex, newIndex) => {}),
-    //       ),
-    //     ],
-    //   ),
-    // );
+    return Scaffold(
+      body: Column(
+        // mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(widget.question),
+          // ListView.builder(
+          //   shrinkWrap: true,
+          //   itemCount: answers.length,
+          //   itemBuilder: (context, index) =>
+          //       DraggableAnswer(answer: answers[index]),
+          /* */
+          // ReorderableListView.builder(
+          //   shrinkWrap: true,
+          //   itemBuilder: (context, index) => ListTile(
+          //     key: ValueKey(widget.answers[index]),
+          //     tileColor: Colors.grey,
+          //     title: Text(widget.answers[index]),
+          //   ),
+          //   itemCount: widget.answers.length,
+          //   onReorder: ((oldIndex, newIndex) => {}),
+          // ),
+          Expanded(child: Container()),
+          Wrap(
+            spacing: 8.0, // gap between adjacent chips
+            runSpacing: 4.0, // gap between lines
+            children: <Widget>[
+              for (final answer in widget.answers) Chip(label: Text(answer))
+              // Chip(
+              //   label: Text('Hamilton'),
+              // ),
+              // Chip(
+              //   label: Text('Lafayette'),
+              // ),
+              // Chip(
+              //   label: Text('Mullilkmblsdfmbdskmbgan'),
+              // ),
+              // Chip(
+              //   label: Text('Laurens'),
+              // ),
+            ],
+          )
+        ],
+      ),
+    );
     // return ReorderableListView(
     //   physics: NeverScrollableScrollPhysics(),
     //   children: [
@@ -65,7 +86,6 @@ class _ConnectStringState extends State<ConnectString> {
     //   ],
     //   onReorder: (oldIndex, newIndex) => {},
     // );
-    return ReorderableExample();
   }
 }
 

@@ -226,6 +226,26 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              _navigateToSignUp(context);
+                            },
+                            child: Text.rich(
+                              TextSpan(
+                                style: TextStyle(color: Colors.white),
+                                children: const [
+                                  TextSpan(text: 'Don\'t have an account? '),
+                                  TextSpan(
+                                      text: 'Sign Up.',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold))
+                                ],
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -233,25 +253,28 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            Align(
-              alignment: Alignment(0, 0.9),
-              child: TextButton(
-                onPressed: () {
-                  _navigateToSignUp(context);
-                },
-                child: Text.rich(
-                  TextSpan(
-                    style: TextStyle(color: Colors.white),
-                    children: const [
-                      TextSpan(text: 'Don\'t have an account? '),
-                      TextSpan(
-                          text: 'Sign Up.',
-                          style: TextStyle(fontWeight: FontWeight.bold))
-                    ],
-                  ),
-                ),
-              ),
-            )
+
+            /* This will align the 'Dont have an account?' button at the bottom of the screen */
+            /* However when they keyboard is displayed it will also be pushed up */
+            // Align(
+            //   alignment: Alignment(0, 0.9),
+            //   child: TextButton(
+            //     onPressed: () {
+            //       _navigateToSignUp(context);
+            //     },
+            //     child: Text.rich(
+            //       TextSpan(
+            //         style: TextStyle(color: Colors.white),
+            //         children: const [
+            //           TextSpan(text: 'Don\'t have an account? '),
+            //           TextSpan(
+            //               text: 'Sign Up.',
+            //               style: TextStyle(fontWeight: FontWeight.bold))
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // )
           ],
         ));
   }

@@ -248,6 +248,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                               ),
                             ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text.rich(
+                              TextSpan(
+                                style: TextStyle(color: Colors.white),
+                                children: const [
+                                  TextSpan(text: 'Already have an account? '),
+                                  TextSpan(
+                                      text: 'Sign In.',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold))
+                                ],
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -255,25 +275,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
             ),
-            Align(
-              alignment: Alignment(0, 0.9),
-              child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text.rich(
-                  TextSpan(
-                    style: TextStyle(color: Colors.white),
-                    children: const [
-                      TextSpan(text: 'Already have an account? '),
-                      TextSpan(
-                          text: 'Sign In.',
-                          style: TextStyle(fontWeight: FontWeight.bold))
-                    ],
-                  ),
-                ),
-              ),
-            )
+            // Align(
+            //   alignment: Alignment(0, 0.9),
+            //   child: TextButton(
+            //     onPressed: () {
+            //       Navigator.of(context).pop();
+            //     },
+            //     child: Text.rich(
+            //       TextSpan(
+            //         style: TextStyle(color: Colors.white),
+            //         children: const [
+            //           TextSpan(text: 'Already have an account? '),
+            //           TextSpan(
+            //               text: 'Sign In.',
+            //               style: TextStyle(fontWeight: FontWeight.bold))
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // )
           ],
         ));
     // return Scaffold(
