@@ -9,36 +9,39 @@ class JourneyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          // ElevatedButton(
-          //   onPressed: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(builder: (context) => const QuizScreen()),
-          //     );
-          //   },
-          //   child: Text('Question Page'),
-          // ),
-          RawMaterialButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const QuizScreen()),
-              );
-            },
-            elevation: 2.0,
-            fillColor: Colors.white,
-            padding: EdgeInsets.all(15.0),
-            shape: CircleBorder(),
-            child: Icon(
-              FontAwesomeIcons.question,
-              size: 35.0,
-            ),
-          )
-        ],
+    return Scaffold(
+      appBar: AppBar(),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            // ElevatedButton(
+            //   onPressed: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(builder: (context) => const QuizScreen()),
+            //     );
+            //   },
+            //   child: Text('Question Page'),
+            // ),
+            RawMaterialButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const QuizScreen()),
+                );
+              },
+              elevation: 2.0,
+              fillColor: Colors.white,
+              padding: EdgeInsets.all(15.0),
+              shape: CircleBorder(),
+              child: Icon(
+                FontAwesomeIcons.question,
+                size: 35.0,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

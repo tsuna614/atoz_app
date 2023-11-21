@@ -19,6 +19,13 @@ class _TabsScreenState extends State<TabsScreen> {
   int _selectedIndex = 0;
   Widget _chosenScreen = JourneyScreen();
   String _chosenScreenName = 'Journey';
+  final _pageController = PageController();
+  final _pages = [
+    JourneyScreen(),
+    PracticeScreen(),
+    LeaderboardScreen(),
+    ProfileScreen(),
+  ];
 
   void _onItemTap(int index) {
     setState(() {
@@ -49,11 +56,19 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_chosenScreenName),
-      ),
+      // appBar: AppBar(
+      //   title: Text(_chosenScreenName),
+      // ),
       backgroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
-      body: _chosenScreen,
+      body: PageView(
+        onPageChanged: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        controller: _pageController,
+        children: _pages,
+      ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           //Here goes the same radius, u can put into a var or function
@@ -75,7 +90,13 @@ class _TabsScreenState extends State<TabsScreen> {
           child: SalomonBottomBar(
             unselectedItemColor: Colors.black.withOpacity(0.2),
             backgroundColor: Colors.white,
-            onTap: _onItemTap,
+            onTap: (index) {
+              setState(() {
+                _selectedIndex = index;
+                _pageController.animateToPage(_selectedIndex,
+                    duration: Duration(milliseconds: 1), curve: Curves.linear);
+              });
+            },
             currentIndex: _selectedIndex,
             // control which tab will be highlighted when chosen
             items: [

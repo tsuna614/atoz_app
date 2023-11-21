@@ -86,7 +86,10 @@ class _ConnectStringState extends State<ConnectString> {
               //   label: Text('Laurens'),
               // ),
             ],
-          )
+          ),
+          SizedBox(
+            height: 100,
+          ),
         ],
       ),
     );

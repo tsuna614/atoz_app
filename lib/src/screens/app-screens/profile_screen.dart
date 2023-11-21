@@ -10,16 +10,33 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: ElevatedButton(
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-          onPressed: () {
-            _firebase.signOut();
-          },
-          child: const Text(
-            'Log Out',
-            style: TextStyle(fontSize: 16),
-          )),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(''),
+        elevation: 0,
+      ),
+      body: Stack(
+        children: [
+          Container(
+            alignment: Alignment.topCenter,
+            height: 75.0,
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+          Center(
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                onPressed: () {
+                  _firebase.signOut();
+                },
+                child: const Text(
+                  'Log Out',
+                  style: TextStyle(fontSize: 16),
+                )),
+          ),
+        ],
+      ),
     );
   }
 }
