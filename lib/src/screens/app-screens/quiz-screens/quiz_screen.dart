@@ -8,6 +8,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:atoz_app/src/data/questions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class QuizScreen extends ConsumerStatefulWidget {
   const QuizScreen({super.key});
@@ -51,7 +52,13 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Question'),
+        title: LinearPercentIndicator(
+          width: MediaQuery.of(context).size.width * 0.7,
+          lineHeight: 8.0,
+          percent: currentQuestionIndex / question.length,
+          progressColor: Colors.blue,
+          backgroundColor: Colors.white,
+        ),
       ),
       // body: chosenScreen,
       body: ConnectString(

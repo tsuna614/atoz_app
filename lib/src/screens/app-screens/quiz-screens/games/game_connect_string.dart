@@ -29,9 +29,28 @@ class _ConnectStringState extends State<ConnectString> {
     return Scaffold(
       body: Column(
         // mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(widget.question),
+          SizedBox(
+            height: 50,
+          ),
+          Text(
+            widget.question,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(
+            height: 50,
+          ),
+          Card(
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Container(
+                width: 100,
+                height: 100,
+              ),
+            ),
+          ),
           // ListView.builder(
           //   shrinkWrap: true,
           //   itemCount: answers.length,
