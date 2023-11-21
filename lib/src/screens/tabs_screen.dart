@@ -48,56 +48,12 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   body: _chosenScreen,
-    //   bottomNavigationBar: BottomNavigationBar(
-    //     items: const [
-    //       BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-    //       BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-    //       BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-    //       BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-    //       BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-    //     ],
-    //     currentIndex: _selectedIndex,
-    //     backgroundColor: Colors.blue,
-    //     // fixedColor: Colors.blue,
-    //     selectedItemColor: Colors.blue,
-    //     onTap: _onItemTap, // automatically pass in the currentIndex variable
-    //   ),
-    // );
-
     return Scaffold(
       appBar: AppBar(
         title: Text(_chosenScreenName),
       ),
       backgroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
-      // body: Stack(
-      //   children: [
-      //     _chosenScreen,
-      //     BottomNavBar1(
-      //       onIconPressed: _onItemTap,
-      //       chosenScreen: _selectedIndex,
-      //     ),
-      //   ],
-      // ),
       body: _chosenScreen,
-      // bottomNavigationBar: BottomNavigationBar(
-      //   onTap: _onItemTap,
-      //   currentIndex: _selectedIndex,
-      //   // control which tab will be highlighted when chosen
-      //   items: const [
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.set_meal),
-      //       label: 'Categories',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.star),
-      //       label: 'Favourites',
-      //     ),
-      //     // BottomNavigationBarItem(icon: Icon(Icons.set_meal), label: ''),
-      //     // BottomNavigationBarItem(icon: Icon(Icons.set_meal), label: ''),
-      //   ],
-      // ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           //Here goes the same radius, u can put into a var or function
@@ -139,8 +95,6 @@ class _TabsScreenState extends State<TabsScreen> {
                 icon: Icon(FontAwesomeIcons.user),
                 title: Text('Profile'),
               ),
-              // BottomNavigationBarItem(icon: Icon(Icons.set_meal), label: ''),
-              // BottomNavigationBarItem(icon: Icon(Icons.set_meal), label: ''),
             ],
           ),
         ),

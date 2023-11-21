@@ -38,6 +38,11 @@ class _MultipleChoiceState extends ConsumerState<MultipleChoice> {
 
     void handleCheckClick(String chosenAnswer) {
       showModalBottomSheet(
+        // backgroundColor: Colors.transparent,
+        isDismissible: false,
+        enableDrag: false,
+        barrierColor: Colors.transparent,
+        // expand: true
         context: context,
         builder: (BuildContext context) {
           return Container(
@@ -115,6 +120,7 @@ class _MultipleChoiceButtonState extends State<MultipleChoiceButton> {
       children: [
         // build the listview buttons from the answers list
         ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           itemCount: widget.shuffledAnswersList.length,
@@ -142,6 +148,7 @@ class _MultipleChoiceButtonState extends State<MultipleChoiceButton> {
             );
           },
         ),
+        SizedBox(height: 50),
         ElevatedButton(
           // if there is no answer chosen yet, button function is set to null (grey out)
           onPressed: currentAnswer.trim().isEmpty

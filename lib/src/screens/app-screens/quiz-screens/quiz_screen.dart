@@ -1,4 +1,5 @@
 import 'package:atoz_app/src/providers/question_provider.dart';
+import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_connect_string.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_multiple_choice.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/result_screen.dart';
 import 'package:atoz_app/src/screens/test.dart';
@@ -52,7 +53,12 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
       appBar: AppBar(
         title: const Text('Question'),
       ),
-      body: chosenScreen,
+      // body: chosenScreen,
+      body: ConnectString(
+          question: question[currentQuestionIndex].question,
+          answers: question[currentQuestionIndex].answers,
+          correctAnswer: question[currentQuestionIndex].correctAnswer,
+          handleCheckButton: _handleAnswerClick),
     );
   }
 }
