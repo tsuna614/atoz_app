@@ -1,8 +1,10 @@
 import 'package:atoz_app/src/screens/authentication-screens/signup_screen.dart';
 import 'package:atoz_app/src/screens/loading_screen.dart';
+import 'package:atoz_app/src/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 final _firebase = FirebaseAuth.instance;
 
@@ -19,6 +21,21 @@ class _LoginScreenState extends State<LoginScreen> {
 
   var _enteredEmail = '';
   var _enteredPassword = '';
+
+  // final GoogleSignIn _googleSignIn = GoogleSignIn(
+  //   scopes: [
+  //     'email',
+  //     'https://www.googleapis.com/auth/contacts.readonly',
+  //   ],
+  // );
+
+  // Future<void> _handleSignIn() async {
+  //   try {
+  //     await _googleSignIn.signIn();
+  //   } catch (error) {
+  //     print(error);
+  //   }
+  // }
 
   void _submit() async {
     final isValid = _loginForm.currentState!.validate();
@@ -70,6 +87,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          SizedBox(
+                            height: 50,
+                          ),
                           Image.asset(
                             'assets/images/logo2.png',
                             color: Colors.white,
@@ -179,7 +199,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.white,
                                 minimumSize: Size.fromHeight(40)),
-                            onPressed: () {},
+                            onPressed: () {
+                              AuthService().signInWithGoogle();
+                              // _handleSignIn();
+                            },
                             child: Ink(
                               child: Padding(
                                 padding: EdgeInsets.all(6),
