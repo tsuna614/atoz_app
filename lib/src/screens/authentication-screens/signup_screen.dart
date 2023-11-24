@@ -1,3 +1,5 @@
+import 'package:atoz_app/src/screens/authentication-screens/detail_signup_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/src/widgets/framework.dart';
@@ -58,9 +60,50 @@ class _SignUpScreenState extends State<SignUpScreen> {
       setState(() {
         _isLoading = true;
       });
-      // create new user
-      await _firebase.createUserWithEmailAndPassword(
-          email: _enteredEmail, password: _enteredPassword);
+
+      final db = FirebaseFirestore.instance;
+      bool isUserExisted = false;
+
+      // search in collection "users" for existed email, if found then set isUserExisted to true
+      await db
+          .collection("users")
+          .where("email", isEqualTo: _enteredEmail)
+          .get()
+          .then((querySnapshot) => {
+                for (var docSnapshop in querySnapshot.docs)
+                  {
+                    if (docSnapshop.exists) {isUserExisted = true}
+                  }
+              });
+
+      // if entered email is already registered, show SnackBar and return
+      if (context.mounted && isUserExisted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('This email address already exists.'),
+          ),
+        );
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+
+      // if the email is valid, push to Detail page
+      if (context.mounted) {
+        // Navigator.of(context).pop();
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetailSignUpScreen(
+                email: _enteredEmail, password: _enteredPassword),
+          ),
+        );
+      }
+      // // create new user
+      // final userCredential = await _firebase.createUserWithEmailAndPassword(
+      //     email: _enteredEmail, password: _enteredPassword);
 
       // await FirebaseFirestore.instance
       //     .collection('users')
@@ -70,8 +113,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       //     'email': _enteredEmail,
       //   },
       // );
-      Navigator.of(context)
-          .pop(); // this line only execute when _firebase.createUser is success, otherwise it will skip this line to the FirebaseAuthException
     } on FirebaseAuthException catch (error) {
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
@@ -237,10 +278,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.white,
-                                  minimumSize: Size.fromHeight(40)),
+                                  minimumSize: Size.fromHeight(50)),
                               onPressed: _submit,
                               child: const Text(
-                                'Sign Up',
+                                'Sign up',
                                 style: TextStyle(
                                   color: Color.fromARGB(255, 0, 28, 112),
                                   fontWeight: FontWeight.bold,
