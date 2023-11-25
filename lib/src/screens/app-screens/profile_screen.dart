@@ -19,21 +19,31 @@ class ProfileScreen extends StatelessWidget {
         children: [
           Container(
             alignment: Alignment.topCenter,
-            height: 75.0,
+            height: 50.0,
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor,
             ),
           ),
           Center(
             child: ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                onPressed: () {
-                  _firebase.signOut();
-                },
-                child: const Text(
-                  'Log Out',
-                  style: TextStyle(fontSize: 16),
-                )),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              onPressed: () {
+                _firebase.signOut();
+              },
+              child: const Text(
+                'Log Out',
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: ClipOval(
+              child: SizedBox.fromSize(
+                size: Size.fromRadius(50),
+                child: Image.asset('assets/images/pfp.jpeg', fit: BoxFit.cover),
+              ),
+            ),
           ),
         ],
       ),

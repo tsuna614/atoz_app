@@ -1,3 +1,4 @@
+import 'package:atoz_app/src/screens/app-screens/profile_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_connect_string.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/quiz_screen.dart';
 import 'package:atoz_app/src/screens/loading_screen.dart';
@@ -96,7 +97,7 @@ class MyApp extends StatelessWidget {
           return const LoginScreen();
         },
       ),
-      // home: QuizScreen(),
+      // home: ProfileScreen(),
     );
   }
 }
