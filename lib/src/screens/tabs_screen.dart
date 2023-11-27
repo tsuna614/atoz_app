@@ -21,10 +21,10 @@ class _TabsScreenState extends State<TabsScreen> {
   String _chosenScreenName = 'Journey';
   final _pageController = PageController();
   final _pages = [
+    ProfileScreen(),
     JourneyScreen(),
     PracticeScreen(),
     LeaderboardScreen(),
-    ProfileScreen(),
   ];
 
   void _onItemTap(int index) {
