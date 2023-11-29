@@ -72,6 +72,10 @@ flutter:
     - assets/images/logo2.png
     - assets/images/profile.jpg
     - assets/images/pfp.jpeg
+    - assets/images/listening.png
+    - assets/images/reading.png
+    - assets/images/writing.png
+    - assets/images/speaking.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

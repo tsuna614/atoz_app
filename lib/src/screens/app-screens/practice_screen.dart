@@ -1,3 +1,7 @@
+import 'package:atoz_app/src/screens/app-screens/practice-screens/listening_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/practice-screens/reading_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/practice-screens/speaking_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/practice-screens/writing_screen.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/src/widgets/framework.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
@@ -6,7 +10,7 @@ class PracticeScreen extends StatelessWidget {
   PracticeScreen({super.key});
 
   final controller = PageController(
-    initialPage: 1,
+    initialPage: 0,
   );
 
   @override
@@ -30,16 +34,16 @@ class PracticeScreen extends StatelessWidget {
         controller: controller,
         children: const [
           CardItem(
-            cardCategory: 'Reading',
+            cardCategory: 'reading',
           ),
           CardItem(
-            cardCategory: 'Writing',
+            cardCategory: 'writing',
           ),
           CardItem(
-            cardCategory: 'Listening',
+            cardCategory: 'listening',
           ),
           CardItem(
-            cardCategory: 'Speaking',
+            cardCategory: 'speaking',
           ),
         ],
       ),
@@ -69,7 +73,93 @@ class CardItem extends StatelessWidget {
                 ),
               ],
               borderRadius: BorderRadius.all(Radius.circular(20))),
-          child: Column(children: []),
+          child: Column(children: [
+            SizedBox(
+              height: 50,
+            ),
+            if (cardCategory == 'reading')
+              SizedBox(
+                height: 200,
+                child: Image.asset('assets/images/reading.png'),
+              )
+            else if (cardCategory == 'writing')
+              SizedBox(
+                height: 200,
+                child: Image.asset('assets/images/writing.png'),
+              )
+            else if (cardCategory == 'listening')
+              SizedBox(
+                height: 200,
+                child: Image.asset('assets/images/listening.png'),
+              )
+            else if (cardCategory == 'speaking')
+              SizedBox(
+                height: 200,
+                child: Image.asset('assets/images/speaking.png'),
+              ),
+            SizedBox(height: 16),
+            Text(
+              "${cardCategory[0].toUpperCase()}${cardCategory.substring(1).toLowerCase()}",
+              style: TextStyle(
+                  fontSize: 34,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).primaryColor),
+            ),
+            Divider(
+              height: 40,
+              thickness: 3,
+              indent: 100,
+              endIndent: 100,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 40),
+              child: Text(
+                'Practice your skill with this gamemode. While it is certainly fun to play, it will definitely not give you an easy task. Your heart will not decrease if you lose in this gamemode.',
+                style: TextStyle(fontSize: 20),
+                textAlign: TextAlign.justify,
+              ),
+            ),
+            Expanded(child: Container()),
+            Padding(
+              padding: EdgeInsets.all(32),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    minimumSize: Size.fromHeight(40)),
+                onPressed: () {
+                  if (cardCategory == 'reading') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ReadingScreen()),
+                    );
+                  } else if (cardCategory == 'listening') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ListeningScreen()),
+                    );
+                  } else if (cardCategory == 'writing') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const WritingScreen()),
+                    );
+                  } else if (cardCategory == 'speaking') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SpeakingScreen()),
+                    );
+                  }
+                },
+                child: const Text(
+                  'Start',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            ),
+          ]),
         ),
       ),
     );
