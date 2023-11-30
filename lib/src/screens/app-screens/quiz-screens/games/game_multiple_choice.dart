@@ -46,22 +46,45 @@ class _MultipleChoiceState extends ConsumerState<MultipleChoice> {
         context: context,
         builder: (BuildContext context) {
           return Container(
-            height: 200,
+            height: 160,
             color: chosenAnswer == widget.correctAnswer
                 ? Colors.green
                 : Color.fromRGBO(244, 67, 54, 1),
             child: Center(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                // crossAxisAlignment: CrossAxisAlignment.center,
+                // mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const Text('Modal BottomSheet'),
-                  ElevatedButton(
-                      child: const Text('Close BottomSheet'),
-                      onPressed: () {
-                        widget.handleCheckButton(chosenAnswer);
-                        Navigator.pop(context);
-                      }),
+                children: [
+                  Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20.0),
+                        child: chosenAnswer == widget.correctAnswer
+                            ? Text(
+                                'Correct answer',
+                                style: TextStyle(fontSize: 20),
+                              )
+                            : Text(
+                                'Wrong answer',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                      )),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size.fromHeight(50),
+                        ),
+                        child: const Text('Next question'),
+                        onPressed: () {
+                          widget.handleCheckButton(chosenAnswer);
+                          Navigator.pop(context);
+                        }),
+                  ),
                 ],
               ),
             ),

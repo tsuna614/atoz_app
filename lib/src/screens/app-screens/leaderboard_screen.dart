@@ -18,9 +18,6 @@ class LeaderboardScreen extends StatelessWidget {
                   'Leaderboard',
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
-                Divider(
-                  height: 40,
-                ),
                 TopPlayerCard(),
               ],
             ),
@@ -31,19 +28,30 @@ class LeaderboardScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  SizedBox(height: 500),
+                  SizedBox(height: 300),
                   Card(
                     elevation: 10,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 100,
+                    child: Container(
+                      height: 400,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: const [
+                            SizedBox(height: 10),
+                            TemporaryPlayerTitle(),
+                            TemporaryPlayerTitle(),
+                            TemporaryPlayerTitle(),
+                            TemporaryPlayerTitle(),
+                            TemporaryPlayerTitle(),
+                            TemporaryPlayerTitle(),
+                            TemporaryPlayerTitle(),
+                            TemporaryPlayerTitle(),
+                            TemporaryPlayerTitle(),
+                            TemporaryPlayerTitle(),
+                            TemporaryPlayerTitle(),
+                            TemporaryPlayerTitle(),
+                          ],
                         ),
-                        Container(
-                          height: 10,
-                          color: Colors.red,
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ],
@@ -79,7 +87,7 @@ class TopPlayerCard extends StatelessWidget {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
+                          color: Color.fromARGB(255, 16, 101, 171),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(20),
                           )),
@@ -114,8 +122,156 @@ class TopPlayerCard extends StatelessWidget {
               ),
             ),
           ],
+        ),
+        Column(
+          children: [
+            SizedBox(
+              height: 40,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SizedBox(
+                  width: 0,
+                ),
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 30,
+                    ),
+                    SizedBox(
+                      height: 80,
+                      width: 80,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          CircleAvatar(
+                            backgroundImage:
+                                AssetImage("assets/images/pfp.jpeg"),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'Khanh',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white),
+                    ),
+                    Text(
+                      '2190',
+                      style: TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    )
+                  ],
+                ),
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 80,
+                      width: 80,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          CircleAvatar(
+                            backgroundImage:
+                                AssetImage("assets/images/pfp.jpeg"),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'Khanh',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white),
+                    ),
+                    Text(
+                      '2190',
+                      style: TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    )
+                  ],
+                ),
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 50,
+                    ),
+                    SizedBox(
+                      height: 80,
+                      width: 80,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          CircleAvatar(
+                            backgroundImage:
+                                AssetImage("assets/images/pfp.jpeg"),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'Khanh',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white),
+                    ),
+                    Text(
+                      '2190',
+                      style: TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  width: 0,
+                ),
+              ],
+            )
+          ],
         )
       ],
+    );
+  }
+}
+
+class TemporaryPlayerTitle extends StatelessWidget {
+  const TemporaryPlayerTitle({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ListTile(
+        leading: SizedBox(
+          height: 80,
+          width: 80,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              CircleAvatar(
+                backgroundImage: AssetImage("assets/images/pfp.jpeg"),
+              ),
+            ],
+          ),
+        ),
+        title: Text('Khanh'),
+        trailing: Text('2190'),
+      ),
     );
   }
 }

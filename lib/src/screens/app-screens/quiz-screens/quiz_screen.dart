@@ -61,11 +61,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
         ),
       ),
       // body: chosenScreen,
-      body: MultipleChoice(
-          question: question[currentQuestionIndex].question,
-          answers: question[currentQuestionIndex].answers,
-          correctAnswer: question[currentQuestionIndex].correctAnswer,
-          handleCheckButton: _handleAnswerClick),
+      body: chosenScreen,
     );
   }
 }

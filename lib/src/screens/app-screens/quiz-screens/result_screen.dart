@@ -12,7 +12,8 @@ class ResultScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text(userScore.toString()),
+        child: Text(
+            'Congratulations, you have answered correctly ${userScore.toString()} questions.'),
       ),
     );
   }
