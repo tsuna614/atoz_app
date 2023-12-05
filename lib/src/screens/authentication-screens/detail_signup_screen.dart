@@ -7,6 +7,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
+
+final dio = Dio();
 
 final _firebase = FirebaseAuth.instance;
 
@@ -49,18 +52,26 @@ class _DetailSignUpScreenState extends State<DetailSignUpScreen> {
       final userCredential = await _firebase.createUserWithEmailAndPassword(
           email: widget.email, password: widget.password);
 
-      // add new user document to users collection, with data
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userCredential.user!.uid)
-          .set(
-        {
-          'email': widget.email,
-          'firstName': enteredFirstName,
-          'lastName': enteredLastName,
-          'age': enteredAge,
-        },
-      );
+      Response response;
+      response = await dio.post('http://localhost:3000/v1/user/addUser', data: {
+        'email': widget.email,
+        'firstName': enteredFirstName,
+        'lastName': enteredLastName,
+        'age': enteredAge,
+      });
+
+      // // add new user document to users collection, with data
+      // await FirebaseFirestore.instance
+      //     .collection('users')
+      //     .doc(userCredential.user!.uid)
+      //     .set(
+      //   {
+      //     'email': widget.email,
+      //     'firstName': enteredFirstName,
+      //     'lastName': enteredLastName,
+      //     'age': enteredAge,
+      //   },
+      // );
       if (context.mounted) {
         Navigator.of(context).popUntil((route) => route.isFirst); // pop all
       }

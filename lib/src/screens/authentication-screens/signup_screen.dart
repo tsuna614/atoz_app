@@ -6,6 +6,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
+
+final dio = Dio();
 
 final _firebase = FirebaseAuth.instance;
 
@@ -57,24 +60,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _loginForm.currentState!.save();
 
     try {
-      setState(() {
-        _isLoading = true;
-      });
+      // setState(() {
+      //   _isLoading = true;
+      // });
 
-      final db = FirebaseFirestore.instance;
+      // final db = FirebaseFirestore.instance;
+      // bool isUserExisted = false;
+
+      // // search in collection "users" for existed email, if found then set isUserExisted to true
+      // await db
+      //     .collection("users")
+      //     .where("email", isEqualTo: _enteredEmail)
+      //     .get()
+      //     .then((querySnapshot) => {
+      //           for (var docSnapshop in querySnapshot.docs)
+      //             {
+      //               if (docSnapshop.exists) {isUserExisted = true}
+      //             }
+      //         });
       bool isUserExisted = false;
-
-      // search in collection "users" for existed email, if found then set isUserExisted to true
-      await db
-          .collection("users")
-          .where("email", isEqualTo: _enteredEmail)
-          .get()
-          .then((querySnapshot) => {
-                for (var docSnapshop in querySnapshot.docs)
-                  {
-                    if (docSnapshop.exists) {isUserExisted = true}
-                  }
-              });
+      Response response;
+      response = await dio
+          .get('http://localhost:3000/v1/user/getUserByEmail/$_enteredEmail');
+      print(response.data.toString());
+      if (response.data.toString().contains(_enteredEmail)) {
+        isUserExisted = true;
+      }
 
       // if entered email is already registered, show SnackBar and return
       if (context.mounted && isUserExisted) {

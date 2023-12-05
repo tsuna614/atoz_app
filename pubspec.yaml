@@ -45,6 +45,7 @@ dependencies:
   google_sign_in: ^6.1.6
   fl_chart: ^0.62.0
   intl: ^0.18.1
+  dio: ^5.4.0
 
 dev_dependencies:
   flutter_test:
