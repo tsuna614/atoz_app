@@ -78,11 +78,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
       //               if (docSnapshop.exists) {isUserExisted = true}
       //             }
       //         });
+
+      // check if email is already registered
       bool isUserExisted = false;
       Response response;
       response = await dio
           .get('http://localhost:3000/v1/user/getUserByEmail/$_enteredEmail');
-      print(response.data.toString());
       if (response.data.toString().contains(_enteredEmail)) {
         isUserExisted = true;
       }

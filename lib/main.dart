@@ -1,6 +1,8 @@
+import 'package:atoz_app/src/screens/app-screens/home_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/profile_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_connect_string.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/quiz_screen.dart';
+import 'package:atoz_app/src/screens/authentication-screens/language_select_screen.dart';
 import 'package:atoz_app/src/screens/loading_screen.dart';
 import 'package:atoz_app/src/screens/test.dart';
 import 'package:flutter/material.dart';
@@ -85,19 +87,19 @@ class MyApp extends StatelessWidget {
       // ),
       theme: theme,
       // theme: ThemeData(useMaterial3: true),
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const LoadingScreen();
-          }
-          if (snapshot.hasData) {
-            return const TabsScreen();
-          }
-          return const LoginScreen();
-        },
-      ),
-      // home: TestWidget(),
+      // home: StreamBuilder(
+      //   stream: FirebaseAuth.instance.authStateChanges(),
+      //   builder: (context, snapshot) {
+      //     if (snapshot.connectionState == ConnectionState.waiting) {
+      //       return const LoadingScreen();
+      //     }
+      //     if (snapshot.hasData) {
+      //       return const TabsScreen();
+      //     }
+      //     return const LoginScreen();
+      //   },
+      // ),
+      home: LanguageSelectPage(),
     );
   }
 }

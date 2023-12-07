@@ -1,11 +1,7 @@
 import 'package:atoz_app/src/providers/question_provider.dart';
-import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_connect_string.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_multiple_choice.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/result_screen.dart';
-import 'package:atoz_app/src/screens/test.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:atoz_app/src/data/questions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:percent_indicator/percent_indicator.dart';
