@@ -2,6 +2,7 @@ import 'package:atoz_app/src/screens/app-screens/home_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/profile_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_connect_string.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/quiz_screen.dart';
+import 'package:atoz_app/src/screens/authentication-screens/difficulty_screen.dart';
 import 'package:atoz_app/src/screens/authentication-screens/language_select_screen.dart';
 import 'package:atoz_app/src/screens/loading_screen.dart';
 import 'package:atoz_app/src/screens/test.dart';
@@ -99,7 +100,9 @@ class MyApp extends StatelessWidget {
       //     return const LoginScreen();
       //   },
       // ),
-      home: LanguageSelectPage(),
+      home: DifficultyScreen(
+        chosenLanguage: 'Vietnamese',
+      ),
     );
   }
 }

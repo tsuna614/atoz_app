@@ -52,8 +52,12 @@ class _DetailSignUpScreenState extends State<DetailSignUpScreen> {
       final userCredential = await _firebase.createUserWithEmailAndPassword(
           email: widget.email, password: widget.password);
 
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      final uid = await auth.currentUser?.uid;
+
       Response response;
       response = await dio.post('http://localhost:3000/v1/user/addUser', data: {
+        'userId': uid,
         'email': widget.email,
         'firstName': enteredFirstName,
         'lastName': enteredLastName,
