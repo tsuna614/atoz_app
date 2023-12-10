@@ -11,8 +11,10 @@ class LoadingScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircularProgressIndicator(),
+          children: const [
+            CircularProgressIndicator(
+              color: Colors.white,
+            ),
             SizedBox(
               height: 20,
             ),
@@ -21,7 +23,7 @@ class LoadingScreen extends StatelessWidget {
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).primaryColor),
+                  color: Colors.white),
             ),
           ],
         ),

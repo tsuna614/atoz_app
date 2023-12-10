@@ -1,6 +1,7 @@
 import 'package:atoz_app/src/providers/question_provider.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_multiple_choice.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/result_screen.dart';
+import 'package:atoz_app/src/screens/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:atoz_app/src/data/questions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -57,7 +58,8 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
         ),
       ),
       // body: chosenScreen,
-      body: chosenScreen,
+      body: SafeArea(child: chosenScreen),
+      backgroundColor: Colors.white,
     );
   }
 }

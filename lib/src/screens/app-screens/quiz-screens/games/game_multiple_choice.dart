@@ -23,76 +23,85 @@ class MultipleChoice extends ConsumerStatefulWidget {
 }
 
 class _MultipleChoiceState extends ConsumerState<MultipleChoice> {
+  // int currentQuestionIndex = 0;
+  // int userScore = 0;
+
+  String chosenAnswer = '';
+
+  List<String> getShuffledAnswers(List<String> answers) {
+    final shuffledAnswers = List.of(answers);
+    shuffledAnswers.shuffle();
+    return shuffledAnswers;
+  }
+
+  void handleAnswerClick(String answerClicked) {
+    setState(() {
+      chosenAnswer = answerClicked;
+    });
+  }
+
+  void handleCheckClick(String selectedAnswer) {
+    showModalBottomSheet(
+      // backgroundColor: Colors.transparent,
+      isDismissible: false,
+      enableDrag: false,
+      barrierColor: Colors.transparent,
+      // expand: true
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 160,
+          color: selectedAnswer == widget.correctAnswer
+              ? Colors.green
+              : Color.fromRGBO(244, 67, 54, 1),
+          child: Center(
+            child: Column(
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20.0),
+                      child: selectedAnswer == widget.correctAnswer
+                          ? Text(
+                              'Correct answer',
+                              style: TextStyle(fontSize: 20),
+                            )
+                          : Text(
+                              'Wrong answer',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                    )),
+                SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size.fromHeight(50),
+                      ),
+                      child: const Text('Next question'),
+                      onPressed: () {
+                        widget.handleCheckButton(chosenAnswer);
+                        setState(() {
+                          chosenAnswer = '';
+                        });
+                        Navigator.pop(context);
+                      }),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final question = ref.watch(questionsProvider);
-
-    int currentQuestionIndex = 0;
-    int userScore = 0;
-
-    List<String> getShuffledAnswers(List<String> answers) {
-      final shuffledAnswers = List.of(answers);
-      shuffledAnswers.shuffle();
-      return shuffledAnswers;
-    }
-
-    void handleCheckClick(String chosenAnswer) {
-      showModalBottomSheet(
-        // backgroundColor: Colors.transparent,
-        isDismissible: false,
-        enableDrag: false,
-        barrierColor: Colors.transparent,
-        // expand: true
-        context: context,
-        builder: (BuildContext context) {
-          return Container(
-            height: 160,
-            color: chosenAnswer == widget.correctAnswer
-                ? Colors.green
-                : Color.fromRGBO(244, 67, 54, 1),
-            child: Center(
-              child: Column(
-                // crossAxisAlignment: CrossAxisAlignment.center,
-                // mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 20.0),
-                        child: chosenAnswer == widget.correctAnswer
-                            ? Text(
-                                'Correct answer',
-                                style: TextStyle(fontSize: 20),
-                              )
-                            : Text(
-                                'Wrong answer',
-                                style: TextStyle(fontSize: 20),
-                              ),
-                      )),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size.fromHeight(50),
-                        ),
-                        child: const Text('Next question'),
-                        onPressed: () {
-                          widget.handleCheckButton(chosenAnswer);
-                          Navigator.pop(context);
-                        }),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-    }
-
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -106,9 +115,9 @@ class _MultipleChoiceState extends ConsumerState<MultipleChoice> {
             textAlign: TextAlign.center,
           ),
           Expanded(
-              child: Container(
-            color: Colors.red,
-          )),
+            child: Card(child: Container()),
+          ),
+
           // call the Answers buttons and Check button Widget
           // MultipleChoiceButton(
           //   shuffledAnswersList: getShuffledAnswers(widget.answers),
@@ -131,10 +140,46 @@ class _MultipleChoiceState extends ConsumerState<MultipleChoice> {
           //     ),
           //   ],
           // ),
-          MultipleChoiceButton(),
-
           SizedBox(
-            height: 50,
+            height: 20,
+          ),
+          GridView(
+              shrinkWrap: true,
+              padding: const EdgeInsets.all(0),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, // 2 columns
+                  childAspectRatio: 10 / 3,
+                  crossAxisSpacing: 5,
+                  mainAxisSpacing: 10),
+              // 20px spacing horizontally and vertically between grid items
+              children: [
+                MultipleChoiceButton(
+                  answer: widget.answers[0],
+                  chosenAnswer: chosenAnswer,
+                  handleAnswerClick: handleAnswerClick,
+                ),
+                MultipleChoiceButton(
+                  answer: widget.answers[1],
+                  chosenAnswer: chosenAnswer,
+                  handleAnswerClick: handleAnswerClick,
+                ),
+                MultipleChoiceButton(
+                  answer: widget.answers[2],
+                  chosenAnswer: chosenAnswer,
+                  handleAnswerClick: handleAnswerClick,
+                ),
+                MultipleChoiceButton(
+                  answer: widget.answers[3],
+                  chosenAnswer: chosenAnswer,
+                  handleAnswerClick: handleAnswerClick,
+                ),
+              ]),
+          SizedBox(
+            height: 100,
+          ),
+          CheckButton(
+            chosenAnswer: chosenAnswer,
+            onCheckPressed: handleCheckClick,
           ),
         ],
       ),
@@ -143,7 +188,16 @@ class _MultipleChoiceState extends ConsumerState<MultipleChoice> {
 }
 
 class MultipleChoiceButton extends StatefulWidget {
-  const MultipleChoiceButton({super.key});
+  const MultipleChoiceButton({
+    super.key,
+    required this.answer,
+    required this.chosenAnswer,
+    required this.handleAnswerClick,
+  });
+
+  final String answer;
+  final String chosenAnswer;
+  final void Function(String answerClicked) handleAnswerClick;
 
   @override
   State<MultipleChoiceButton> createState() => _MultipleChoiceButtonState();
@@ -156,17 +210,92 @@ class _MultipleChoiceButtonState extends State<MultipleChoiceButton> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // onCheckPress();
+        widget.handleAnswerClick(widget.answer);
       },
       onTapDown: (_) {
-        if (false) {
+        setState(() {
+          _padding = 0;
+        });
+      },
+      onTapUp: (_) {
+        setState(() {
+          _padding = 6;
+        });
+      },
+      child: AnimatedContainer(
+        padding: EdgeInsets.only(bottom: _padding),
+        margin: EdgeInsets.only(top: -(_padding - 6)),
+        decoration: BoxDecoration(
+          // color: Theme.of(context).primaryColor,
+          color:
+              widget.answer == widget.chosenAnswer ? Colors.blue : Colors.grey,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        duration: Duration(milliseconds: 50),
+        child: Container(
+          width: double.infinity,
+          height: 50,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(
+                color: widget.answer == widget.chosenAnswer
+                    ? Colors.blue
+                    : Colors.grey),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Center(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                widget.answer,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: widget.answer == widget.chosenAnswer
+                      ? Colors.blue
+                      : Colors.grey,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CheckButton extends StatefulWidget {
+  const CheckButton(
+      {super.key, required this.chosenAnswer, required this.onCheckPressed});
+
+  final String chosenAnswer;
+
+  final void Function(String chosenAnswer) onCheckPressed;
+
+  @override
+  State<CheckButton> createState() => _CheckButtonState();
+}
+
+class _CheckButtonState extends State<CheckButton> {
+  double _padding = 6;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: widget.chosenAnswer.isEmpty
+          ? null
+          : () {
+              widget.onCheckPressed(widget.chosenAnswer);
+            },
+      onTapDown: (_) {
+        if (widget.chosenAnswer.isNotEmpty) {
           setState(() {
             _padding = 0;
           });
         }
       },
       onTapUp: (_) {
-        if (false) {
+        if (widget.chosenAnswer.isNotEmpty) {
           setState(() {
             _padding = 6;
           });
@@ -177,27 +306,32 @@ class _MultipleChoiceButtonState extends State<MultipleChoiceButton> {
         margin: EdgeInsets.only(top: -(_padding - 6)),
         decoration: BoxDecoration(
           // color: Theme.of(context).primaryColor,
-          color: Colors.grey,
+          color:
+              widget.chosenAnswer.isEmpty ? Colors.grey[600] : Colors.blue[700],
           borderRadius: BorderRadius.circular(20),
         ),
         duration: Duration(milliseconds: 100),
         child: Container(
           width: double.infinity,
-          height: 50,
+          height: 60,
           decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: Colors.grey),
+            color: widget.chosenAnswer.isEmpty ? Colors.grey : Colors.blue,
+            border: Border.all(
+                color: widget.chosenAnswer.isEmpty ? Colors.grey : Colors.blue),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Center(
             child: Text(
-              'Confirm',
+              'Check answer',
               style: TextStyle(
-                fontSize: 20,
-                letterSpacing: 5,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey,
-              ),
+                  fontSize: 24,
+                  letterSpacing: 5,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white
+                  // color: widget.chosenAnswer.isEmpty
+                  //     ? Colors.grey
+                  //     : Theme.of(context).primaryColor,
+                  ),
             ),
           ),
         ),

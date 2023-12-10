@@ -25,7 +25,6 @@ class _MainScreenState extends State<MainScreen> {
         await dio.get('http://localhost:3000/v1/user/getUserById/$id');
     // Response response = await dio.get(
     //     'http://localhost:3000/v1/user/getUserById/EIKSUu6uBQOIv8Pnx9UZ2wA0trn2');
-    print(response);
     setState(() {
       if (response.data.toString().contains('language')) {
         appScreen = TabsScreen();
