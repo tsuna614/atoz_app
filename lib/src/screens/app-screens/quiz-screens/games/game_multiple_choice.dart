@@ -105,12 +105,34 @@ class _MultipleChoiceState extends ConsumerState<MultipleChoice> {
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
-          Expanded(child: SizedBox()),
+          Expanded(
+              child: Container(
+            color: Colors.red,
+          )),
           // call the Answers buttons and Check button Widget
-          MultipleChoiceButton(
-            shuffledAnswersList: getShuffledAnswers(widget.answers),
-            handleCheckButton: handleCheckClick,
-          ),
+          // MultipleChoiceButton(
+          //   shuffledAnswersList: getShuffledAnswers(widget.answers),
+          //   handleCheckButton: handleCheckClick,
+          // ),
+
+          // Column(
+          //   children: [
+          //     Row(
+          //       children: [
+          //         MultipleChoiceButton(),
+          //         MultipleChoiceButton(),
+          //       ],
+          //     ),
+          //     Row(
+          //       children: [
+          //         MultipleChoiceButton(),
+          //         MultipleChoiceButton(),
+          //       ],
+          //     ),
+          //   ],
+          // ),
+          MultipleChoiceButton(),
+
           SizedBox(
             height: 50,
           ),
@@ -121,70 +143,134 @@ class _MultipleChoiceState extends ConsumerState<MultipleChoice> {
 }
 
 class MultipleChoiceButton extends StatefulWidget {
-  MultipleChoiceButton(
-      {super.key,
-      required this.shuffledAnswersList,
-      required this.handleCheckButton});
-
-  List<String> shuffledAnswersList;
-
-  final void Function(String chosenAnswer) handleCheckButton;
+  const MultipleChoiceButton({super.key});
 
   @override
   State<MultipleChoiceButton> createState() => _MultipleChoiceButtonState();
 }
 
 class _MultipleChoiceButtonState extends State<MultipleChoiceButton> {
-  String currentAnswer = '';
+  double _padding = 6;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // build the listview buttons from the answers list
-        ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: widget.shuffledAnswersList.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ElevatedButton(
-              style: widget.shuffledAnswersList[index] == currentAnswer
-                  ? ElevatedButton.styleFrom(
-                      minimumSize: Size.fromHeight(40),
-                      backgroundColor: Colors.green,
-                    )
-                  : ElevatedButton.styleFrom(
-                      minimumSize: Size.fromHeight(
-                          40), // fromHeight use double.infinity as width and 40 is the height
-                      backgroundColor: Colors.blue,
-                    ),
-              onPressed: () {
-                setState(() {
-                  currentAnswer = widget.shuffledAnswersList[index];
-                });
-              },
-              child: Text(
-                widget.shuffledAnswersList[index],
-                textAlign: TextAlign.center,
-              ),
-            );
-          },
+    return GestureDetector(
+      onTap: () {
+        // onCheckPress();
+      },
+      onTapDown: (_) {
+        if (false) {
+          setState(() {
+            _padding = 0;
+          });
+        }
+      },
+      onTapUp: (_) {
+        if (false) {
+          setState(() {
+            _padding = 6;
+          });
+        }
+      },
+      child: AnimatedContainer(
+        padding: EdgeInsets.only(bottom: _padding),
+        margin: EdgeInsets.only(top: -(_padding - 6)),
+        decoration: BoxDecoration(
+          // color: Theme.of(context).primaryColor,
+          color: Colors.grey,
+          borderRadius: BorderRadius.circular(20),
         ),
-        SizedBox(height: 50),
-        ElevatedButton(
-          // if there is no answer chosen yet, button function is set to null (grey out)
-          onPressed: currentAnswer.trim().isEmpty
-              ? null
-              : () {
-                  widget.handleCheckButton(currentAnswer);
-                },
-          style: ElevatedButton.styleFrom(
-            minimumSize: Size.fromHeight(50),
+        duration: Duration(milliseconds: 100),
+        child: Container(
+          width: double.infinity,
+          height: 50,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(20),
           ),
-          child: Text('Check'),
+          child: Center(
+            child: Text(
+              'Confirm',
+              style: TextStyle(
+                fontSize: 20,
+                letterSpacing: 5,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
+              ),
+            ),
+          ),
         ),
-      ],
+      ),
     );
   }
 }
+
+// class MultipleChoiceButton extends StatefulWidget {
+//   MultipleChoiceButton(
+//       {super.key,
+//       required this.shuffledAnswersList,
+//       required this.handleCheckButton});
+
+//   List<String> shuffledAnswersList;
+
+//   final void Function(String chosenAnswer) handleCheckButton;
+
+//   @override
+//   State<MultipleChoiceButton> createState() => _MultipleChoiceButtonState();
+// }
+
+// class _MultipleChoiceButtonState extends State<MultipleChoiceButton> {
+//   String currentAnswer = '';
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       children: [
+//         // build the listview buttons from the answers list
+//         ListView.builder(
+//           physics: NeverScrollableScrollPhysics(),
+//           scrollDirection: Axis.vertical,
+//           shrinkWrap: true,
+//           itemCount: widget.shuffledAnswersList.length,
+//           itemBuilder: (BuildContext context, int index) {
+//             return ElevatedButton(
+//               style: widget.shuffledAnswersList[index] == currentAnswer
+//                   ? ElevatedButton.styleFrom(
+//                       minimumSize: Size.fromHeight(40),
+//                       backgroundColor: Colors.green,
+//                     )
+//                   : ElevatedButton.styleFrom(
+//                       minimumSize: Size.fromHeight(
+//                           40), // fromHeight use double.infinity as width and 40 is the height
+//                       backgroundColor: Colors.blue,
+//                     ),
+//               onPressed: () {
+//                 setState(() {
+//                   currentAnswer = widget.shuffledAnswersList[index];
+//                 });
+//               },
+//               child: Text(
+//                 widget.shuffledAnswersList[index],
+//                 textAlign: TextAlign.center,
+//               ),
+//             );
+//           },
+//         ),
+//         SizedBox(height: 50),
+//         ElevatedButton(
+//           // if there is no answer chosen yet, button function is set to null (grey out)
+//           onPressed: currentAnswer.trim().isEmpty
+//               ? null
+//               : () {
+//                   widget.handleCheckButton(currentAnswer);
+//                 },
+//           style: ElevatedButton.styleFrom(
+//             minimumSize: Size.fromHeight(50),
+//           ),
+//           child: Text('Check'),
+//         ),
+//       ],
+//     );
+//   }
+// }

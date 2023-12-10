@@ -1,11 +1,20 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:dio/dio.dart';
+
+final dio = Dio();
 
 class DifficultyScreen extends StatefulWidget {
-  DifficultyScreen({super.key, required this.chosenLanguage});
+  DifficultyScreen({
+    super.key,
+    required this.chosenLanguage,
+    required this.resetMainPage,
+  });
 
   final String chosenLanguage;
+  final void Function() resetMainPage;
 
   @override
   State<DifficultyScreen> createState() => _DifficultyScreenState();
@@ -22,142 +31,171 @@ class _DifficultyScreenState extends State<DifficultyScreen> {
     });
   }
 
+  void onCheckPress() async {
+    final _firebase = FirebaseAuth.instance;
+    final id = _firebase.currentUser!.uid;
+    double score = 0;
+
+    switch (chosenDifficulty) {
+      case 'Novice':
+        score = 0;
+        break;
+      case 'Beginner':
+        score = 200;
+        break;
+      case 'Intermediate':
+        score = 500;
+        break;
+      case 'Expert':
+        score = 1000;
+        break;
+      default:
+        break;
+    }
+    Response response = await dio.put(
+      'http://localhost:3000/v1/user/editUserById/${id}',
+      data: {
+        'language': widget.chosenLanguage,
+        'score': score,
+      },
+    );
+
+    widget.resetMainPage();
+  }
+
   double _padding = 6.0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   elevation: 0,
+      //   // title: Row(
+      //   //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //   //   children: [
+      //   //     Expanded(
+      //   //       child: Container(
+      //   //         height: 10,
+      //   //         color: Colors.white,
+      //   //       ),
+      //   //     ),
+      //   //     SizedBox(
+      //   //       width: 20,
+      //   //     ),
+      //   //     Expanded(
+      //   //       child: Container(
+      //   //         height: 10,
+      //   //         color: Colors.white,
+      //   //       ),
+      //   //     ),
+      //   //   ],
+      //   // ),
+      // ),
       backgroundColor: Color.fromARGB(255, 0, 194, 255),
-      body: Stack(
-        children: [
-          Positioned(
-            top: 160,
-            left: 50,
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'First, let us set you up!',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white),
-                  ),
-                  SizedBox(
-                    height: 50,
-                  ),
-                  Text(
-                    'What\'s your current ${widget.chosenLanguage} level?',
-                    style: TextStyle(
-                        fontSize: 36,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                ],
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Positioned(
+              top: 0,
+              left: 30,
+              child: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.white,
+                ),
               ),
             ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            // bottom: 10,
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  child: Column(
-                    children: [
-                      Spacer(),
-                      CountryCard(
-                        difficulty: 'Novice',
-                        chosenDifficulty: chosenDifficulty,
-                        onDifficultyPress: onDifficultyPress,
-                      ),
-                      CountryCard(
-                        difficulty: 'Beginner',
-                        chosenDifficulty: chosenDifficulty,
-                        onDifficultyPress: onDifficultyPress,
-                      ),
-                      CountryCard(
-                        difficulty: 'Intermediate',
-                        chosenDifficulty: chosenDifficulty,
-                        onDifficultyPress: onDifficultyPress,
-                      ),
-                      CountryCard(
-                        difficulty: 'Expert',
-                        chosenDifficulty: chosenDifficulty,
-                        onDifficultyPress: onDifficultyPress,
-                      ),
-                      SizedBox(height: 16),
-                      // FilledButton(
-                      //   style: ElevatedButton.styleFrom(
-                      //       minimumSize: Size.fromHeight(60),
-                      //       backgroundColor: Color.fromARGB(255, 35, 182, 40)),
-                      //   onPressed: chosenDifficulty.isEmpty ? null : () {},
-                      //   child: Text(
-                      //     'Select',
-                      //     style: TextStyle(
-                      //         fontSize: 20,
-                      //         letterSpacing: 5,
-                      //         fontWeight: FontWeight.bold),
-                      //   ),
-                      // ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 6),
-                        child: chosenDifficulty.isEmpty
-                            ? Container(
-                                padding: EdgeInsets.only(bottom: _padding),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Container(
-                                  width: double.infinity,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 216, 216, 216),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'Check',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        letterSpacing: 5,
-                                        fontWeight: FontWeight.bold,
-                                        color:
-                                            Color.fromARGB(255, 154, 154, 154),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : GestureDetector(
-                                onTap: () {},
-                                onTapDown: (_) {
-                                  setState(() {
-                                    _padding = 0;
-                                  });
-                                },
-                                onTapUp: (_) {
-                                  setState(() {
-                                    _padding = 6;
-                                  });
-                                },
-                                child: AnimatedContainer(
+            Positioned(
+              top: 80,
+              left: 40,
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Final step.',
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      'What\'s your current ${widget.chosenLanguage} level?',
+                      style: TextStyle(
+                          fontSize: 36,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              // bottom: 10,
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Container(
+                    child: Column(
+                      children: [
+                        Spacer(),
+                        DifficultyCard(
+                          difficulty: 'Novice',
+                          chosenDifficulty: chosenDifficulty,
+                          onDifficultyPress: onDifficultyPress,
+                        ),
+                        DifficultyCard(
+                          difficulty: 'Beginner',
+                          chosenDifficulty: chosenDifficulty,
+                          onDifficultyPress: onDifficultyPress,
+                        ),
+                        DifficultyCard(
+                          difficulty: 'Intermediate',
+                          chosenDifficulty: chosenDifficulty,
+                          onDifficultyPress: onDifficultyPress,
+                        ),
+                        DifficultyCard(
+                          difficulty: 'Expert',
+                          chosenDifficulty: chosenDifficulty,
+                          onDifficultyPress: onDifficultyPress,
+                        ),
+                        SizedBox(height: 16),
+                        // FilledButton(
+                        //   style: ElevatedButton.styleFrom(
+                        //       minimumSize: Size.fromHeight(60),
+                        //       backgroundColor: Color.fromARGB(255, 35, 182, 40)),
+                        //   onPressed: chosenDifficulty.isEmpty ? null : () {},
+                        //   child: Text(
+                        //     'Select',
+                        //     style: TextStyle(
+                        //         fontSize: 20,
+                        //         letterSpacing: 5,
+                        //         fontWeight: FontWeight.bold),
+                        //   ),
+                        // ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 6),
+                          child: chosenDifficulty.isEmpty
+                              ? Container(
                                   padding: EdgeInsets.only(bottom: _padding),
-                                  margin: EdgeInsets.only(top: -(_padding - 6)),
                                   decoration: BoxDecoration(
-                                    color: Theme.of(context).primaryColor,
+                                    color: Colors.grey,
                                     borderRadius: BorderRadius.circular(20),
                                   ),
-                                  duration: Duration(milliseconds: 100),
                                   child: Container(
                                     width: double.infinity,
                                     height: 50,
                                     decoration: BoxDecoration(
-                                      color: Colors.blue,
+                                      color: Color.fromARGB(255, 216, 216, 216),
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: Center(
@@ -167,28 +205,74 @@ class _DifficultyScreenState extends State<DifficultyScreen> {
                                           fontSize: 20,
                                           letterSpacing: 5,
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.white,
+                                          color: Color.fromARGB(
+                                              255, 154, 154, 154),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : GestureDetector(
+                                  onTap: () {
+                                    onCheckPress();
+                                  },
+                                  onTapDown: (_) {
+                                    setState(() {
+                                      _padding = 0;
+                                    });
+                                  },
+                                  onTapUp: (_) {
+                                    setState(() {
+                                      _padding = 6;
+                                    });
+                                  },
+                                  child: AnimatedContainer(
+                                    padding: EdgeInsets.only(bottom: _padding),
+                                    margin:
+                                        EdgeInsets.only(top: -(_padding - 6)),
+                                    decoration: BoxDecoration(
+                                      // color: Theme.of(context).primaryColor,
+                                      color: Colors.blue[800],
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    duration: Duration(milliseconds: 100),
+                                    child: Container(
+                                      width: double.infinity,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue,
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          'Confirm',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            letterSpacing: 5,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
 }
 
-class CountryCard extends StatefulWidget {
-  const CountryCard({
+class DifficultyCard extends StatefulWidget {
+  const DifficultyCard({
     super.key,
     required this.difficulty,
     required this.chosenDifficulty,
@@ -200,10 +284,10 @@ class CountryCard extends StatefulWidget {
   final Function(String difficultyChosen) onDifficultyPress;
 
   @override
-  State<CountryCard> createState() => _CountryCardState();
+  State<DifficultyCard> createState() => _DifficultyCardState();
 }
 
-class _CountryCardState extends State<CountryCard> {
+class _DifficultyCardState extends State<DifficultyCard> {
   double _padding = 6.0;
 
   @override
@@ -283,14 +367,18 @@ class _CountryCardState extends State<CountryCard> {
                     style: TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).primaryColor),
+                        color: widget.chosenDifficulty == widget.difficulty
+                            ? Colors.blue
+                            : Colors.blue[800]),
                   ),
                   Text(
                     subText,
                     style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.normal,
-                        color: Theme.of(context).primaryColor),
+                        color: widget.chosenDifficulty == widget.difficulty
+                            ? Colors.blue
+                            : Colors.blue[800]),
                   ),
                 ],
               ),

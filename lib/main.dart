@@ -4,7 +4,9 @@ import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_connect
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/quiz_screen.dart';
 import 'package:atoz_app/src/screens/authentication-screens/difficulty_screen.dart';
 import 'package:atoz_app/src/screens/authentication-screens/language_select_screen.dart';
+import 'package:atoz_app/src/screens/authentication-screens/user_setup_screen.dart';
 import 'package:atoz_app/src/screens/loading_screen.dart';
+import 'package:atoz_app/src/screens/main_screen.dart';
 import 'package:atoz_app/src/screens/test.dart';
 import 'package:flutter/material.dart';
 import 'package:atoz_app/src/screens/authentication-screens/login_screen.dart';
@@ -88,21 +90,19 @@ class MyApp extends StatelessWidget {
       // ),
       theme: theme,
       // theme: ThemeData(useMaterial3: true),
-      // home: StreamBuilder(
-      //   stream: FirebaseAuth.instance.authStateChanges(),
-      //   builder: (context, snapshot) {
-      //     if (snapshot.connectionState == ConnectionState.waiting) {
-      //       return const LoadingScreen();
-      //     }
-      //     if (snapshot.hasData) {
-      //       return const TabsScreen();
-      //     }
-      //     return const LoginScreen();
-      //   },
-      // ),
-      home: DifficultyScreen(
-        chosenLanguage: 'Vietnamese',
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const LoadingScreen();
+          }
+          if (snapshot.hasData) {
+            return const MainScreen();
+          }
+          return const LoginScreen();
+        },
       ),
+      // home: MainScreen(),
     );
   }
 }
