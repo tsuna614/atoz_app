@@ -2,6 +2,16 @@ import '../models/quiz_question.dart';
 
 const dummyQuestions = [
   QuizQuestion(
+    'What is the name of this vehicle?',
+    [
+      'Train',
+      'Bus',
+      'Plane',
+      'Boat',
+    ],
+    'Train',
+  ),
+  QuizQuestion(
     'What are the main building blocks of Flutter UIs?',
     [
       'Widgets',

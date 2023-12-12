@@ -1,4 +1,5 @@
 import 'package:atoz_app/src/providers/question_provider.dart';
+import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_connect_string.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_multiple_choice.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/result_screen.dart';
 import 'package:atoz_app/src/screens/loading_screen.dart';
@@ -32,23 +33,40 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final question = ref.watch(questionsProvider);
     double width = MediaQuery.of(context).size.width;
 
+    final question = ref.watch(questionsProvider);
     Widget chosenScreen;
+
+    List<String> getShuffledAnswers() {
+      final shuffledList = List.of(question[currentQuestionIndex].answers);
+      shuffledList.shuffle();
+      return shuffledList;
+    }
 
     if (currentQuestionIndex == question.length) {
       chosenScreen = ResultScreen(userScore: userScore);
     } else {
-      chosenScreen = MultipleChoice(
+      // chosenScreen = MultipleChoice(
+      //   question: question[currentQuestionIndex].question,
+      //   answers: getShuffledAnswers(),
+      //   correctAnswer: question[currentQuestionIndex].correctAnswer,
+      //   handleCheckButton: _handleAnswerClick,
+      // );
+      chosenScreen = ConnectString(
         question: question[currentQuestionIndex].question,
-        answers: question[currentQuestionIndex].answers,
+        answers: getShuffledAnswers(),
         correctAnswer: question[currentQuestionIndex].correctAnswer,
         handleCheckButton: _handleAnswerClick,
       );
     }
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        elevation: 0,
+        title: Text('Question ${currentQuestionIndex + 1}'),
+      ),
       // appBar: AppBar(
       //   backgroundColor: Colors.transparent,
       //   elevation: 0,
@@ -96,7 +114,7 @@ class ProgressBar extends StatelessWidget {
           width: screenWidth,
           height: 20,
           decoration: BoxDecoration(
-            color: Colors.grey.withOpacity(0.6),
+            color: Colors.grey.withOpacity(0.3),
             borderRadius: BorderRadius.circular(20),
           ),
         ),

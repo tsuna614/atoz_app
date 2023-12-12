@@ -74,86 +74,6 @@ class _MultipleChoiceState extends ConsumerState<MultipleChoice> {
               // Navigator.pop(context);
             },
           ).show();
-    // showModalBottomSheet(
-    //   // backgroundColor: Colors.transparent,
-    //   isDismissible: false,
-    //   enableDrag: false,
-    //   barrierColor: Colors.transparent,
-    //   // expand: true
-    //   context: context,
-    //   builder: (BuildContext context) {
-    //     return Container(
-    //       height: 180,
-    //       // color: selectedAnswer == widget.correctAnswer
-    //       //     ? Colors.green
-    //       //     : Color.fromRGBO(244, 67, 54, 1),
-    //       // color: Colors.white,
-    //       decoration: BoxDecoration(
-    //         color: Colors.white,
-    //         boxShadow: [
-    //           BoxShadow(
-    //               color: Colors.black.withOpacity(0.1),
-    //               offset: Offset(0, -2),
-    //               blurRadius: 2),
-    //         ],
-    //       ),
-    //       child: Center(
-    //         child: Column(
-    //           // crossAxisAlignment: CrossAxisAlignment.center,
-    //           // mainAxisAlignment: MainAxisAlignment.center,
-    //           mainAxisSize: MainAxisSize.min,
-    //           children: [
-    //             SizedBox(
-    //               height: 20,
-    //             ),
-    //             Align(
-    //                 alignment: Alignment(-0.1, 0),
-    //                 child: Padding(
-    //                   padding: const EdgeInsets.only(left: 20.0),
-    //                   child: selectedAnswer == widget.correctAnswer
-    //                       ? Text(
-    //                           'Correct answer!',
-    //                           style: TextStyle(
-    //                               fontSize: 20,
-    //                               fontWeight: FontWeight.bold,
-    //                               color: Colors.green),
-    //                         )
-    //                       : Text(
-    //                           'Wrong answer!',
-    //                           style: TextStyle(
-    //                               fontSize: 20,
-    //                               fontWeight: FontWeight.bold,
-    //                               color: Colors.red),
-    //                         ),
-    //                 )),
-    //             // SizedBox(
-    //             //   height: 20,
-    //             // ),
-    //             Expanded(child: Container()),
-    //             SafeArea(
-    //               child: Padding(
-    //                 padding: const EdgeInsets.symmetric(horizontal: 20),
-    //                 child: NextButton(
-    //                   color: selectedAnswer == widget.correctAnswer
-    //                       ? 'blue'
-    //                       : 'red',
-    //                   onNextPressed: () {
-    // print('object');
-    // widget.handleCheckButton(chosenAnswer);
-    // setState(() {
-    //   chosenAnswer = '';
-    // });
-    // Navigator.pop(context);
-    //                   },
-    //                 ),
-    //               ),
-    //             ),
-    //           ],
-    //         ),
-    //       ),
-    //     );
-    //   },
-    // );
   }
 
   @override
@@ -173,12 +93,26 @@ class _MultipleChoiceState extends ConsumerState<MultipleChoice> {
           SizedBox(
             height: 20,
           ),
-          Expanded(
-            child: Card(child: Container()),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20.0),
+            child: SizedBox.fromSize(
+              size: Size.fromHeight(400),
+              child: Image(
+                image: AssetImage('assets/images/train.png'),
+              ),
+            ),
           ),
-          SizedBox(
-            height: 20,
-          ),
+          Expanded(child: Container()),
+          // Expanded(
+          //   child: ClipRRect(
+          //     borderRadius: BorderRadius.circular(20.0),
+          //     child: SizedBox.fromSize(
+          //       child: Image(
+          //         image: AssetImage('assets/images/train.png'),
+          //       ),
+          //     ),
+          //   ),
+          // ),
           GridView(
               shrinkWrap: true,
               padding: const EdgeInsets.all(0),
@@ -211,7 +145,7 @@ class _MultipleChoiceState extends ConsumerState<MultipleChoice> {
                 ),
               ]),
           SizedBox(
-            height: 100,
+            height: 50,
           ),
           CheckButton(
             chosenAnswer: chosenAnswer,
@@ -222,6 +156,8 @@ class _MultipleChoiceState extends ConsumerState<MultipleChoice> {
     );
   }
 }
+
+///////////////// MULTIPLE-CHOICE BUTTON /////////////////
 
 class MultipleChoiceButton extends StatefulWidget {
   const MultipleChoiceButton({
@@ -299,6 +235,8 @@ class _MultipleChoiceButtonState extends State<MultipleChoiceButton> {
   }
 }
 
+///////////////// CHECK BUTTON /////////////////
+
 class CheckButton extends StatefulWidget {
   const CheckButton(
       {super.key, required this.chosenAnswer, required this.onCheckPressed});
@@ -369,6 +307,8 @@ class _CheckButtonState extends State<CheckButton> {
     );
   }
 }
+
+///////////////// NEXT BUTTON /////////////////
 
 class NextButton extends StatefulWidget {
   const NextButton(

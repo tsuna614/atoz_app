@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -24,15 +25,52 @@ class ConnectString extends StatefulWidget {
 class _ConnectStringState extends State<ConnectString> {
   // final List myTiles = ['A', 'B', 'C', 'D'];
 
+  String chosenAnswer = '';
+
+  void handleCheckClick(String selectedAnswer) {
+    selectedAnswer == widget.correctAnswer
+        ? AwesomeDialog(
+            context: context,
+            dialogType: DialogType.success,
+            animType: AnimType.rightSlide,
+            title: 'Correct',
+            // desc: 'Dialog description here.............',
+            btnOkText: 'Next',
+            btnOkOnPress: () {
+              widget.handleCheckButton(chosenAnswer);
+              setState(() {
+                chosenAnswer = '';
+              });
+              // Navigator.pop(context);
+            },
+          ).show()
+        : AwesomeDialog(
+            context: context,
+            dialogType: DialogType.error,
+            animType: AnimType.rightSlide,
+            title: 'Wrong',
+            desc: 'Correct answer: \"${widget.correctAnswer}\"',
+            btnCancelText: 'Next',
+            btnCancelOnPress: () {
+              widget.handleCheckButton(chosenAnswer);
+              setState(() {
+                chosenAnswer = '';
+              });
+              // Navigator.pop(context);
+            },
+          ).show();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
         // mainAxisAlignment: MainAxisAlignment.center,
         // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            height: 50,
+            height: 60,
           ),
           Text(
             widget.question,
@@ -88,7 +126,11 @@ class _ConnectStringState extends State<ConnectString> {
             ],
           ),
           SizedBox(
-            height: 100,
+            height: 50,
+          ),
+          CheckButton(
+            chosenAnswer: chosenAnswer,
+            onCheckPressed: handleCheckClick,
           ),
         ],
       ),
@@ -110,6 +152,80 @@ class _ConnectStringState extends State<ConnectString> {
     // );
   }
 }
+
+///////////////// CHECK BUTTON /////////////////
+
+class CheckButton extends StatefulWidget {
+  const CheckButton(
+      {super.key, required this.chosenAnswer, required this.onCheckPressed});
+
+  final String chosenAnswer;
+
+  final void Function(String chosenAnswer) onCheckPressed;
+
+  @override
+  State<CheckButton> createState() => _CheckButtonState();
+}
+
+class _CheckButtonState extends State<CheckButton> {
+  double _padding = 6;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: widget.chosenAnswer.isEmpty
+          ? null
+          : () {
+              widget.onCheckPressed(widget.chosenAnswer);
+            },
+      onTapDown: (_) {
+        if (widget.chosenAnswer.isNotEmpty) {
+          setState(() {
+            _padding = 0;
+          });
+        }
+      },
+      onTapUp: (_) {
+        if (widget.chosenAnswer.isNotEmpty) {
+          setState(() {
+            _padding = 6;
+          });
+        }
+      },
+      child: AnimatedContainer(
+        padding: EdgeInsets.only(bottom: _padding),
+        margin: EdgeInsets.only(top: -(_padding - 6)),
+        decoration: BoxDecoration(
+          color:
+              widget.chosenAnswer.isEmpty ? Colors.grey[600] : Colors.blue[700],
+          borderRadius: BorderRadius.circular(20),
+        ),
+        duration: Duration(milliseconds: 100),
+        child: Container(
+          width: double.infinity,
+          height: 60,
+          decoration: BoxDecoration(
+            color: widget.chosenAnswer.isEmpty ? Colors.grey : Colors.blue,
+            border: Border.all(
+                color: widget.chosenAnswer.isEmpty ? Colors.grey : Colors.blue),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Center(
+            child: Text(
+              'Check answer',
+              style: TextStyle(
+                  fontSize: 24,
+                  letterSpacing: 5,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+/////////////////  /////////////////
 
 class DraggableAnswer extends StatelessWidget {
   const DraggableAnswer({super.key, required this.answer});
