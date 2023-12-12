@@ -1,9 +1,11 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:atoz_app/src/data/questions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:atoz_app/src/providers/question_provider.dart';
+// import 'package:atoz_app/src/widgets/animated_button_1.dart';
+// import 'package:flutter/src/widgets/framework.dart';
+// import 'package:flutter/src/widgets/placeholder.dart';
+// import 'package:atoz_app/src/data/questions.dart';
+// import 'package:atoz_app/src/providers/question_provider.dart';
 
 class MultipleChoice extends ConsumerStatefulWidget {
   const MultipleChoice(
@@ -41,63 +43,117 @@ class _MultipleChoiceState extends ConsumerState<MultipleChoice> {
   }
 
   void handleCheckClick(String selectedAnswer) {
-    showModalBottomSheet(
-      // backgroundColor: Colors.transparent,
-      isDismissible: false,
-      enableDrag: false,
-      barrierColor: Colors.transparent,
-      // expand: true
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          height: 160,
-          color: selectedAnswer == widget.correctAnswer
-              ? Colors.green
-              : Color.fromRGBO(244, 67, 54, 1),
-          child: Center(
-            child: Column(
-              // crossAxisAlignment: CrossAxisAlignment.center,
-              // mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: selectedAnswer == widget.correctAnswer
-                          ? Text(
-                              'Correct answer',
-                              style: TextStyle(fontSize: 20),
-                            )
-                          : Text(
-                              'Wrong answer',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                    )),
-                SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size.fromHeight(50),
-                      ),
-                      child: const Text('Next question'),
-                      onPressed: () {
-                        widget.handleCheckButton(chosenAnswer);
-                        setState(() {
-                          chosenAnswer = '';
-                        });
-                        Navigator.pop(context);
-                      }),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
+    selectedAnswer == widget.correctAnswer
+        ? AwesomeDialog(
+            context: context,
+            dialogType: DialogType.success,
+            animType: AnimType.rightSlide,
+            title: 'Correct',
+            // desc: 'Dialog description here.............',
+            btnOkText: 'Next',
+            btnOkOnPress: () {
+              widget.handleCheckButton(chosenAnswer);
+              setState(() {
+                chosenAnswer = '';
+              });
+              // Navigator.pop(context);
+            },
+          ).show()
+        : AwesomeDialog(
+            context: context,
+            dialogType: DialogType.error,
+            animType: AnimType.rightSlide,
+            title: 'Wrong',
+            desc: 'Correct answer: \"${widget.correctAnswer}\"',
+            btnCancelText: 'Next',
+            btnCancelOnPress: () {
+              widget.handleCheckButton(chosenAnswer);
+              setState(() {
+                chosenAnswer = '';
+              });
+              // Navigator.pop(context);
+            },
+          ).show();
+    // showModalBottomSheet(
+    //   // backgroundColor: Colors.transparent,
+    //   isDismissible: false,
+    //   enableDrag: false,
+    //   barrierColor: Colors.transparent,
+    //   // expand: true
+    //   context: context,
+    //   builder: (BuildContext context) {
+    //     return Container(
+    //       height: 180,
+    //       // color: selectedAnswer == widget.correctAnswer
+    //       //     ? Colors.green
+    //       //     : Color.fromRGBO(244, 67, 54, 1),
+    //       // color: Colors.white,
+    //       decoration: BoxDecoration(
+    //         color: Colors.white,
+    //         boxShadow: [
+    //           BoxShadow(
+    //               color: Colors.black.withOpacity(0.1),
+    //               offset: Offset(0, -2),
+    //               blurRadius: 2),
+    //         ],
+    //       ),
+    //       child: Center(
+    //         child: Column(
+    //           // crossAxisAlignment: CrossAxisAlignment.center,
+    //           // mainAxisAlignment: MainAxisAlignment.center,
+    //           mainAxisSize: MainAxisSize.min,
+    //           children: [
+    //             SizedBox(
+    //               height: 20,
+    //             ),
+    //             Align(
+    //                 alignment: Alignment(-0.1, 0),
+    //                 child: Padding(
+    //                   padding: const EdgeInsets.only(left: 20.0),
+    //                   child: selectedAnswer == widget.correctAnswer
+    //                       ? Text(
+    //                           'Correct answer!',
+    //                           style: TextStyle(
+    //                               fontSize: 20,
+    //                               fontWeight: FontWeight.bold,
+    //                               color: Colors.green),
+    //                         )
+    //                       : Text(
+    //                           'Wrong answer!',
+    //                           style: TextStyle(
+    //                               fontSize: 20,
+    //                               fontWeight: FontWeight.bold,
+    //                               color: Colors.red),
+    //                         ),
+    //                 )),
+    //             // SizedBox(
+    //             //   height: 20,
+    //             // ),
+    //             Expanded(child: Container()),
+    //             SafeArea(
+    //               child: Padding(
+    //                 padding: const EdgeInsets.symmetric(horizontal: 20),
+    //                 child: NextButton(
+    //                   color: selectedAnswer == widget.correctAnswer
+    //                       ? 'blue'
+    //                       : 'red',
+    //                   onNextPressed: () {
+    // print('object');
+    // widget.handleCheckButton(chosenAnswer);
+    // setState(() {
+    //   chosenAnswer = '';
+    // });
+    // Navigator.pop(context);
+    //                   },
+    //                 ),
+    //               ),
+    //             ),
+    //           ],
+    //         ),
+    //       ),
+    //     );
+    //   },
+    // );
   }
 
   @override
@@ -107,39 +163,19 @@ class _MultipleChoiceState extends ConsumerState<MultipleChoice> {
       child: Column(
         children: [
           SizedBox(
-            height: 50,
+            height: 60,
           ),
           Text(
             widget.question,
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
+          SizedBox(
+            height: 20,
+          ),
           Expanded(
             child: Card(child: Container()),
           ),
-
-          // call the Answers buttons and Check button Widget
-          // MultipleChoiceButton(
-          //   shuffledAnswersList: getShuffledAnswers(widget.answers),
-          //   handleCheckButton: handleCheckClick,
-          // ),
-
-          // Column(
-          //   children: [
-          //     Row(
-          //       children: [
-          //         MultipleChoiceButton(),
-          //         MultipleChoiceButton(),
-          //       ],
-          //     ),
-          //     Row(
-          //       children: [
-          //         MultipleChoiceButton(),
-          //         MultipleChoiceButton(),
-          //       ],
-          //     ),
-          //   ],
-          // ),
           SizedBox(
             height: 20,
           ),
@@ -226,7 +262,6 @@ class _MultipleChoiceButtonState extends State<MultipleChoiceButton> {
         padding: EdgeInsets.only(bottom: _padding),
         margin: EdgeInsets.only(top: -(_padding - 6)),
         decoration: BoxDecoration(
-          // color: Theme.of(context).primaryColor,
           color:
               widget.answer == widget.chosenAnswer ? Colors.blue : Colors.grey,
           borderRadius: BorderRadius.circular(10),
@@ -305,7 +340,6 @@ class _CheckButtonState extends State<CheckButton> {
         padding: EdgeInsets.only(bottom: _padding),
         margin: EdgeInsets.only(top: -(_padding - 6)),
         decoration: BoxDecoration(
-          // color: Theme.of(context).primaryColor,
           color:
               widget.chosenAnswer.isEmpty ? Colors.grey[600] : Colors.blue[700],
           borderRadius: BorderRadius.circular(20),
@@ -327,11 +361,7 @@ class _CheckButtonState extends State<CheckButton> {
                   fontSize: 24,
                   letterSpacing: 5,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white
-                  // color: widget.chosenAnswer.isEmpty
-                  //     ? Colors.grey
-                  //     : Theme.of(context).primaryColor,
-                  ),
+                  color: Colors.white),
             ),
           ),
         ),
@@ -340,71 +370,66 @@ class _CheckButtonState extends State<CheckButton> {
   }
 }
 
-// class MultipleChoiceButton extends StatefulWidget {
-//   MultipleChoiceButton(
-//       {super.key,
-//       required this.shuffledAnswersList,
-//       required this.handleCheckButton});
+class NextButton extends StatefulWidget {
+  const NextButton(
+      {super.key, required this.color, required this.onNextPressed});
 
-//   List<String> shuffledAnswersList;
+  final String color;
 
-//   final void Function(String chosenAnswer) handleCheckButton;
+  final void Function() onNextPressed;
 
-//   @override
-//   State<MultipleChoiceButton> createState() => _MultipleChoiceButtonState();
-// }
+  @override
+  State<NextButton> createState() => _NextButtonState();
+}
 
-// class _MultipleChoiceButtonState extends State<MultipleChoiceButton> {
-//   String currentAnswer = '';
+class _NextButtonState extends State<NextButton> {
+  double _padding = 6;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         // build the listview buttons from the answers list
-//         ListView.builder(
-//           physics: NeverScrollableScrollPhysics(),
-//           scrollDirection: Axis.vertical,
-//           shrinkWrap: true,
-//           itemCount: widget.shuffledAnswersList.length,
-//           itemBuilder: (BuildContext context, int index) {
-//             return ElevatedButton(
-//               style: widget.shuffledAnswersList[index] == currentAnswer
-//                   ? ElevatedButton.styleFrom(
-//                       minimumSize: Size.fromHeight(40),
-//                       backgroundColor: Colors.green,
-//                     )
-//                   : ElevatedButton.styleFrom(
-//                       minimumSize: Size.fromHeight(
-//                           40), // fromHeight use double.infinity as width and 40 is the height
-//                       backgroundColor: Colors.blue,
-//                     ),
-//               onPressed: () {
-//                 setState(() {
-//                   currentAnswer = widget.shuffledAnswersList[index];
-//                 });
-//               },
-//               child: Text(
-//                 widget.shuffledAnswersList[index],
-//                 textAlign: TextAlign.center,
-//               ),
-//             );
-//           },
-//         ),
-//         SizedBox(height: 50),
-//         ElevatedButton(
-//           // if there is no answer chosen yet, button function is set to null (grey out)
-//           onPressed: currentAnswer.trim().isEmpty
-//               ? null
-//               : () {
-//                   widget.handleCheckButton(currentAnswer);
-//                 },
-//           style: ElevatedButton.styleFrom(
-//             minimumSize: Size.fromHeight(50),
-//           ),
-//           child: Text('Check'),
-//         ),
-//       ],
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        widget.onNextPressed();
+      },
+      onTapDown: (_) {
+        setState(() {
+          _padding = 0;
+        });
+      },
+      onTapUp: (_) {
+        setState(() {
+          _padding = 6;
+        });
+      },
+      child: AnimatedContainer(
+        padding: EdgeInsets.only(bottom: _padding),
+        margin: EdgeInsets.only(top: -(_padding - 6)),
+        decoration: BoxDecoration(
+          color: widget.color == 'red' ? Colors.red[800] : Colors.green[800],
+          borderRadius: BorderRadius.circular(20),
+        ),
+        duration: Duration(milliseconds: 100),
+        child: Container(
+          width: double.infinity,
+          height: 60,
+          decoration: BoxDecoration(
+            color: widget.color == 'red' ? Colors.red : Colors.green,
+            border: Border.all(
+                color: widget.color == 'red' ? Colors.red : Colors.green),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Center(
+            child: Text(
+              'Next',
+              style: TextStyle(
+                  fontSize: 24,
+                  letterSpacing: 5,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -33,6 +33,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
   @override
   Widget build(BuildContext context) {
     final question = ref.watch(questionsProvider);
+    double width = MediaQuery.of(context).size.width;
 
     Widget chosenScreen;
 
@@ -48,18 +49,80 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: LinearPercentIndicator(
-          width: MediaQuery.of(context).size.width * 0.7,
-          lineHeight: 8.0,
-          percent: currentQuestionIndex / question.length,
-          progressColor: Colors.blue,
-          backgroundColor: Colors.white,
-        ),
-      ),
-      // body: chosenScreen,
-      body: SafeArea(child: chosenScreen),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   elevation: 0,
+      //   title: LinearPercentIndicator(
+      //     width: MediaQuery.of(context).size.width * 0.7,
+      //     lineHeight: 8.0,
+      //     percent: currentQuestionIndex / question.length,
+      //     progressColor: Colors.blue,
+      //     backgroundColor: Colors.white,
+      //   ),
+      // ),
+      // body: SafeArea(child: chosenScreen),
+      body: SafeArea(
+          child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 40,
+              vertical: 20,
+            ),
+            child: ProgressBar(
+                screenWidth: width,
+                ratio: currentQuestionIndex / question.length),
+          ),
+          chosenScreen,
+        ],
+      )),
       backgroundColor: Colors.white,
+    );
+  }
+}
+
+class ProgressBar extends StatelessWidget {
+  const ProgressBar(
+      {super.key, required this.screenWidth, required this.ratio});
+
+  final double screenWidth;
+  final double ratio;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          width: screenWidth,
+          height: 20,
+          decoration: BoxDecoration(
+            color: Colors.grey.withOpacity(0.6),
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
+        AnimatedContainer(
+          width: screenWidth * ratio,
+          height: 20,
+          // padding: EdgeInsets.only(
+          //     // right: screenWidth * (1 - 0.16),
+          //     // right: 20,
+          //     ),
+          decoration: BoxDecoration(
+            color: Colors.blue,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          duration: Duration(milliseconds: 250),
+          // child: Container(
+          //   // width: 40,
+          //   // height: 20,
+          //   decoration: BoxDecoration(
+          //     color: Colors.blue,
+          //     border: Border.all(color: Colors.blue),
+          //     borderRadius: BorderRadius.circular(20),
+          //   ),
+          // ),
+        ),
+      ],
     );
   }
 }

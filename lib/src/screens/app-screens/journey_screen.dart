@@ -10,7 +10,39 @@ class JourneyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      // body: SafeArea(
+      //   child: SingleChildScrollView(
+      //     child: Stack(
+      //       children: [
+      //         Column(
+      //           children: [
+      //             for (int i = 0; i < 10; i++)
+      //               Positioned(
+      //                 top: i * 20,
+      //                 child: RawMaterialButton(
+      //                   onPressed: () {
+      //                     Navigator.push(
+      //                       context,
+      //                       MaterialPageRoute(
+      //                           builder: (context) => const QuizScreen()),
+      //                     );
+      //                   },
+      //                   elevation: 2.0,
+      //                   fillColor: Colors.white,
+      //                   padding: EdgeInsets.all(15.0),
+      //                   shape: CircleBorder(),
+      //                   child: Icon(
+      //                     FontAwesomeIcons.question,
+      //                     size: 35.0,
+      //                   ),
+      //                 ),
+      //               )
+      //           ],
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

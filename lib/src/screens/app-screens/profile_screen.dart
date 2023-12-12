@@ -1,4 +1,5 @@
 import 'package:atoz_app/src/screens/app-screens/chart/bar_chart.dart';
+import 'package:atoz_app/src/widgets/animated_button_1.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -9,6 +10,8 @@ final _firebase = FirebaseAuth.instance;
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
+
+  void testFunction() {}
 
   @override
   Widget build(BuildContext context) {
@@ -159,10 +162,18 @@ class ProfileScreen extends StatelessWidget {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  ProfileNumberWidget(number: 0, title: 'Friends'),
-                  ProfileNumberWidget(number: 0, title: 'Follower'),
-                  ProfileNumberWidget(number: 0, title: 'Following'),
+                children: [
+                  // ProfileNumberWidget(number: 0, title: 'Friends'),
+                  // ProfileNumberWidget(number: 0, title: 'Follower'),
+                  // ProfileNumberWidget(number: 0, title: 'Following'),
+                  Expanded(
+                    child: AnimatedButton1(
+                        buttonText: 'Add Friend', voidFunction: testFunction),
+                  ),
+                  Expanded(
+                    child: AnimatedButton1(
+                        buttonText: 'Add Friend', voidFunction: testFunction),
+                  ),
                 ],
               ),
             ]),
