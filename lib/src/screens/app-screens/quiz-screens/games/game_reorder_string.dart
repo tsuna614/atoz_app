@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -33,7 +34,17 @@ class _ReorderStringState extends State<ReorderString> {
   }
 
   void onCheckPressed() {
-    print('object');
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.success,
+      animType: AnimType.rightSlide,
+      title: 'Correct',
+      // desc: 'Dialog description here.............',
+      btnOkText: 'Next',
+      btnOkOnPress: () {
+        Navigator.pop(context);
+      },
+    ).show();
   }
 
   void onReorder(int oldIndex, int newIndex) {
@@ -88,7 +99,7 @@ class _ReorderStringState extends State<ReorderString> {
             child: SizedBox.fromSize(
               size: Size.fromHeight(300),
               child: Image(
-                image: AssetImage('assets/images/train.png'),
+                image: AssetImage('assets/images/stomachache.png'),
               ),
             ),
           ),

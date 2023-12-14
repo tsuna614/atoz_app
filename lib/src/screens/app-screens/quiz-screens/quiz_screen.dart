@@ -1,3 +1,4 @@
+import 'package:atoz_app/src/models/quiz_question.dart';
 import 'package:atoz_app/src/providers/question_provider.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_connect_string.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_multiple_choice.dart';
@@ -36,7 +37,10 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
 
+    final dummyQuestionsData = ref.watch(questionsProvider);
+
     final question = ref.watch(questionsProvider);
+
     Widget chosenScreen;
 
     List<String> getShuffledAnswers() {
@@ -48,24 +52,25 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
     if (currentQuestionIndex == question.length) {
       chosenScreen = ResultScreen(userScore: userScore);
     } else {
-      // chosenScreen = MultipleChoice(
-      //   question: question[currentQuestionIndex].question,
-      //   answers: getShuffledAnswers(),
-      //   correctAnswer: question[currentQuestionIndex].correctAnswer,
-      //   handleCheckButton: _handleAnswerClick,
-      // );
+      chosenScreen = MultipleChoice(
+        question: question[currentQuestionIndex].question,
+        answers: getShuffledAnswers(),
+        correctAnswer: question[currentQuestionIndex].correctAnswer,
+        handleCheckButton: _handleAnswerClick,
+        imageAsset: question[currentQuestionIndex].imageAsset,
+      );
       // chosenScreen = ConnectString(
       //   question: question[currentQuestionIndex].question,
       //   answers: getShuffledAnswers(),
       //   correctAnswer: question[currentQuestionIndex].correctAnswer,
       //   handleCheckButton: _handleAnswerClick,
       // );
-      chosenScreen = ReorderString(
-        question: question[currentQuestionIndex].question,
-        answers: getShuffledAnswers(),
-        correctAnswer: question[currentQuestionIndex].correctAnswer,
-        handleCheckButton: _handleAnswerClick,
-      );
+      // chosenScreen = ReorderString(
+      //   question: question[currentQuestionIndex].question,
+      //   answers: getShuffledAnswers(),
+      //   correctAnswer: question[currentQuestionIndex].correctAnswer,
+      //   handleCheckButton: _handleAnswerClick,
+      // );
     }
 
     return Scaffold(

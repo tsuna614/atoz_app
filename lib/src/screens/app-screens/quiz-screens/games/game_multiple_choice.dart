@@ -13,11 +13,13 @@ class MultipleChoice extends ConsumerStatefulWidget {
       required this.question,
       required this.answers,
       required this.correctAnswer,
+      required this.imageAsset,
       required this.handleCheckButton});
 
   final String question;
   final List<String> answers;
   final String correctAnswer;
+  final String imageAsset;
   final void Function(String userAnswer) handleCheckButton;
 
   @override
@@ -103,7 +105,7 @@ class _MultipleChoiceState extends ConsumerState<MultipleChoice> {
             child: SizedBox.fromSize(
               size: Size.fromHeight(400),
               child: Image(
-                image: AssetImage('assets/images/train.png'),
+                image: AssetImage(widget.imageAsset),
               ),
             ),
           ),
@@ -119,6 +121,7 @@ class _MultipleChoiceState extends ConsumerState<MultipleChoice> {
           //   ),
           // ),
           GridView(
+              physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               padding: const EdgeInsets.all(0),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -192,6 +195,11 @@ class _MultipleChoiceButtonState extends State<MultipleChoiceButton> {
       onTapDown: (_) {
         setState(() {
           _padding = 0;
+        });
+      },
+      onTapCancel: () {
+        setState(() {
+          _padding = 6;
         });
       },
       onTapUp: (_) {
@@ -272,6 +280,13 @@ class _CheckButtonState extends State<CheckButton> {
           });
         }
       },
+      onTapCancel: () {
+        if (widget.chosenAnswer.isNotEmpty) {
+          setState(() {
+            _padding = 6;
+          });
+        }
+      },
       onTapUp: (_) {
         if (widget.chosenAnswer.isNotEmpty) {
           setState(() {
@@ -315,66 +330,71 @@ class _CheckButtonState extends State<CheckButton> {
 
 ///////////////// NEXT BUTTON /////////////////
 
-class NextButton extends StatefulWidget {
-  const NextButton(
-      {super.key, required this.color, required this.onNextPressed});
+// class NextButton extends StatefulWidget {
+//   const NextButton(
+//       {super.key, required this.color, required this.onNextPressed});
 
-  final String color;
+//   final String color;
 
-  final void Function() onNextPressed;
+//   final void Function() onNextPressed;
 
-  @override
-  State<NextButton> createState() => _NextButtonState();
-}
+//   @override
+//   State<NextButton> createState() => _NextButtonState();
+// }
 
-class _NextButtonState extends State<NextButton> {
-  double _padding = 6;
+// class _NextButtonState extends State<NextButton> {
+//   double _padding = 6;
 
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        widget.onNextPressed();
-      },
-      onTapDown: (_) {
-        setState(() {
-          _padding = 0;
-        });
-      },
-      onTapUp: (_) {
-        setState(() {
-          _padding = 6;
-        });
-      },
-      child: AnimatedContainer(
-        padding: EdgeInsets.only(bottom: _padding),
-        margin: EdgeInsets.only(top: -(_padding - 6)),
-        decoration: BoxDecoration(
-          color: widget.color == 'red' ? Colors.red[800] : Colors.green[800],
-          borderRadius: BorderRadius.circular(20),
-        ),
-        duration: Duration(milliseconds: 100),
-        child: Container(
-          width: double.infinity,
-          height: 60,
-          decoration: BoxDecoration(
-            color: widget.color == 'red' ? Colors.red : Colors.green,
-            border: Border.all(
-                color: widget.color == 'red' ? Colors.red : Colors.green),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Center(
-            child: Text(
-              'Next',
-              style: TextStyle(
-                  fontSize: 24,
-                  letterSpacing: 5,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return GestureDetector(
+//       onTap: () {
+//         widget.onNextPressed();
+//       },
+//       onTapDown: (_) {
+//         setState(() {
+//           _padding = 0;
+//         });
+//       },
+//       onTapCancel: () {
+//         setState(() {
+//           _padding = 6;
+//         });
+//       },
+//       onTapUp: (_) {
+//         setState(() {
+//           _padding = 6;
+//         });
+//       },
+//       child: AnimatedContainer(
+//         padding: EdgeInsets.only(bottom: _padding),
+//         margin: EdgeInsets.only(top: -(_padding - 6)),
+//         decoration: BoxDecoration(
+//           color: widget.color == 'red' ? Colors.red[800] : Colors.green[800],
+//           borderRadius: BorderRadius.circular(20),
+//         ),
+//         duration: Duration(milliseconds: 100),
+//         child: Container(
+//           width: double.infinity,
+//           height: 60,
+//           decoration: BoxDecoration(
+//             color: widget.color == 'red' ? Colors.red : Colors.green,
+//             border: Border.all(
+//                 color: widget.color == 'red' ? Colors.red : Colors.green),
+//             borderRadius: BorderRadius.circular(20),
+//           ),
+//           child: Center(
+//             child: Text(
+//               'Next',
+//               style: TextStyle(
+//                   fontSize: 24,
+//                   letterSpacing: 5,
+//                   fontWeight: FontWeight.bold,
+//                   color: Colors.white),
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

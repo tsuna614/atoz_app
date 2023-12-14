@@ -221,6 +221,11 @@ class _DifficultyScreenState extends State<DifficultyScreen> {
                                       _padding = 0;
                                     });
                                   },
+                                  onTapCancel: () {
+                                    setState(() {
+                                      _padding = 6;
+                                    });
+                                  },
                                   onTapUp: (_) {
                                     setState(() {
                                       _padding = 6;
@@ -321,6 +326,11 @@ class _DifficultyCardState extends State<DifficultyCard> {
         onTapDown: (_) {
           setState(() {
             _padding = 0.0;
+          });
+        },
+        onTapCancel: () {
+          setState(() {
+            _padding = 6.0;
           });
         },
         onTapUp: (_) {

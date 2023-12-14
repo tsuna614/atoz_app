@@ -46,7 +46,7 @@ class _AnimatedButton1State extends State<AnimatedButton1> {
           height: 50,
           decoration: BoxDecoration(
             color: Colors.white,
-            border: Border.all(color: Colors.blue),
+            border: Border.all(color: Colors.blue.shade800),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Center(
@@ -57,7 +57,7 @@ class _AnimatedButton1State extends State<AnimatedButton1> {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Colors.blue,
+                  color: Colors.blue[800],
                 ),
               ),
             ),

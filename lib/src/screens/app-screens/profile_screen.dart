@@ -154,7 +154,7 @@ class ProfileScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               Text(
-                'Student',
+                'nqkhanh@gmail.com',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w100),
               ),
               SizedBox(
@@ -166,13 +166,20 @@ class ProfileScreen extends StatelessWidget {
                   // ProfileNumberWidget(number: 0, title: 'Friends'),
                   // ProfileNumberWidget(number: 0, title: 'Follower'),
                   // ProfileNumberWidget(number: 0, title: 'Following'),
+                  // Expanded(
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.symmetric(horizontal: 20),
+                  //     child: AnimatedButton1(
+                  //         buttonText: 'Add Friend', voidFunction: testFunction),
+                  //   ),
+                  // ),
                   Expanded(
-                    child: AnimatedButton1(
-                        buttonText: 'Add Friend', voidFunction: testFunction),
-                  ),
-                  Expanded(
-                    child: AnimatedButton1(
-                        buttonText: 'Add Friend', voidFunction: testFunction),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: AnimatedButton1(
+                          buttonText: 'Change profile',
+                          voidFunction: testFunction),
+                    ),
                   ),
                 ],
               ),
@@ -239,19 +246,19 @@ class DetailInfo extends StatelessWidget {
         TableRow(children: [
           Text('Age',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          Text('19'),
+          Text('20'),
         ]),
         rowSpacer,
         TableRow(children: [
           Text('Email',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          Text('thedarkspiritaway@gmail.com'),
+          Text('nqkhanh@gmail.com'),
         ]),
         rowSpacer,
         TableRow(children: [
           Text('Languages',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          Text('English, Japanese'),
+          Text('English'),
         ]),
       ]),
       // child: Row(
@@ -334,25 +341,25 @@ class StudyingInfo extends StatelessWidget {
             'Hours of study',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-          Text('16'),
+          Text('0'),
         ]),
         rowSpacer,
         TableRow(children: [
           Text('Lessons completed',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          Text('52'),
+          Text('0'),
         ]),
         rowSpacer,
         TableRow(children: [
           Text('Score',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          Text('815'),
+          Text('0'),
         ]),
         rowSpacer,
         TableRow(children: [
           Text('Ranking',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          Text('161'),
+          Text('1'),
         ]),
       ]),
     );

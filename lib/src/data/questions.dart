@@ -13,9 +13,10 @@ const dummyQuestions = [
       'so',
       'I am',
       'having',
-      'a stomache',
+      'a stomachache',
     ],
     'Train',
+    'assets/images/japan.png',
   ),
   QuizQuestion(
     'What is the name of this vehicle?',
@@ -26,6 +27,7 @@ const dummyQuestions = [
       'Boat',
     ],
     'Train',
+    'assets/images/train.png',
   ),
   QuizQuestion(
     'What are the main building blocks of Flutter UIs?',
@@ -36,16 +38,19 @@ const dummyQuestions = [
       'Functions',
     ],
     'Widgets',
+    'assets/images/train.png',
   ),
   QuizQuestion(
-      'How are Flutter UIs built?',
-      [
-        'By combining widgets in code',
-        'By combining widgets in a visual editor',
-        'By defining widgets in config files',
-        'By using XCode for iOS and Android Studio for Android',
-      ],
-      'By combining widgets in code'),
+    'How are Flutter UIs built?',
+    [
+      'By combining widgets in code',
+      'By combining widgets in a visual editor',
+      'By defining widgets in config files',
+      'By using XCode for iOS and Android Studio for Android',
+    ],
+    'By combining widgets in code',
+    'assets/images/train.png',
+  ),
   QuizQuestion(
     'What\'s the purpose of a StatefulWidget?',
     [
@@ -55,6 +60,7 @@ const dummyQuestions = [
       'Render UI that does not depend on data',
     ],
     'Update UI as data changes',
+    'assets/images/train.png',
   ),
   QuizQuestion(
     'Which widget should you try to use more often: StatelessWidget or StatefulWidget?',
@@ -65,6 +71,7 @@ const dummyQuestions = [
       'None of the above',
     ],
     'StatelessWidget',
+    'assets/images/train.png',
   ),
   QuizQuestion(
     'What happens if you change data in a StatelessWidget?',
@@ -75,6 +82,7 @@ const dummyQuestions = [
       'Any nested StatefulWidgets are updated',
     ],
     'The UI is not updated',
+    'assets/images/train.png',
   ),
   QuizQuestion(
     'How should you update data inside of StatefulWidgets?',
@@ -85,5 +93,6 @@ const dummyQuestions = [
       'By calling updateState()',
     ],
     'By calling setState()',
+    'assets/images/train.png',
   ),
 ];
