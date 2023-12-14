@@ -58,6 +58,7 @@ class _MultipleChoiceState extends ConsumerState<MultipleChoice> {
               });
               // Navigator.pop(context);
             },
+            dismissOnTouchOutside: false,
           ).show()
         : AwesomeDialog(
             context: context,
@@ -73,6 +74,7 @@ class _MultipleChoiceState extends ConsumerState<MultipleChoice> {
               });
               // Navigator.pop(context);
             },
+            dismissOnTouchOutside: false,
           ).show();
   }
 
@@ -85,10 +87,13 @@ class _MultipleChoiceState extends ConsumerState<MultipleChoice> {
           SizedBox(
             height: 60,
           ),
-          Text(
-            widget.question,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
+          Align(
+            alignment: Alignment(0, 0),
+            child: Text(
+              widget.question,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.start,
+            ),
           ),
           SizedBox(
             height: 20,

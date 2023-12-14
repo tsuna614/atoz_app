@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:atoz_app/src/data/global_data.dart' as globals;
 
 final dio = Dio();
 
@@ -83,7 +84,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       bool isUserExisted = false;
       Response response;
       response = await dio
-          .get('http://localhost:3000/v1/user/getUserByEmail/$_enteredEmail');
+          .get('${globals.atozApi}/user/getUserByEmail/$_enteredEmail');
       if (response.data.toString().contains(_enteredEmail)) {
         isUserExisted = true;
       }

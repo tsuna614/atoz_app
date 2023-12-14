@@ -47,18 +47,18 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
     if (currentQuestionIndex == question.length) {
       chosenScreen = ResultScreen(userScore: userScore);
     } else {
-      // chosenScreen = MultipleChoice(
-      //   question: question[currentQuestionIndex].question,
-      //   answers: getShuffledAnswers(),
-      //   correctAnswer: question[currentQuestionIndex].correctAnswer,
-      //   handleCheckButton: _handleAnswerClick,
-      // );
-      chosenScreen = ConnectString(
+      chosenScreen = MultipleChoice(
         question: question[currentQuestionIndex].question,
         answers: getShuffledAnswers(),
         correctAnswer: question[currentQuestionIndex].correctAnswer,
         handleCheckButton: _handleAnswerClick,
       );
+      // chosenScreen = ConnectString(
+      //   question: question[currentQuestionIndex].question,
+      //   answers: getShuffledAnswers(),
+      //   correctAnswer: question[currentQuestionIndex].correctAnswer,
+      //   handleCheckButton: _handleAnswerClick,
+      // );
     }
 
     return Scaffold(

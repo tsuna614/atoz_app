@@ -7,12 +7,11 @@ import 'package:atoz_app/src/screens/authentication-screens/language_select_scre
 import 'package:atoz_app/src/screens/authentication-screens/user_setup_screen.dart';
 import 'package:atoz_app/src/screens/loading_screen.dart';
 import 'package:atoz_app/src/screens/main_screen.dart';
-import 'package:atoz_app/src/screens/test.dart';
-import 'package:flutter/material.dart';
 import 'package:atoz_app/src/screens/authentication-screens/login_screen.dart';
-// import 'package:atoz_app/screens/main_screen.dart';
 import 'package:atoz_app/src/screens/tabs_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:atoz_app/src/screens/test.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
