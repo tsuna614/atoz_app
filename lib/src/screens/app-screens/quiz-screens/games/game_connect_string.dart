@@ -110,7 +110,15 @@ class _ConnectStringState extends State<ConnectString> {
             spacing: 8.0, // gap between adjacent chips
             runSpacing: 4.0, // gap between lines
             children: <Widget>[
-              for (final answer in widget.answers) Chip(label: Text(answer))
+              for (final answer in widget.answers)
+                Chip(
+                    label: Text(
+                  answer,
+                  style: TextStyle(
+                    fontSize: 30,
+                    // color: Colors.black,
+                  ),
+                ))
               // Chip(
               //   label: Text('Hamilton'),
               // ),
@@ -235,18 +243,21 @@ class DraggableAnswer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Draggable(
-      feedback: Container(
-        padding: EdgeInsets.all(8),
-        margin: EdgeInsets.all(8),
-        color: Colors.grey,
-        child: Text(answer),
+      feedback: Material(
+        child: Container(
+          padding: EdgeInsets.all(8),
+          // margin: EdgeInsets.all(8),
+          color: Colors.grey,
+          child: Text(answer),
+        ),
       ),
-      childWhenDragging: Container(
-        padding: EdgeInsets.all(8),
-        margin: EdgeInsets.all(8),
-        color: Colors.grey,
-        child: Text(answer),
-      ),
+      // childWhenDragging: Container(
+      //   padding: EdgeInsets.all(8),
+      //   margin: EdgeInsets.all(8),
+      //   color: Colors.grey,
+      //   child: Text(answer),
+      // ),
+      childWhenDragging: Container(),
       child: Container(
         padding: EdgeInsets.all(8),
         margin: EdgeInsets.all(8),

@@ -1,6 +1,7 @@
 import 'package:atoz_app/src/providers/question_provider.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_connect_string.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_multiple_choice.dart';
+import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_reorder_string.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/result_screen.dart';
 import 'package:atoz_app/src/screens/loading_screen.dart';
 import 'package:flutter/material.dart';
@@ -47,18 +48,24 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
     if (currentQuestionIndex == question.length) {
       chosenScreen = ResultScreen(userScore: userScore);
     } else {
-      chosenScreen = MultipleChoice(
-        question: question[currentQuestionIndex].question,
-        answers: getShuffledAnswers(),
-        correctAnswer: question[currentQuestionIndex].correctAnswer,
-        handleCheckButton: _handleAnswerClick,
-      );
+      // chosenScreen = MultipleChoice(
+      //   question: question[currentQuestionIndex].question,
+      //   answers: getShuffledAnswers(),
+      //   correctAnswer: question[currentQuestionIndex].correctAnswer,
+      //   handleCheckButton: _handleAnswerClick,
+      // );
       // chosenScreen = ConnectString(
       //   question: question[currentQuestionIndex].question,
       //   answers: getShuffledAnswers(),
       //   correctAnswer: question[currentQuestionIndex].correctAnswer,
       //   handleCheckButton: _handleAnswerClick,
       // );
+      chosenScreen = ReorderString(
+        question: question[currentQuestionIndex].question,
+        answers: getShuffledAnswers(),
+        correctAnswer: question[currentQuestionIndex].correctAnswer,
+        handleCheckButton: _handleAnswerClick,
+      );
     }
 
     return Scaffold(

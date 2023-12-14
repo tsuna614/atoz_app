@@ -2,6 +2,22 @@ import '../models/quiz_question.dart';
 
 const dummyQuestions = [
   QuizQuestion(
+    'Re-order the words to make a meaningful sentence:',
+    [
+      'Yesterday,',
+      'I ate',
+      'a',
+      'lot',
+      'of',
+      'ice scream',
+      'so',
+      'I am',
+      'having',
+      'a stomache',
+    ],
+    'Train',
+  ),
+  QuizQuestion(
     'What is the name of this vehicle?',
     [
       'Train',

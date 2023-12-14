@@ -10,6 +10,7 @@ class JourneyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       // body: SafeArea(
       //   child: SingleChildScrollView(
       //     child: Stack(
@@ -43,36 +44,38 @@ class JourneyScreen extends StatelessWidget {
       //     ),
       //   ),
       // ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // ElevatedButton(
-            //   onPressed: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(builder: (context) => const QuizScreen()),
-            //     );
-            //   },
-            //   child: Text('Question Page'),
-            // ),
-            RawMaterialButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const QuizScreen()),
-                );
-              },
-              elevation: 2.0,
-              fillColor: Colors.white,
-              padding: EdgeInsets.all(15.0),
-              shape: CircleBorder(),
-              child: Icon(
-                FontAwesomeIcons.question,
-                size: 35.0,
-              ),
-            )
-          ],
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              // ElevatedButton(
+              //   onPressed: () {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(builder: (context) => const QuizScreen()),
+              //     );
+              //   },
+              //   child: Text('Question Page'),
+              // ),
+              RawMaterialButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const QuizScreen()),
+                  );
+                },
+                elevation: 2.0,
+                fillColor: Colors.white,
+                padding: EdgeInsets.all(15.0),
+                shape: CircleBorder(),
+                child: Icon(
+                  FontAwesomeIcons.question,
+                  size: 35.0,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
