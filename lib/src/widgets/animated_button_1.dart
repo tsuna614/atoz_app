@@ -27,6 +27,11 @@ class _AnimatedButton1State extends State<AnimatedButton1> {
           _padding = 0;
         });
       },
+      onTapCancel: () {
+        setState(() {
+          _padding = 6;
+        });
+      },
       onTapUp: (_) {
         setState(() {
           _padding = 6;

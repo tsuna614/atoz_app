@@ -11,11 +11,13 @@ class ConnectString extends StatefulWidget {
     required this.answers,
     required this.correctAnswer,
     required this.handleCheckButton,
+    required this.imageAsset,
   });
 
   String question;
   List<String> answers;
   String correctAnswer;
+  String imageAsset;
   void Function(String userAnswer) handleCheckButton;
 
   @override

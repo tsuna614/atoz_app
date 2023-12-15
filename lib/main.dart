@@ -1,5 +1,6 @@
 import 'package:atoz_app/src/screens/app-screens/home_screen.dart';
-import 'package:atoz_app/src/screens/app-screens/profile_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/profile-screen/change_profile_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/profile-screen/profile_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_connect_string.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/quiz_screen.dart';
 import 'package:atoz_app/src/screens/authentication-screens/difficulty_screen.dart';
@@ -101,9 +102,10 @@ class MyApp extends StatelessWidget {
           return const LoginScreen();
         },
       ),
+      // home: ChangeProfileScreen(),
       // home: UserSetupScreen(resetMainPage: () {}),
       // home: TestWidget(),
-      // home: QuizScreen(),
+      // home: ProfileScreen(),
     );
   }
 }

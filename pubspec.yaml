@@ -49,6 +49,7 @@ dependencies:
   awesome_dialog: ^3.1.0
   reorderable_grid_view: ^2.2.8
   reorderables: ^0.6.0
+  image_picker: ^1.0.4
 
 dev_dependencies:
   flutter_test:
@@ -87,6 +88,9 @@ flutter:
     - assets/images/germany.png
     - assets/images/spain.png
     - assets/images/train.png
+    - assets/images/bus.png
+    - assets/images/boat.png
+    - assets/images/plane.png
     - assets/images/stomachache.png
 
   # An image asset can refer to one or more resolution-specific "variants", see

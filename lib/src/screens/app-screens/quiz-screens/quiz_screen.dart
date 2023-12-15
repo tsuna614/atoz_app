@@ -25,9 +25,23 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
   int userScore = 0;
 
   void _handleAnswerClick(String userAnswer) {
-    if (userAnswer == dummyQuestions[currentQuestionIndex].correctAnswer) {
-      userScore++;
+    final currentQuestion = ref.read(questionsProvider)[currentQuestionIndex];
+    if (currentQuestion is MultipleChoiceQuestion) {
+      if (userAnswer == currentQuestion.correctAnswer) {
+        userScore++;
+      }
+    } else if (currentQuestion is ReorderStringQuestion) {
+      if (userAnswer == currentQuestion.correctAnswer.join(' ')) {
+        userScore++;
+      }
+    } else if (currentQuestion is ConnectStringQuestion) {
+      if (userAnswer == currentQuestion.correctAnswer) {
+        userScore++;
+      }
     }
+    // if (userAnswer == dummyQuestions[currentQuestionIndex].correctAnswer) {
+    //   userScore++;
+    // }
     setState(() {
       currentQuestionIndex++;
     });
@@ -37,41 +51,60 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
 
-    final dummyQuestionsData = ref.watch(questionsProvider);
-
     final question = ref.watch(questionsProvider);
 
     Widget chosenScreen;
 
-    List<String> getShuffledAnswers() {
-      final shuffledList = List.of(question[currentQuestionIndex].answers);
-      shuffledList.shuffle();
-      return shuffledList;
+    // List<String> getShuffledAnswers() {
+    //   final currentQuestion = question[currentQuestionIndex];
+    //   // Shuffle the answers if the question is MultipleChoiceQuestion
+    //   if (currentQuestion is MultipleChoiceQuestion) {
+    //     final shuffledList = List.of(currentQuestion.answers);
+    //     shuffledList.shuffle();
+    //     return shuffledList;
+    //   }
+    // }
+
+    final currentQuestion = question[currentQuestionIndex];
+    if (currentQuestion is MultipleChoiceQuestion) {
+      chosenScreen = MultipleChoice(
+        question: currentQuestion.question,
+        answers: currentQuestion.getShuffledAnswers(),
+        correctAnswer: currentQuestion.correctAnswer,
+        handleCheckButton: _handleAnswerClick,
+        imageAsset: currentQuestion.imageAsset,
+      );
+    } else if (currentQuestion is ReorderStringQuestion) {
+      chosenScreen = ReorderString(
+        question: currentQuestion.question,
+        answers: currentQuestion.getShuffledAnswers(),
+        correctAnswer: currentQuestion.correctAnswer,
+        handleCheckButton: _handleAnswerClick,
+        imageAsset: currentQuestion.imageAsset,
+      );
+    } else if (currentQuestion is ConnectStringQuestion) {
+      chosenScreen = ConnectString(
+        question: currentQuestion.question,
+        answers: currentQuestion.getShuffledAnswers(),
+        correctAnswer: currentQuestion.correctAnswer,
+        handleCheckButton: _handleAnswerClick,
+        imageAsset: currentQuestion.imageAsset,
+      );
+    } else {
+      chosenScreen = LoadingScreen();
     }
 
-    if (currentQuestionIndex == question.length) {
-      chosenScreen = ResultScreen(userScore: userScore);
-    } else {
-      chosenScreen = MultipleChoice(
-        question: question[currentQuestionIndex].question,
-        answers: getShuffledAnswers(),
-        correctAnswer: question[currentQuestionIndex].correctAnswer,
-        handleCheckButton: _handleAnswerClick,
-        imageAsset: question[currentQuestionIndex].imageAsset,
-      );
-      // chosenScreen = ConnectString(
-      //   question: question[currentQuestionIndex].question,
-      //   answers: getShuffledAnswers(),
-      //   correctAnswer: question[currentQuestionIndex].correctAnswer,
-      //   handleCheckButton: _handleAnswerClick,
-      // );
-      // chosenScreen = ReorderString(
-      //   question: question[currentQuestionIndex].question,
-      //   answers: getShuffledAnswers(),
-      //   correctAnswer: question[currentQuestionIndex].correctAnswer,
-      //   handleCheckButton: _handleAnswerClick,
-      // );
-    }
+    // if (currentQuestionIndex == question.length) {
+    //   chosenScreen = ResultScreen(userScore: userScore);
+    // } else {
+    //   chosenScreen = MultipleChoice(
+    //     question: question[currentQuestionIndex].question,
+    //     answers: getShuffledAnswers(),
+    //     correctAnswer: question[currentQuestionIndex].correctAnswer,
+    //     handleCheckButton: _handleAnswerClick,
+    //     imageAsset: question[currentQuestionIndex].imageAsset,
+    //   );
+    // }
 
     return Scaffold(
       appBar: AppBar(

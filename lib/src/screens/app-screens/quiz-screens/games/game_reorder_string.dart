@@ -12,11 +12,13 @@ class ReorderString extends StatefulWidget {
     required this.answers,
     required this.correctAnswer,
     required this.handleCheckButton,
+    required this.imageAsset,
   });
 
   String question;
   List<String> answers;
-  String correctAnswer;
+  List<String> correctAnswer;
+  String imageAsset;
   void Function(String userAnswer) handleCheckButton;
 
   @override
@@ -42,7 +44,8 @@ class _ReorderStringState extends State<ReorderString> {
       // desc: 'Dialog description here.............',
       btnOkText: 'Next',
       btnOkOnPress: () {
-        Navigator.pop(context);
+        // Navigator.pop(context);
+        widget.handleCheckButton(tempAnswers.join(' '));
       },
     ).show();
   }
