@@ -1,12 +1,8 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:flutter/src/widgets/framework.dart';
-// import 'package:flutter/src/widgets/placeholder.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:atoz_app/src/data/global_data.dart' as global_data;
 import 'package:dio/dio.dart';
 
 final dio = Dio();
@@ -56,7 +52,8 @@ class _DetailSignUpScreenState extends State<DetailSignUpScreen> {
       final uid = await auth.currentUser?.uid;
 
       Response response;
-      response = await dio.post('http://localhost:3000/v1/user/addUser', data: {
+      response =
+          await dio.post('${global_data.atozApi}/v1/user/addUser', data: {
         'userId': uid,
         'email': widget.email,
         'firstName': enteredFirstName,

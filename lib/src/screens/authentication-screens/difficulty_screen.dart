@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:atoz_app/src/data/global_data.dart' as global_data;
 import 'package:dio/dio.dart';
 
 final dio = Dio();
@@ -53,7 +52,7 @@ class _DifficultyScreenState extends State<DifficultyScreen> {
         break;
     }
     Response response = await dio.put(
-      'http://localhost:3000/v1/user/editUserById/${id}',
+      '${global_data.atozApi}/user/editUserById/${id}',
       data: {
         'language': widget.chosenLanguage,
         'score': score,

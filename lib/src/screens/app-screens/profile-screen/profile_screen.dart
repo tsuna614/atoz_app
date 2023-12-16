@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:atoz_app/src/data/global_data.dart' as global;
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 final dio = Dio();
@@ -42,7 +43,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(userData);
+    // print(userData);
     return userData == null
         ? Scaffold(
             body: Center(
@@ -160,8 +161,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         fit: StackFit.expand,
                         children: [
                           CircleAvatar(
-                            backgroundImage:
-                                AssetImage("assets/images/pfp.jpeg"),
+                            backgroundColor: Colors.grey.shade300,
+                            child: Icon(
+                              Icons.person,
+                              size: 60,
+                              color: Colors.white,
+                            ),
+                            // backgroundImage:
+                            //     AssetImage("assets/images/profile.jpg"),
                           ),
                           Positioned(
                               bottom: -10,
@@ -233,7 +240,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             emailAddress: userData["email"],
                           ),
                         ),
-                      );
+                      ).then((value) {
+                        Future.delayed(Duration(seconds: 1), () {
+                          request();
+                        });
+                      });
                     },
                     icon: Icon(FontAwesomeIcons.pencil),
                     color: Colors.white,
