@@ -101,21 +101,22 @@ class _TabsScreenState extends State<TabsScreen> {
             // control which tab will be highlighted when chosen
             items: [
               SalomonBottomBarItem(
-                icon: Icon(FontAwesomeIcons.book),
-                title: Text('Journey'),
-              ),
+                  icon: Icon(FontAwesomeIcons.book),
+                  title: Text('Journey'),
+                  selectedColor: Colors.lightBlue.shade300),
               SalomonBottomBarItem(
                 icon: Icon(FontAwesomeIcons.dumbbell),
                 title: Text('Practice'),
+                selectedColor: Colors.pink,
               ),
               SalomonBottomBarItem(
-                icon: Icon(FontAwesomeIcons.rankingStar),
-                title: Text('Leaderboard'),
-              ),
+                  icon: Icon(FontAwesomeIcons.rankingStar),
+                  title: Text('Leaderboard'),
+                  selectedColor: Colors.yellow.shade700),
               SalomonBottomBarItem(
-                icon: Icon(FontAwesomeIcons.user),
-                title: Text('Profile'),
-              ),
+                  icon: Icon(FontAwesomeIcons.user),
+                  title: Text('Profile'),
+                  selectedColor: Colors.green),
             ],
           ),
         ),

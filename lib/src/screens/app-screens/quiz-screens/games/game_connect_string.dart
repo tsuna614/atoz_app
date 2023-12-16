@@ -18,7 +18,7 @@ class ConnectString extends StatefulWidget {
   List<String> answers;
   String correctAnswer;
   String imageAsset;
-  void Function(String userAnswer) handleCheckButton;
+  void Function(bool correctAnswer) handleCheckButton;
 
   @override
   State<ConnectString> createState() => _ConnectStringState();
@@ -39,7 +39,7 @@ class _ConnectStringState extends State<ConnectString> {
             // desc: 'Dialog description here.............',
             btnOkText: 'Next',
             btnOkOnPress: () {
-              widget.handleCheckButton(chosenAnswer);
+              widget.handleCheckButton(true);
               setState(() {
                 chosenAnswer = '';
               });
@@ -54,7 +54,7 @@ class _ConnectStringState extends State<ConnectString> {
             desc: 'Correct answer: \"${widget.correctAnswer}\"',
             btnCancelText: 'Next',
             btnCancelOnPress: () {
-              widget.handleCheckButton(chosenAnswer);
+              widget.handleCheckButton(false);
               setState(() {
                 chosenAnswer = '';
               });

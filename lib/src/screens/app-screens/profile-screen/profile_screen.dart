@@ -51,10 +51,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           )
         : Scaffold(
-            appBar: AppBar(
-              title: Text(''),
-              elevation: 0,
-            ),
+            // appBar: AppBar(
+            //   title: Text(''),
+            //   elevation: 0,
+            // ),
             body: Stack(
               children: [
                 // THIS IS THE INFO CARD BELOW THE PROFILE
@@ -64,7 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Column(
                       children: [
                         SizedBox(
-                          height: 250,
+                          height: 350,
                         ),
                         Padding(
                           padding: const EdgeInsets.all(16.0),
@@ -115,119 +115,153 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 // THIS IS THE 2 BACKGROUND CONTAINERS
-                Align(
-                  alignment: Alignment.topCenter,
+                Positioned(
+                  top: 0,
                   child: Column(
                     children: [
+                      // Container(
+                      //   height: 50.0,
+                      //   decoration: BoxDecoration(
+                      //     color: Theme.of(context).primaryColor,
+                      //   ),
+                      // ),
+                      SizedBox(height: 50),
                       Container(
-                        height: 50.0,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                      Container(
-                        height: 200.0,
+                        height: 300.0,
+                        width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 1,
-                              blurRadius: 10,
-                              offset: Offset(0, 1),
+                          // border:
+                          // only bottom border
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Colors.grey.shade300,
+                              width: 1.0,
                             ),
-                          ],
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                // THIS IS THE PROFILE PICTURE AND TITLE/NAME
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: Column(children: [
-                    // ClipOval(
-                    //   child: SizedBox.fromSize(
-                    //     size: Size.fromRadius(50),
-                    //     child:
-                    //         Image.asset('assets/images/pfp.jpeg', fit: BoxFit.cover),
-                    //   ),
-                    // ),
-                    SizedBox(
-                      height: 100,
-                      width: 100,
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        fit: StackFit.expand,
-                        children: [
-                          CircleAvatar(
-                            backgroundColor: Colors.grey.shade300,
-                            child: Icon(
-                              Icons.person,
-                              size: 60,
-                              color: Colors.white,
-                            ),
-                            // backgroundImage:
-                            //     AssetImage("assets/images/profile.jpg"),
-                          ),
-                          Positioned(
-                              bottom: -10,
-                              right: -40,
-                              child: SizedBox(
-                                height: 50,
-                                child: RawMaterialButton(
-                                  onPressed: () {},
-                                  elevation: 2.0,
-                                  fillColor: Color(0xFFF5F6F9),
-                                  padding: EdgeInsets.all(15.0),
-                                  shape: CircleBorder(),
-                                  child: Icon(
-                                    Icons.camera_alt_outlined,
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                              )),
+                ClipPath(
+                  clipper: CustomClipPathLightBlue(context: context),
+                  child: Container(
+                    height: 200.0,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [
+                          Colors.lightBlue.shade400,
+                          Colors.lightBlue.shade100,
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: 10,
+                  ),
+                ),
+                ClipPath(
+                  clipper: CustomClipPathBlue(context: context),
+                  child: Container(
+                    height: 200.0,
+                    decoration: BoxDecoration(
+                      // gradient
+                      gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [
+                          Colors.blue.shade900,
+                          Colors.indigo.shade900,
+                        ],
+                      ),
                     ),
-                    Text(
-                      // '${userData['firstName']} ${userData['lastName']}',
-                      '${userData["firstName"]} ${userData["lastName"]}',
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      userData["email"],
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w100),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: const [
-                        ProfileNumberWidget(number: 0, title: 'Friends'),
-                        ProfileNumberWidget(number: 0, title: 'Follower'),
-                        ProfileNumberWidget(number: 0, title: 'Following'),
-                        // Expanded(
-                        //   child: Padding(
-                        //     padding: const EdgeInsets.symmetric(horizontal: 20),
-                        //     child: AnimatedButton1(
-                        //         buttonText: 'Change profile',
-                        //         voidFunction: () {}),
-                        //   ),
-                        // ),
-                      ],
-                    ),
-                  ]),
+                  ),
+                ),
+                // THIS IS THE PROFILE PICTURE AND TITLE/NAME
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 100,
+                      ),
+                      SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          fit: StackFit.expand,
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.grey.shade300,
+                              child: Icon(
+                                Icons.person,
+                                size: 60,
+                                color: Colors.white,
+                              ),
+                              // backgroundImage:
+                              //     AssetImage("assets/images/profile.jpg"),
+                            ),
+                            Positioned(
+                                bottom: -10,
+                                right: -40,
+                                child: SizedBox(
+                                  height: 50,
+                                  child: RawMaterialButton(
+                                    onPressed: () {},
+                                    elevation: 2.0,
+                                    fillColor: Color(0xFFF5F6F9),
+                                    padding: EdgeInsets.all(15.0),
+                                    shape: CircleBorder(),
+                                    child: Icon(
+                                      Icons.camera_alt_outlined,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                )),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        // '${userData['firstName']} ${userData['lastName']}',
+                        '${userData["firstName"]} ${userData["lastName"]}',
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        userData["email"],
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w100),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: const [
+                          ProfileNumberWidget(number: 0, title: 'Friends'),
+                          ProfileNumberWidget(number: 0, title: 'Follower'),
+                          ProfileNumberWidget(number: 0, title: 'Following'),
+                          // Expanded(
+                          //   child: Padding(
+                          //     padding: const EdgeInsets.symmetric(horizontal: 20),
+                          //     child: AnimatedButton1(
+                          //         buttonText: 'Change profile',
+                          //         voidFunction: () {}),
+                          //   ),
+                          // ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
                 // THIS IS THE PENCIL ICON BUTTON ON THE TOP RIGHT
-                Align(
-                  alignment: Alignment(0.95, -1),
+                Positioned(
+                  top: 70,
+                  right: 10,
                   child: IconButton(
                     onPressed: () {
                       Navigator.push(
@@ -246,13 +280,88 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         });
                       });
                     },
-                    icon: Icon(FontAwesomeIcons.pencil),
+                    icon: Icon(
+                      FontAwesomeIcons.pencil,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 8.0,
+                          color: Colors.black.withOpacity(0.8),
+                          offset: Offset(0, 0),
+                        ),
+                      ],
+                    ),
                     color: Colors.white,
+                    // add shadow to icon
                   ),
                 )
               ],
             ),
           );
+  }
+}
+
+class CustomClipPathBlue extends CustomClipper<Path> {
+  CustomClipPathBlue({required this.context});
+
+  final BuildContext context;
+
+  @override
+  Path getClip(Size size) {
+    // print(size);
+    // double w = size.width;
+    // double h = size.height;
+
+    double w = MediaQuery.of(context).size.width;
+    double h = MediaQuery.of(context).size.height;
+
+    final path = Path();
+
+    path.moveTo(0, 0);
+    path.lineTo(0, h * 0.1);
+    path.quadraticBezierTo(w * 0.3, h * 0.1, w * 0.5, h * 0.12);
+    path.quadraticBezierTo(w * 0.88, h * 0.15, w, h * 0.12);
+    path.lineTo(w, 0);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return false;
+  }
+}
+
+class CustomClipPathLightBlue extends CustomClipper<Path> {
+  CustomClipPathLightBlue({required this.context});
+
+  final BuildContext context;
+
+  @override
+  Path getClip(Size size) {
+    // print(size);
+    // double w = size.width;
+    // double h = size.height;
+
+    double w = MediaQuery.of(context).size.width;
+    double h = MediaQuery.of(context).size.height;
+
+    final path = Path();
+
+    path.moveTo(0, 0);
+    path.lineTo(0, h * 0.14);
+    path.quadraticBezierTo(w * 0.2, h * 0.06, w * 0.6, h * 0.14);
+    path.quadraticBezierTo(w * 0.8, h * 0.18, w, h * 0.13);
+    // path.quadraticBezierTo(w * 0.3, h * 0.05, w, h * 0.2);
+    path.lineTo(w, 0);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return false;
   }
 }
 

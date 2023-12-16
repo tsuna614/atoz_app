@@ -135,6 +135,33 @@ class TestWidget extends StatelessWidget {
   }
 }
 
+class CustomClipPathBlue extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    print(size);
+    double w = size.width;
+    double h = size.height;
+
+    final path = Path();
+
+    path.moveTo(0, 0);
+    path.lineTo(0, h * 0.2);
+    // create a s shaped line to x = w, y = h * 0.2
+    path.quadraticBezierTo(w * 0.1, h * 0.15, w * 0.5, h * 0.2);
+    path.quadraticBezierTo(w * 0.8, h * 0.25, w, h * 0.2);
+    // path.quadraticBezierTo(w * 0.5, h * 0.2, w, h * 0.3);
+    path.lineTo(w, 0);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return false;
+  }
+}
+
 class CustomClipPathPurple extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
@@ -184,28 +211,7 @@ class CustomClipPathWhite extends CustomClipper<Path> {
   }
 }
 
-class CustomClipPathBlue extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    print(size);
-    double w = size.width;
-    double h = size.height;
 
-    final path = Path();
-
-    path.moveTo(0, 0);
-    path.lineTo(0, h * 0.3);
-    path.lineTo(w * 0.4, h * 0.4);
-    path.close();
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
-    return false;
-  }
-}
 
 // import 'package:flutter/material.dart';
 // import 'package:flutter/src/widgets/framework.dart';

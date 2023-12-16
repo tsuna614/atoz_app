@@ -7,60 +7,144 @@ class LeaderboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Stack(
-        children: [
-          Align(
-            alignment: Alignment.topCenter,
-            child: Column(
-              children: const [
-                Text(
-                  'Leaderboard',
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                ),
-                TopPlayerCard(),
-              ],
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  SizedBox(height: 300),
-                  Card(
-                    elevation: 10,
-                    child: Container(
-                      height: 400,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: const [
-                            SizedBox(height: 10),
-                            TemporaryPlayerTitle(),
-                            TemporaryPlayerTitle(),
-                            TemporaryPlayerTitle(),
-                            TemporaryPlayerTitle(),
-                            TemporaryPlayerTitle(),
-                            TemporaryPlayerTitle(),
-                            TemporaryPlayerTitle(),
-                            TemporaryPlayerTitle(),
-                            TemporaryPlayerTitle(),
-                            TemporaryPlayerTitle(),
-                            TemporaryPlayerTitle(),
-                            TemporaryPlayerTitle(),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+    return Stack(
+      children: [
+        ClipPath(
+          clipper: CustomClipPathLightBlue(context: context),
+          child: Container(
+            // gradient
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  Colors.lightBlue.shade600,
+                  Colors.lightBlue.shade400,
                 ],
               ),
             ),
           ),
-        ],
-      ),
+        ),
+        Align(
+          alignment: Alignment.topCenter,
+          child: Column(
+            children: [
+              SizedBox(height: 150),
+              TopPlayerCard(),
+              Card(
+                elevation: 10,
+                child: Container(
+                  height: 400,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: const [
+                        SizedBox(height: 10),
+                        TemporaryPlayerTitle(),
+                        TemporaryPlayerTitle(),
+                        TemporaryPlayerTitle(),
+                        TemporaryPlayerTitle(),
+                        TemporaryPlayerTitle(),
+                        TemporaryPlayerTitle(),
+                        TemporaryPlayerTitle(),
+                        TemporaryPlayerTitle(),
+                        TemporaryPlayerTitle(),
+                        TemporaryPlayerTitle(),
+                        TemporaryPlayerTitle(),
+                        TemporaryPlayerTitle(),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        ClipPath(
+          clipper: CustomClipPathBlue(context: context),
+          child: Container(
+            // gradient
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  Colors.blue.shade800,
+                  Colors.blue.shade900,
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
+  }
+}
+
+class CustomClipPathBlue extends CustomClipper<Path> {
+  CustomClipPathBlue({required this.context});
+
+  final BuildContext context;
+
+  @override
+  Path getClip(Size size) {
+    // print(size);
+    // double w = size.width;
+    // double h = size.height;
+
+    double w = MediaQuery.of(context).size.width;
+    double h = MediaQuery.of(context).size.height;
+
+    final path = Path();
+
+    path.moveTo(0, 0);
+    path.lineTo(0, h * 0.12);
+    // create a s shaped line to x = w, y = h * 0.2
+    path.quadraticBezierTo(w * 0.4, h * 0.15, w * 0.7, h * 0.12);
+    path.quadraticBezierTo(w * 0.9, h * 0.1, w, h * 0.1);
+    // path.quadraticBezierTo(w * 0.5, h * 0.2, w, h * 0.3);
+    path.lineTo(w, 0);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return false;
+  }
+}
+
+class CustomClipPathLightBlue extends CustomClipper<Path> {
+  CustomClipPathLightBlue({required this.context});
+
+  final BuildContext context;
+
+  @override
+  Path getClip(Size size) {
+    // print(size);
+    // double w = size.width;
+    // double h = size.height;
+
+    double w = MediaQuery.of(context).size.width;
+    double h = MediaQuery.of(context).size.height;
+
+    final path = Path();
+
+    path.moveTo(0, 0);
+    path.lineTo(0, h * 0.15);
+    // create a s shaped line to x = w, y = h * 0.2
+    path.quadraticBezierTo(w * 0.3, h * 0.12, w * 0.6, h * 0.15);
+    path.quadraticBezierTo(w * 0.9, h * 0.18, w, h * 0.14);
+    // path.quadraticBezierTo(w * 0.5, h * 0.2, w, h * 0.3);
+    path.lineTo(w, 0);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return false;
   }
 }
 

@@ -19,7 +19,7 @@ class ReorderString extends StatefulWidget {
   List<String> answers;
   List<String> correctAnswer;
   String imageAsset;
-  void Function(String userAnswer) handleCheckButton;
+  void Function(bool isCorrect) handleCheckButton;
 
   @override
   State<ReorderString> createState() => _ReorderStringState();
@@ -36,18 +36,34 @@ class _ReorderStringState extends State<ReorderString> {
   }
 
   void onCheckPressed() {
-    AwesomeDialog(
-      context: context,
-      dialogType: DialogType.success,
-      animType: AnimType.rightSlide,
-      title: 'Correct',
-      // desc: 'Dialog description here.............',
-      btnOkText: 'Next',
-      btnOkOnPress: () {
-        // Navigator.pop(context);
-        widget.handleCheckButton(tempAnswers.join(' '));
-      },
-    ).show();
+    if (tempAnswers.join(' ') == widget.correctAnswer.join(' ')) {
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.success,
+        animType: AnimType.rightSlide,
+        title: 'Correct',
+        btnOkText: 'Next',
+        btnOkOnPress: () {
+          // Navigator.pop(context);
+          widget.handleCheckButton(true);
+        },
+        dismissOnTouchOutside: false,
+      ).show();
+    } else {
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.error,
+        animType: AnimType.rightSlide,
+        title: 'Wrong',
+        desc: 'Correct answer: ${widget.correctAnswer.join(' ')}',
+        btnCancelText: 'Next',
+        btnCancelOnPress: () {
+          // Navigator.pop(context);
+          widget.handleCheckButton(false);
+        },
+        dismissOnTouchOutside: false,
+      ).show();
+    }
   }
 
   void onReorder(int oldIndex, int newIndex) {
@@ -111,6 +127,7 @@ class _ReorderStringState extends State<ReorderString> {
           ),
           Expanded(
             child: Container(
+              width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),

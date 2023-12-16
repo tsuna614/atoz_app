@@ -2,8 +2,8 @@ import '../models/quiz_question.dart';
 
 final List<QuizQuestion> dummyQuestions = [
   ReorderStringQuestion(
-    'Re-order the words to make a meaningful sentence:',
-    [
+    question: 'Re-order the words to make a meaningful sentence:',
+    answers: [
       'Yesterday,',
       'I ate',
       'a',
@@ -15,7 +15,7 @@ final List<QuizQuestion> dummyQuestions = [
       'having',
       'a stomachache',
     ],
-    [
+    correctAnswer: [
       'Yesterday,',
       'I ate',
       'a',
@@ -27,7 +27,7 @@ final List<QuizQuestion> dummyQuestions = [
       'having',
       'a stomachache',
     ],
-    'assets/images/japan.png',
+    imageAsset: 'assets/images/japan.png',
   ),
   MultipleChoiceQuestion(
     question: 'What is the name of this vehicle?',

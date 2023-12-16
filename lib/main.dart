@@ -88,8 +88,8 @@ class MyApp extends StatelessWidget {
       // theme: ThemeData(
       //   primarySwatch: Colors.green,
       // ),
-      theme: theme,
       // theme: ThemeData(useMaterial3: true),
+      theme: theme,
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {

@@ -20,7 +20,7 @@ class MultipleChoice extends ConsumerStatefulWidget {
   final List<String> answers;
   final String correctAnswer;
   final String imageAsset;
-  final void Function(String userAnswer) handleCheckButton;
+  final void Function(bool isCorrect) handleCheckButton;
 
   @override
   ConsumerState<MultipleChoice> createState() => _MultipleChoiceState();
@@ -54,7 +54,7 @@ class _MultipleChoiceState extends ConsumerState<MultipleChoice> {
             // desc: 'Dialog description here.............',
             btnOkText: 'Next',
             btnOkOnPress: () {
-              widget.handleCheckButton(chosenAnswer);
+              widget.handleCheckButton(true);
               setState(() {
                 chosenAnswer = '';
               });
@@ -70,7 +70,7 @@ class _MultipleChoiceState extends ConsumerState<MultipleChoice> {
             desc: 'Correct answer: \"${widget.correctAnswer}\"',
             btnCancelText: 'Next',
             btnCancelOnPress: () {
-              widget.handleCheckButton(chosenAnswer);
+              widget.handleCheckButton(false);
               setState(() {
                 chosenAnswer = '';
               });

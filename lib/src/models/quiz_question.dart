@@ -41,12 +41,12 @@ class MultipleChoiceQuestion extends QuizQuestion {
 }
 
 class ReorderStringQuestion extends QuizQuestion {
-  ReorderStringQuestion(
-    this.question,
-    this.answers,
-    this.correctAnswer,
-    this.imageAsset,
-  );
+  ReorderStringQuestion({
+    required this.question,
+    required this.answers,
+    required this.correctAnswer,
+    required this.imageAsset,
+  });
 
   final String question;
   final List<String> answers;

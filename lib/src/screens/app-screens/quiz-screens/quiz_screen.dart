@@ -24,27 +24,30 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
 
   int userScore = 0;
 
-  void _handleAnswerClick(String userAnswer) {
-    final currentQuestion = ref.read(questionsProvider)[currentQuestionIndex];
-    if (currentQuestion is MultipleChoiceQuestion) {
-      if (userAnswer == currentQuestion.correctAnswer) {
-        userScore++;
-      }
-    } else if (currentQuestion is ReorderStringQuestion) {
-      if (userAnswer == currentQuestion.correctAnswer.join(' ')) {
-        userScore++;
-      }
-    } else if (currentQuestion is ConnectStringQuestion) {
-      if (userAnswer == currentQuestion.correctAnswer) {
-        userScore++;
-      }
+  void _handleAnswerClick(bool isCorrect) {
+    if (isCorrect) {
+      userScore++;
     }
-    // if (userAnswer == dummyQuestions[currentQuestionIndex].correctAnswer) {
-    //   userScore++;
-    // }
     setState(() {
       currentQuestionIndex++;
     });
+    // final currentQuestion = ref.read(questionsProvider)[currentQuestionIndex];
+    // if (currentQuestion is MultipleChoiceQuestion) {
+    //   if (userAnswer == currentQuestion.correctAnswer) {
+    //     userScore++;
+    //   }
+    // } else if (currentQuestion is ReorderStringQuestion) {
+    //   if (userAnswer == currentQuestion.correctAnswer.join(' ')) {
+    //     userScore++;
+    //   }
+    // } else if (currentQuestion is ConnectStringQuestion) {
+    //   if (userAnswer == currentQuestion.correctAnswer) {
+    //     userScore++;
+    //   }
+    // }
+    // if (userAnswer == dummyQuestions[currentQuestionIndex].correctAnswer) {
+    //   userScore++;
+    // }
   }
 
   @override
