@@ -45,20 +45,34 @@ class _DetailSignUpScreenState extends State<DetailSignUpScreen> {
         _isLoading = true;
       });
       // create new user
-      final userCredential = await _firebase.createUserWithEmailAndPassword(
-          email: widget.email, password: widget.password);
-
-      final FirebaseAuth auth = FirebaseAuth.instance;
-      final uid = await auth.currentUser?.uid;
-
-      Response response;
-      response =
-          await dio.post('${global_data.atozApi}/v1/user/addUser', data: {
-        'userId': uid,
-        'email': widget.email,
-        'firstName': enteredFirstName,
-        'lastName': enteredLastName,
-        'age': enteredAge,
+      final userCredential = await _firebase
+          .createUserWithEmailAndPassword(
+              email: widget.email, password: widget.password)
+          .then((value) async {
+        Response response;
+        response = await dio.post('${global_data.atozApi}/user/addUser', data: {
+          'userId': value.user!.uid,
+          'email': widget.email,
+          'firstName': enteredFirstName,
+          'lastName': enteredLastName,
+          'age': enteredAge,
+        }).then((value) {
+          print('User created successfully');
+          return value;
+        }).catchError((onError) {
+          print(onError);
+          // // delete user on firebase
+          // value.user!.delete();
+        });
+      }).catchError((onError) {
+        // show snackbar
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(onError.toString()),
+          ),
+        );
+        print(onError);
       });
 
       // // add new user document to users collection, with data

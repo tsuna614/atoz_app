@@ -59,7 +59,6 @@ class JourneyScreen extends StatelessWidget {
                         color: Theme.of(context).primaryColor,
                         thickness: 2,
                       ),
-                      SizedBox(height: 10),
                       GridView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
@@ -96,7 +95,6 @@ class JourneyScreen extends StatelessWidget {
                         color: Theme.of(context).primaryColor,
                         thickness: 2,
                       ),
-                      SizedBox(height: 10),
                       GridView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
@@ -133,7 +131,6 @@ class JourneyScreen extends StatelessWidget {
                         color: Theme.of(context).primaryColor,
                         thickness: 2,
                       ),
-                      SizedBox(height: 10),
                       GridView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,

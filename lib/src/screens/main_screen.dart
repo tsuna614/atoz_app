@@ -8,7 +8,7 @@ import 'package:dio/dio.dart';
 
 final dio = Dio();
 
-// final _firebase = FirebaseAuth.instance;
+final _firebase = FirebaseAuth.instance;
 
 final FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -25,7 +25,11 @@ class _MainScreenState extends State<MainScreen> {
   Future<void> changeScreen() async {
     final id = auth.currentUser!.uid;
     // print(id);
+    final email = auth.currentUser!.email;
+    print(email);
+
     // _firebase.signOut();
+
     Response response =
         await dio.get('${globals.atozApi}/user/getUserById/$id');
     // Response response = await dio.get(

@@ -246,9 +246,15 @@ class CardItem extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 40),
                   child: Text(
-                    'Practice your skill with this gamemode. While it is certainly fun to play, it will definitely not give you an easy task. Your heart will not decrease if you lose in this gamemode.',
+                    cardCategory == 'reading'
+                        ? 'Read the text and answer the questions'
+                        : cardCategory == 'writing'
+                            ? 'Write the text based on the picture'
+                            : cardCategory == 'listening'
+                                ? 'Listen to the audio and answer the questions'
+                                : 'Record your voice and answer the questions',
                     style: TextStyle(fontSize: 20),
-                    textAlign: TextAlign.justify,
+                    textAlign: TextAlign.center,
                   ),
                 ),
                 Expanded(child: Container()),

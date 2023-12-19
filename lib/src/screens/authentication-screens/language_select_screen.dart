@@ -1,5 +1,8 @@
 import 'package:atoz_app/src/screens/authentication-screens/difficulty_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+final _firebase = FirebaseAuth.instance;
 
 class LanguageSelectPage extends StatelessWidget {
   LanguageSelectPage({
@@ -36,6 +39,19 @@ class LanguageSelectPage extends StatelessWidget {
       body: SafeArea(
         child: Stack(
           children: [
+            Positioned(
+              top: 0,
+              left: 30,
+              child: IconButton(
+                onPressed: () {
+                  _firebase.signOut();
+                },
+                icon: Icon(
+                  Icons.close,
+                  color: Colors.white,
+                ),
+              ),
+            ),
             Positioned(
               top: 80,
               left: 40,

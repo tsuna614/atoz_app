@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:atoz_app/src/screens/app-screens/chart/bar_chart.dart';
 import 'package:atoz_app/src/screens/app-screens/profile-screen/change_profile_screen.dart';
 import 'package:atoz_app/src/widgets/animated_button_1.dart';
@@ -7,6 +9,7 @@ import 'package:atoz_app/src/data/global_data.dart' as global;
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 
 final dio = Dio();
 
@@ -21,11 +24,19 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   var userData;
+  bool hasImage = false;
 
   request() async {
     Response response;
     response = await dio.get(
         '${global.atozApi}/user/getUserById/${_firebase.currentUser!.uid}');
+
+    if (response.data.toString().contains('profileImage')) {
+      // Response profileImage = await dio.get(
+      //   '${global.atozApi}/user/getProfileImage/${_firebase.currentUser!.uid}',
+      // );
+      hasImage = true;
+    }
 
     setState(() {
       userData = response.data[0];
@@ -192,33 +203,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           clipBehavior: Clip.none,
                           fit: StackFit.expand,
                           children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.grey.shade300,
-                              child: Icon(
-                                Icons.person,
-                                size: 60,
-                                color: Colors.white,
+                            if (hasImage)
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                    '${global.atozApi}/user/getProfileImage/${_firebase.currentUser!.uid}'),
+                              )
+                            else
+                              CircleAvatar(
+                                backgroundColor: Colors.grey.shade300,
+                                child: Icon(
+                                  Icons.person,
+                                  size: 80,
+                                  color: Colors.grey.shade500,
+                                ),
                               ),
-                              // backgroundImage:
-                              //     AssetImage("assets/images/profile.jpg"),
-                            ),
-                            Positioned(
-                                bottom: -10,
-                                right: -40,
-                                child: SizedBox(
-                                  height: 50,
-                                  child: RawMaterialButton(
-                                    onPressed: () {},
-                                    elevation: 2.0,
-                                    fillColor: Color(0xFFF5F6F9),
-                                    padding: EdgeInsets.all(15.0),
-                                    shape: CircleBorder(),
-                                    child: Icon(
-                                      Icons.camera_alt_outlined,
-                                      color: Colors.blue,
-                                    ),
-                                  ),
-                                )),
                           ],
                         ),
                       ),
@@ -260,7 +258,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 // THIS IS THE PENCIL ICON BUTTON ON THE TOP RIGHT
                 Positioned(
-                  top: 70,
+                  top: 60,
                   right: 10,
                   child: IconButton(
                     onPressed: () {
@@ -272,6 +270,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             lastName: userData["lastName"],
                             age: userData["age"],
                             emailAddress: userData["email"],
+                            userImage: hasImage
+                                ? NetworkImage(
+                                    '${global.atozApi}/user/getProfileImage/${_firebase.currentUser!.uid}')
+                                : null,
                           ),
                         ),
                       ).then((value) {

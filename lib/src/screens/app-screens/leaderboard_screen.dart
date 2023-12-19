@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:flutter/src/widgets/framework.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
 
@@ -25,38 +26,106 @@ class LeaderboardScreen extends StatelessWidget {
             ),
           ),
         ),
-        Align(
-          alignment: Alignment.topCenter,
+        // Align(
+        //   alignment: Alignment(0, 1),
+        //   child: SingleChildScrollView(
+        //     child: Column(
+        //       children: [
+        //         TemporaryPlayerTitle(),
+        //         TemporaryPlayerTitle(),
+        //         TemporaryPlayerTitle(),
+        //         TemporaryPlayerTitle(),
+        //         TemporaryPlayerTitle(),
+        //         TemporaryPlayerTitle(),
+        //         TemporaryPlayerTitle(),
+        //         TemporaryPlayerTitle(),
+        //         TemporaryPlayerTitle(),
+        //         TemporaryPlayerTitle(),
+        //         TemporaryPlayerTitle(),
+        //         TemporaryPlayerTitle(),
+        //         TemporaryPlayerTitle(),
+        //         TemporaryPlayerTitle(),
+        //         TemporaryPlayerTitle(),
+        //       ],
+        //     ),
+        //   ),
+        // ),
+        Positioned(
+          // top: 0,
           child: Column(
             children: [
-              SizedBox(height: 150),
-              TopPlayerCard(),
-              Card(
-                elevation: 10,
-                child: Container(
-                  height: 400,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: const [
-                        SizedBox(height: 10),
-                        TemporaryPlayerTitle(),
-                        TemporaryPlayerTitle(),
-                        TemporaryPlayerTitle(),
-                        TemporaryPlayerTitle(),
-                        TemporaryPlayerTitle(),
-                        TemporaryPlayerTitle(),
-                        TemporaryPlayerTitle(),
-                        TemporaryPlayerTitle(),
-                        TemporaryPlayerTitle(),
-                        TemporaryPlayerTitle(),
-                        TemporaryPlayerTitle(),
-                        TemporaryPlayerTitle(),
-                      ],
+              // Container(
+              //   height: 50.0,
+              //   decoration: BoxDecoration(
+              //     color: Theme.of(context).primaryColor,
+              //   ),
+              // ),
+              SizedBox(height: 50),
+              Container(
+                height: 350.0,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Colors.lightBlue.shade100,
+                  // border:
+                  // only bottom border
+                  // border: Border(
+                  //   bottom: BorderSide(
+                  //     color: Colors.grey.shade300,
+                  //     width: 1.0,
+                  //   ),
+                  // ),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TopPlayerCard(),
+                    SizedBox(
+                      height: 20,
                     ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      TemporaryPlayerTitle(index: 1),
+                      TemporaryPlayerTitle(index: 2),
+                      TemporaryPlayerTitle(index: 3),
+                      TemporaryPlayerTitle(index: 4),
+                      TemporaryPlayerTitle(index: 5),
+                      TemporaryPlayerTitle(index: 6),
+                      TemporaryPlayerTitle(index: 7),
+                      TemporaryPlayerTitle(index: 8),
+                      TemporaryPlayerTitle(index: 9),
+                      TemporaryPlayerTitle(index: 10),
+                      TemporaryPlayerTitle(index: 11),
+                      TemporaryPlayerTitle(index: 12),
+                      TemporaryPlayerTitle(index: 13),
+                      TemporaryPlayerTitle(index: 14),
+                      TemporaryPlayerTitle(index: 15),
+                    ],
                   ),
                 ),
               ),
             ],
+          ),
+        ),
+        ClipPath(
+          clipper: CustomClipPathLightBlue(context: context),
+          child: Container(
+            // gradient
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  Colors.lightBlue.shade600,
+                  Colors.lightBlue.shade400,
+                ],
+              ),
+            ),
           ),
         ),
         ClipPath(
@@ -174,30 +243,108 @@ class TopPlayerCard extends StatelessWidget {
                           color: Color.fromARGB(255, 16, 101, 171),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(20),
+                            bottomLeft: Radius.circular(20),
                           )),
                       height: 130,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            'Khanh',
+                            style: TextStyle(
+                                fontSize: 26,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          Text(
+                            '2190',
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
-                          )),
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            spreadRadius: 1,
+                            blurRadius: 10,
+                            offset: Offset(0, 0),
+                          ),
+                        ],
+                      ),
                       height: 160,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(
+                            FontAwesomeIcons.crown,
+                            color: Colors.yellow,
+                          ),
+                          Text(
+                            'Khanh',
+                            style: TextStyle(
+                                fontSize: 26,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          Text(
+                            '2190',
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Expanded(
                     child: Container(
-                      decoration: BoxDecoration(
+                        decoration: BoxDecoration(
                           color: Theme.of(context).primaryColor,
                           borderRadius: BorderRadius.only(
                             topRight: Radius.circular(20),
-                          )),
-                      height: 110,
-                    ),
+                            bottomRight: Radius.circular(20),
+                          ),
+                        ),
+                        height: 110,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              'Khanh',
+                              style: TextStyle(
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                            Text(
+                              '2190',
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ],
+                        )),
                   ),
                   SizedBox(
                     width: 40,
@@ -237,21 +384,6 @@ class TopPlayerCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 10),
-                    Text(
-                      'Khanh',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.white),
-                    ),
-                    Text(
-                      '2190',
-                      style: TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    )
                   ],
                 ),
                 Column(
@@ -269,21 +401,6 @@ class TopPlayerCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 10),
-                    Text(
-                      'Khanh',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.white),
-                    ),
-                    Text(
-                      '2190',
-                      style: TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    )
                   ],
                 ),
                 Column(
@@ -304,21 +421,21 @@ class TopPlayerCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 10),
-                    Text(
-                      'Khanh',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.white),
-                    ),
-                    Text(
-                      '2190',
-                      style: TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    )
+                    // SizedBox(height: 10),
+                    // Text(
+                    //   'Khanh',
+                    //   style: TextStyle(
+                    //       fontSize: 16,
+                    //       fontWeight: FontWeight.w800,
+                    //       color: Colors.white),
+                    // ),
+                    // Text(
+                    //   '2190',
+                    //   style: TextStyle(
+                    //       fontSize: 26,
+                    //       fontWeight: FontWeight.bold,
+                    //       color: Colors.white),
+                    // )
                   ],
                 ),
                 SizedBox(
@@ -334,27 +451,89 @@ class TopPlayerCard extends StatelessWidget {
 }
 
 class TemporaryPlayerTitle extends StatelessWidget {
-  const TemporaryPlayerTitle({super.key});
+  const TemporaryPlayerTitle({super.key, required this.index});
+
+  final int index;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(0),
       child: ListTile(
-        leading: SizedBox(
-          height: 80,
-          width: 80,
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              CircleAvatar(
-                backgroundImage: AssetImage("assets/images/pfp.jpeg"),
-              ),
-            ],
+        // leading: Text(
+        //   index.toString(),
+        //   style: TextStyle(
+        //     fontSize: 20,
+        //     fontWeight: FontWeight.bold,
+        //   ),
+        // ),
+        title: Container(
+          height: 65,
+          decoration: BoxDecoration(
+            color: Colors.grey.shade100,
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              children: [
+                Text(
+                  index.toString(),
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(width: 20),
+                SizedBox(
+                  height: 50,
+                  width: 50,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: const [
+                      CircleAvatar(
+                        backgroundImage: AssetImage(
+                          "assets/images/profile.jpg",
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 20),
+                // Text(
+                //   'Khanh Nguyen Quoc',
+                //   style: TextStyle(
+                //     // fontSize: 16,
+                //     fontWeight: FontWeight.bold,
+                //   ),
+                // ),
+                Flexible(
+                  fit: FlexFit.loose,
+                  child: Text(
+                    'Khanh Nguyen Quoc',
+                    style: TextStyle(
+                      // fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Spacer(),
+                Text(
+                  '2190',
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue),
+                ),
+              ],
+            ),
           ),
         ),
-        title: Text('Khanh'),
-        trailing: Text('2190'),
+        // trailing: Text(
+        //   '2190',
+        //   style: TextStyle(
+        //       fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
+        // ),
       ),
     );
   }

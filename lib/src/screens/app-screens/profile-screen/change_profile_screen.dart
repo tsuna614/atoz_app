@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -16,12 +17,14 @@ class ChangeProfileScreen extends StatefulWidget {
     required this.lastName,
     required this.age,
     required this.emailAddress,
+    required this.userImage,
   });
 
   final String firstName;
   final String lastName;
   final int age;
   final String emailAddress;
+  final NetworkImage? userImage;
 
   @override
   State<ChangeProfileScreen> createState() => _ChangeProfileScreenState();
@@ -66,7 +69,8 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
     if (_firstNameTextField.text != widget.firstName ||
         _lastNameTextField.text != widget.lastName ||
         _ageTextField.text != widget.age.toString() ||
-        _emailTextField.text != widget.emailAddress) {
+        _emailTextField.text != widget.emailAddress ||
+        image != null) {
       return true;
     } else {
       return false;
@@ -84,6 +88,15 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
         "email": _emailTextField.text,
       },
     );
+
+    // if (image != null) {
+    //   await dio.post(
+    //       '${global.atozApi}/user/uploadImage/${_firebase.currentUser!.uid}', // upload image
+    //       data: FormData.fromMap({
+    //         "image": await MultipartFile.fromFile(image!.path,
+    //             filename: image!.path.split('/').last),
+    //       }));
+    // }
   }
 
   /////////////////////////////////////////
@@ -254,8 +267,15 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
                             fit: StackFit.expand,
                             children: [
                               CircleAvatar(
-                                backgroundImage:
-                                    AssetImage("assets/images/pfp.jpeg"),
+                                // if image is null (user hasn't upload image when editing profile), then use the userImage from profile_screen
+                                // if image is not null (user has upload image when editing profile), then use the image from image picker
+                                backgroundImage: image == null
+                                    ? widget.userImage == null
+                                        ? Image.asset(
+                                                'assets/images/profile.jpg')
+                                            .image
+                                        : widget.userImage!
+                                    : Image.file(File(image!.path)).image,
                               ),
                               Positioned(
                                   bottom: -10,

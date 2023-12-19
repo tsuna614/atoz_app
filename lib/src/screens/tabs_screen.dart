@@ -74,11 +74,11 @@ class _TabsScreenState extends State<TabsScreen> {
           //Here goes the same radius, u can put into a var or function
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
-              color: Color(0x54000000),
-              spreadRadius: 0,
-              blurRadius: 10,
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 1,
+              blurRadius: 5,
             ),
           ],
         ),
