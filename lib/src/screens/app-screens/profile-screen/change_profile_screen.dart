@@ -173,6 +173,7 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
       //   backgroundColor: Colors.transparent,
       //   iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
       // ),
+      resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
           ClipPath(
