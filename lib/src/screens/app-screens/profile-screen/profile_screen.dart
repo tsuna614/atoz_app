@@ -32,22 +32,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
         '${global.atozApi}/user/getUserById/${_firebase.currentUser!.uid}');
 
     if (response.data.toString().contains('profileImage')) {
-      // Response profileImage = await dio.get(
-      //   '${global.atozApi}/user/getProfileImage/${_firebase.currentUser!.uid}',
-      // );
       hasImage = true;
     }
 
     setState(() {
       userData = response.data[0];
     });
-
-    // print(response.data[0]['lastName'].toString());
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     request();
   }
@@ -56,11 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     // print(userData);
     return userData == null
-        ? Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          )
+        ? UserProfileLoadingScreen()
         : Scaffold(
             // appBar: AppBar(
             //   title: Text(''),
@@ -594,6 +584,54 @@ class StudyingInfo extends StatelessWidget {
               child: Text('1')),
         ]),
       ]),
+    );
+  }
+}
+
+class UserProfileLoadingScreen extends StatelessWidget {
+  const UserProfileLoadingScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          ClipPath(
+            clipper: CustomClipPathLightBlue(context: context),
+            child: Container(
+              height: 200.0,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [
+                    Colors.lightBlue.shade400,
+                    Colors.lightBlue.shade100,
+                  ],
+                ),
+              ),
+            ),
+          ),
+          ClipPath(
+            clipper: CustomClipPathBlue(context: context),
+            child: Container(
+              height: 200.0,
+              decoration: BoxDecoration(
+                // gradient
+                gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [
+                    Colors.blue.shade900,
+                    Colors.indigo.shade900,
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Center(child: CircularProgressIndicator()),
+        ],
+      ),
     );
   }
 }

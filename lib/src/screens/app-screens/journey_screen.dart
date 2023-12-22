@@ -4,25 +4,44 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:flutter/src/widgets/framework.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:dio/dio.dart';
+import 'package:atoz_app/src/data/global_data.dart' as global_data;
 
-class JourneyScreen extends StatelessWidget {
-  const JourneyScreen({super.key});
+final dio = Dio();
+
+class JourneyScreen extends StatefulWidget {
+  JourneyScreen({super.key});
+
+  @override
+  State<JourneyScreen> createState() => _JourneyScreenState();
+}
+
+class _JourneyScreenState extends State<JourneyScreen> {
+  int currentUserProgress = 0;
+
+  void getUserData() async {
+    Response response;
+    response = await dio.get('${global_data.atozApi}/user/getAllUsers');
+    setState(() {
+      currentUserProgress = response.data[0]['userStage'];
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUserData();
+  }
 
   @override
   Widget build(BuildContext context) {
-    int currentUserProgress = 16;
-
     return Scaffold(
       backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //     // elevation: 0,
-      //     ),
       body: Stack(
         children: [
           ClipPath(
             clipper: CustomClipPathLightBlue(context: context),
             child: Container(
-              // color: Colors.lightBlue.shade200,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.centerLeft,
