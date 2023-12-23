@@ -66,15 +66,21 @@ class ReorderStringQuestion extends QuizQuestion {
 }
 
 class ConnectStringQuestion extends QuizQuestion {
-  ConnectStringQuestion(
-      this.question, this.answers, this.correctAnswer, this.imageAsset);
+  ConnectStringQuestion({
+    required this.question,
+    required this.leftAnswers,
+    required this.rightAnswers,
+    required this.correctAnswers,
+    required this.imageAsset,
+  });
 
   final String question;
-  final List<String> answers;
-  final String correctAnswer;
+  final List<String> leftAnswers;
+  final List<String> rightAnswers;
+  final List<String> correctAnswers;
   final String imageAsset;
 
-  List<String> getShuffledAnswers() {
+  List<String> getShuffledAnswers(List<String> answers) {
     final shuffledList = List.of(answers);
     shuffledList.shuffle();
     return shuffledList;
@@ -82,6 +88,6 @@ class ConnectStringQuestion extends QuizQuestion {
 
   @override
   List<String> getAnswers() {
-    return answers;
+    return correctAnswers;
   }
 }

@@ -88,8 +88,11 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
     } else if (currentQuestion is ConnectStringQuestion) {
       chosenScreen = ConnectString(
         question: currentQuestion.question,
-        answers: currentQuestion.getShuffledAnswers(),
-        correctAnswer: currentQuestion.correctAnswer,
+        leftAnswers:
+            currentQuestion.getShuffledAnswers(currentQuestion.leftAnswers),
+        rightAnswers:
+            currentQuestion.getShuffledAnswers(currentQuestion.rightAnswers),
+        correctAnswers: currentQuestion.correctAnswers,
         handleCheckButton: _handleAnswerClick,
         imageAsset: currentQuestion.imageAsset,
       );

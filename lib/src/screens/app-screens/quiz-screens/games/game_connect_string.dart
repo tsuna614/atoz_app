@@ -8,17 +8,19 @@ class ConnectString extends StatefulWidget {
   ConnectString({
     super.key,
     required this.question,
-    required this.answers,
-    required this.correctAnswer,
+    required this.leftAnswers,
+    required this.rightAnswers,
+    required this.correctAnswers,
     required this.handleCheckButton,
     required this.imageAsset,
   });
 
   String question;
-  List<String> answers;
-  String correctAnswer;
+  List<String> leftAnswers;
+  List<String> rightAnswers;
+  List<String> correctAnswers;
   String imageAsset;
-  void Function(bool correctAnswer) handleCheckButton;
+  void Function(bool correctAnswers) handleCheckButton;
 
   @override
   State<ConnectString> createState() => _ConnectStringState();
@@ -27,40 +29,86 @@ class ConnectString extends StatefulWidget {
 class _ConnectStringState extends State<ConnectString> {
   // final List myTiles = ['A', 'B', 'C', 'D'];
 
-  String chosenAnswer = '';
+  List<String> chosenLeftAnswers = [];
+  List<String> chosenRightAnswers = [];
 
-  void handleCheckClick(String selectedAnswer) {
-    selectedAnswer == widget.correctAnswer
-        ? AwesomeDialog(
-            context: context,
-            dialogType: DialogType.success,
-            animType: AnimType.rightSlide,
-            title: 'Correct',
-            // desc: 'Dialog description here.............',
-            btnOkText: 'Next',
-            btnOkOnPress: () {
-              widget.handleCheckButton(true);
-              setState(() {
-                chosenAnswer = '';
-              });
-              // Navigator.pop(context);
-            },
-          ).show()
-        : AwesomeDialog(
-            context: context,
-            dialogType: DialogType.error,
-            animType: AnimType.rightSlide,
-            title: 'Wrong',
-            desc: 'Correct answer: \"${widget.correctAnswer}\"',
-            btnCancelText: 'Next',
-            btnCancelOnPress: () {
-              widget.handleCheckButton(false);
-              setState(() {
-                chosenAnswer = '';
-              });
-              // Navigator.pop(context);
-            },
-          ).show();
+  void handleLeftAnswersClick(String selectedAnswer) {
+    if (chosenLeftAnswers.contains(selectedAnswer)) {
+      setState(() {
+        chosenLeftAnswers.remove(selectedAnswer);
+      });
+    } else {
+      setState(() {
+        chosenLeftAnswers.add(selectedAnswer);
+      });
+    }
+    print(chosenLeftAnswers);
+  }
+
+  void handleRightAnswersClick(String selectedAnswer) {
+    if (chosenRightAnswers.contains(selectedAnswer)) {
+      setState(() {
+        chosenRightAnswers.remove(selectedAnswer);
+      });
+    } else {
+      setState(() {
+        chosenRightAnswers.add(selectedAnswer);
+      });
+    }
+    print(chosenRightAnswers);
+  }
+
+  void handleCheckClick() {
+    bool isCorrect = true;
+    for (int i = 0; i < chosenLeftAnswers.length; i++) {
+      // chosenLeftAnswers = ['Go', 'Eat', 'Play', 'Sleep']
+      // chosenRightAnswers = ['Went', 'Ate', 'Played', 'Slept']
+      // correctAnswers = ['GoWent', 'EatAte', 'PlayPlayed', 'SleepSlept']
+      if (!widget.correctAnswers
+          .contains('${chosenLeftAnswers[i]} - ${chosenRightAnswers[i]}')) {
+        isCorrect = false;
+      }
+    }
+    if (isCorrect) {
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.success,
+        animType: AnimType.rightSlide,
+        title: 'Correct',
+        // desc: 'Dialog description here.............',
+        btnOkText: 'Next',
+        btnOkOnPress: () {
+          widget.handleCheckButton(true);
+          setState(() {
+            chosenLeftAnswers = [];
+            chosenRightAnswers = [];
+          });
+          // Navigator.pop(context);
+        },
+      ).show();
+    } else {
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.error,
+        animType: AnimType.rightSlide,
+        title: 'Wrong',
+        desc: 'Correct answer: \"${widget.correctAnswers}\"',
+        btnCancelText: 'Next',
+        btnCancelOnPress: () {
+          widget.handleCheckButton(false);
+          setState(() {
+            chosenLeftAnswers = [];
+            chosenRightAnswers = [];
+          });
+          // Navigator.pop(context);
+        },
+      ).show();
+    }
+  }
+
+  bool checkIfAllAnswersIsChosen() {
+    return chosenLeftAnswers.length == widget.leftAnswers.length &&
+        chosenRightAnswers.length == widget.rightAnswers.length;
   }
 
   @override
@@ -82,84 +130,203 @@ class _ConnectStringState extends State<ConnectString> {
           SizedBox(
             height: 50,
           ),
-          Card(
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: Container(
-                width: 100,
-                height: 100,
+          Expanded(
+            child: Card(
+              elevation: 0,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        for (final answer in widget.leftAnswers)
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(bottom: 16, right: 16),
+                            child: MultipleChoiceButton(
+                              answer: answer,
+                              chosenAnswers: chosenLeftAnswers,
+                              handleAnswerClick: handleLeftAnswersClick,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        for (final answer in widget.rightAnswers)
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(bottom: 16, left: 16),
+                            child: MultipleChoiceButton(
+                              answer: answer,
+                              chosenAnswers: chosenRightAnswers,
+                              handleAnswerClick: handleRightAnswersClick,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-          // ListView.builder(
-          //   shrinkWrap: true,
-          //   itemCount: answers.length,
-          //   itemBuilder: (context, index) =>
-          //       DraggableAnswer(answer: answers[index]),
-          /* */
-          // ReorderableListView.builder(
-          //   shrinkWrap: true,
-          //   itemBuilder: (context, index) => ListTile(
-          //     key: ValueKey(widget.answers[index]),
-          //     tileColor: Colors.grey,
-          //     title: Text(widget.answers[index]),
-          //   ),
-          //   itemCount: widget.answers.length,
-          //   onReorder: ((oldIndex, newIndex) => {}),
-          // ),
-          Expanded(child: Container()),
-          Wrap(
-            spacing: 8.0, // gap between adjacent chips
-            runSpacing: 4.0, // gap between lines
-            children: <Widget>[
-              for (final answer in widget.answers)
-                Chip(
-                    label: Text(
-                  answer,
-                  style: TextStyle(
-                    fontSize: 30,
-                    // color: Colors.black,
-                  ),
-                ))
-              // Chip(
-              //   label: Text('Hamilton'),
-              // ),
-              // Chip(
-              //   label: Text('Lafayette'),
-              // ),
-              // Chip(
-              //   label: Text('Mullilkmblsdfmbdskmbgan'),
-              // ),
-              // Chip(
-              //   label: Text('Laurens'),
-              // ),
-            ],
           ),
           SizedBox(
             height: 50,
           ),
           CheckButton(
-            chosenAnswer: chosenAnswer,
+            isAllAnswersChosen: checkIfAllAnswersIsChosen(),
             onCheckPressed: handleCheckClick,
           ),
         ],
       ),
     );
-    // return ReorderableListView(
-    //   physics: NeverScrollableScrollPhysics(),
-    //   children: [
-    //     for (final tile in myTiles)
-    //       ListTile(
-    //         key: ValueKey(tile),
-    //         title: Text(tile),
-    //         trailing: ReorderableDragStartListener(
-    //           index: myTiles.indexOf(tile),
-    //           child: const Icon(Icons.drag_handle),
-    //         ),
-    //       )
-    //   ],
-    //   onReorder: (oldIndex, newIndex) => {},
-    // );
+  }
+}
+
+///////////////// MULTIPLE CHOICE BUTTON /////////////////
+
+class MultipleChoiceButton extends StatefulWidget {
+  const MultipleChoiceButton({
+    super.key,
+    required this.answer,
+    required this.chosenAnswers,
+    required this.handleAnswerClick,
+  });
+
+  final String answer;
+  final List<String> chosenAnswers;
+  final void Function(String answerClicked) handleAnswerClick;
+
+  @override
+  State<MultipleChoiceButton> createState() => _MultipleChoiceButtonState();
+}
+
+class _MultipleChoiceButtonState extends State<MultipleChoiceButton> {
+  double _padding = 6;
+
+  int indexOfAnswerInChosenAnswers(String answer) {
+    return widget.chosenAnswers.indexOf(answer);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    int indexValue = indexOfAnswerInChosenAnswers(widget.answer);
+
+    return GestureDetector(
+      onTap: () {
+        widget.handleAnswerClick(widget.answer);
+      },
+      onTapDown: (_) {
+        setState(() {
+          _padding = 0;
+        });
+      },
+      onTapCancel: () {
+        setState(() {
+          _padding = 6;
+        });
+      },
+      onTapUp: (_) {
+        setState(() {
+          _padding = 6;
+        });
+      },
+      child: AnimatedContainer(
+        padding: EdgeInsets.only(bottom: _padding),
+        margin: EdgeInsets.only(top: -(_padding - 6)),
+        decoration: BoxDecoration(
+          color: indexValue == -1
+              ? Colors.grey
+              : indexValue == 0
+                  ? Colors.red
+                  : indexValue == 1
+                      ? Colors.yellow[700]
+                      : indexValue == 2
+                          ? Colors.orange[600]
+                          : Colors.green,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        duration: Duration(milliseconds: 50),
+        child: Stack(
+          children: [
+            Container(
+              height: 60,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                  color: indexValue == -1
+                      ? Colors.grey
+                      : indexValue == 0
+                          ? Colors.red
+                          : indexValue == 1
+                              ? Colors.yellow.shade700
+                              : indexValue == 2
+                                  ? Colors.orange.shade600
+                                  : Colors.green,
+                ),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Center(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    widget.answer,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: indexValue == -1
+                          ? Colors.grey
+                          : indexValue == 0
+                              ? Colors.red
+                              : indexValue == 1
+                                  ? Colors.yellow[700]
+                                  : indexValue == 2
+                                      ? Colors.yellow[700]
+                                      : Colors.green,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment(0, -1),
+              child: Container(
+                width: 20,
+                height: 20,
+                child: Center(
+                  child: Text(
+                    indexValue == -1
+                        ? ''
+                        : indexValue == 0
+                            ? '1'
+                            : indexValue == 1
+                                ? '2'
+                                : indexValue == 2
+                                    ? '3'
+                                    : '4',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      // color: Colors.white,
+                      color: indexValue == -1
+                          ? Colors.grey
+                          : indexValue == 0
+                              ? Colors.red
+                              : indexValue == 1
+                                  ? Colors.yellow[700]
+                                  : indexValue == 2
+                                      ? Colors.orange[600]
+                                      : Colors.green,
+                    ),
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -167,11 +334,13 @@ class _ConnectStringState extends State<ConnectString> {
 
 class CheckButton extends StatefulWidget {
   const CheckButton(
-      {super.key, required this.chosenAnswer, required this.onCheckPressed});
+      {super.key,
+      required this.isAllAnswersChosen,
+      required this.onCheckPressed});
 
-  final String chosenAnswer;
+  final bool isAllAnswersChosen;
 
-  final void Function(String chosenAnswer) onCheckPressed;
+  final void Function() onCheckPressed;
 
   @override
   State<CheckButton> createState() => _CheckButtonState();
@@ -183,20 +352,16 @@ class _CheckButtonState extends State<CheckButton> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.chosenAnswer.isEmpty
-          ? null
-          : () {
-              widget.onCheckPressed(widget.chosenAnswer);
-            },
+      onTap: widget.isAllAnswersChosen ? widget.onCheckPressed : null,
       onTapDown: (_) {
-        if (widget.chosenAnswer.isNotEmpty) {
+        if (widget.isAllAnswersChosen) {
           setState(() {
             _padding = 0;
           });
         }
       },
       onTapUp: (_) {
-        if (widget.chosenAnswer.isNotEmpty) {
+        if (widget.isAllAnswersChosen) {
           setState(() {
             _padding = 6;
           });
@@ -207,7 +372,8 @@ class _CheckButtonState extends State<CheckButton> {
         margin: EdgeInsets.only(top: -(_padding - 6)),
         decoration: BoxDecoration(
           color:
-              widget.chosenAnswer.isEmpty ? Colors.grey[600] : Colors.blue[700],
+              // widget.chosenAnswer.isEmpty ? Colors.grey[600] : Colors.blue[700],
+              widget.isAllAnswersChosen ? Colors.blue[700] : Colors.grey[600],
           borderRadius: BorderRadius.circular(20),
         ),
         duration: Duration(milliseconds: 100),
@@ -215,9 +381,12 @@ class _CheckButtonState extends State<CheckButton> {
           width: double.infinity,
           height: 60,
           decoration: BoxDecoration(
-            color: widget.chosenAnswer.isEmpty ? Colors.grey : Colors.blue,
+            // color: widget.chosenAnswer.isEmpty ? Colors.grey : Colors.blue,
+            color: widget.isAllAnswersChosen ? Colors.blue : Colors.grey,
             border: Border.all(
-                color: widget.chosenAnswer.isEmpty ? Colors.grey : Colors.blue),
+              // color: widget.chosenAnswer.isEmpty ? Colors.grey : Colors.blue,
+              color: widget.isAllAnswersChosen ? Colors.blue : Colors.grey,
+            ),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Center(
@@ -235,7 +404,7 @@ class _CheckButtonState extends State<CheckButton> {
     );
   }
 }
-/////////////////  /////////////////
+///////////////// DRAG ANSWERS /////////////////
 
 class DraggableAnswer extends StatelessWidget {
   const DraggableAnswer({super.key, required this.answer});
@@ -270,81 +439,81 @@ class DraggableAnswer extends StatelessWidget {
   }
 }
 
-class ReorderableExample extends StatefulWidget {
-  const ReorderableExample({super.key});
+// class ReorderableExample extends StatefulWidget {
+//   const ReorderableExample({super.key});
 
-  @override
-  State<ReorderableExample> createState() => _ReorderableExampleState();
-}
+//   @override
+//   State<ReorderableExample> createState() => _ReorderableExampleState();
+// }
 
-class _ReorderableExampleState extends State<ReorderableExample> {
-  final List<int> _items = List<int>.generate(50, (int index) => index);
+// class _ReorderableExampleState extends State<ReorderableExample> {
+//   final List<int> _items = List<int>.generate(50, (int index) => index);
 
-  @override
-  Widget build(BuildContext context) {
-    final Color oddItemColor = Colors.lime.shade100;
-    final Color evenItemColor = Colors.deepPurple.shade100;
+//   @override
+//   Widget build(BuildContext context) {
+//     final Color oddItemColor = Colors.lime.shade100;
+//     final Color evenItemColor = Colors.deepPurple.shade100;
 
-    final List<Card> cards = <Card>[
-      for (int index = 0; index < _items.length; index += 1)
-        Card(
-          key: Key('$index'),
-          color: _items[index].isOdd ? oddItemColor : evenItemColor,
-          child: SizedBox(
-            height: 80,
-            child: Center(
-              child: Text('Card ${_items[index]}'),
-            ),
-          ),
-        ),
-    ];
+//     final List<Card> cards = <Card>[
+//       for (int index = 0; index < _items.length; index += 1)
+//         Card(
+//           key: Key('$index'),
+//           color: _items[index].isOdd ? oddItemColor : evenItemColor,
+//           child: SizedBox(
+//             height: 80,
+//             child: Center(
+//               child: Text('Card ${_items[index]}'),
+//             ),
+//           ),
+//         ),
+//     ];
 
-    Widget proxyDecorator(
-        Widget child, int index, Animation<double> animation) {
-      return AnimatedBuilder(
-        animation: animation,
-        builder: (BuildContext context, Widget? child) {
-          final double animValue = Curves.easeInOut.transform(animation.value);
-          final double elevation = lerpDouble(1, 6, animValue)!;
-          final double scale = lerpDouble(1, 1.02, animValue)!;
-          return Transform.scale(
-            scale: scale,
-            // Create a Card based on the color and the content of the dragged one
-            // and set its elevation to the animated value.
-            child: Card(
-              elevation: elevation,
-              color: cards[index].color,
-              child: cards[index].child,
-            ),
-          );
-        },
-        child: child,
-      );
-    }
+//     Widget proxyDecorator(
+//         Widget child, int index, Animation<double> animation) {
+//       return AnimatedBuilder(
+//         animation: animation,
+//         builder: (BuildContext context, Widget? child) {
+//           final double animValue = Curves.easeInOut.transform(animation.value);
+//           final double elevation = lerpDouble(1, 6, animValue)!;
+//           final double scale = lerpDouble(1, 1.02, animValue)!;
+//           return Transform.scale(
+//             scale: scale,
+//             // Create a Card based on the color and the content of the dragged one
+//             // and set its elevation to the animated value.
+//             child: Card(
+//               elevation: elevation,
+//               color: cards[index].color,
+//               child: cards[index].child,
+//             ),
+//           );
+//         },
+//         child: child,
+//       );
+//     }
 
-    return ReorderableListView(
-      padding: const EdgeInsets.symmetric(horizontal: 40),
-      proxyDecorator: proxyDecorator,
-      onReorder: (int oldIndex, int newIndex) {
-        setState(() {
-          if (oldIndex < newIndex) {
-            newIndex -= 1;
-          }
-          final int item = _items.removeAt(oldIndex);
-          _items.insert(newIndex, item);
-        });
-      },
-      children: [
-        for (final card in cards)
-          ListTile(
-            key: ValueKey(card),
-            title: card,
-            trailing: ReorderableDragStartListener(
-              index: cards.indexOf(card),
-              child: const Icon(Icons.drag_handle),
-            ),
-          )
-      ],
-    );
-  }
-}
+//     return ReorderableListView(
+//       padding: const EdgeInsets.symmetric(horizontal: 40),
+//       proxyDecorator: proxyDecorator,
+//       onReorder: (int oldIndex, int newIndex) {
+//         setState(() {
+//           if (oldIndex < newIndex) {
+//             newIndex -= 1;
+//           }
+//           final int item = _items.removeAt(oldIndex);
+//           _items.insert(newIndex, item);
+//         });
+//       },
+//       children: [
+//         for (final card in cards)
+//           ListTile(
+//             key: ValueKey(card),
+//             title: card,
+//             trailing: ReorderableDragStartListener(
+//               index: cards.indexOf(card),
+//               child: const Icon(Icons.drag_handle),
+//             ),
+//           )
+//       ],
+//     );
+//   }
+// }

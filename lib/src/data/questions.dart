@@ -1,6 +1,28 @@
 import '../models/quiz_question.dart';
 
 final List<QuizQuestion> dummyQuestions = [
+  ConnectStringQuestion(
+    question: 'Connect the words to make a meaningful sentence:',
+    leftAnswers: [
+      'Go',
+      'Eat',
+      'Play',
+      'Sleep',
+    ],
+    rightAnswers: [
+      'Went',
+      'Ate',
+      'Played',
+      'Slept',
+    ],
+    correctAnswers: [
+      'Go - Went',
+      'Eat - Ate',
+      'Play - Played',
+      'Sleep - Slept',
+    ],
+    imageAsset: 'assets/images/japan.png',
+  ),
   ReorderStringQuestion(
     question: 'Re-order the words to make a meaningful sentence:',
     answers: [

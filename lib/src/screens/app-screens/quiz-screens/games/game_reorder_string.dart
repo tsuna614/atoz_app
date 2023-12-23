@@ -143,9 +143,9 @@ class _ReorderStringState extends State<ReorderString> {
             height: 20,
           ),
           CheckButton(onCheckPressed: onCheckPressed),
-          SizedBox(
-            height: 50,
-          ),
+          // SizedBox(
+          //   height: 50,
+          // ),
         ],
       ),
     );
