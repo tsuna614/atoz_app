@@ -178,19 +178,20 @@ class _WrapExampleState extends State<WrapExample> {
       runSpacing: 4.0,
       padding: const EdgeInsets.all(8),
       onReorder: _onReorder,
-      onNoReorder: (int index) {
-        //this callback is optional
-        debugPrint(
-            '${DateTime.now().toString().substring(5, 22)} reorder cancelled. index:$index');
-      },
+      // onNoReorder: (int index) {
+      //   //this callback is optional
+      //   debugPrint(
+      //       '${DateTime.now().toString().substring(5, 22)} reorder cancelled. index:$index');
+      // },
+      needsLongPressDraggable: false,
       children: widget.data
           .map((e) => MultipleChoiceButton(key: ValueKey(e), answer: e))
           .toList(),
-      onReorderStarted: (int index) {
-        //this callback is optional
-        debugPrint(
-            '${DateTime.now().toString().substring(5, 22)} reorder started: index:$index');
-      },
+      // onReorderStarted: (int index) {
+      //   //this callback is optional
+      //   debugPrint(
+      //       '${DateTime.now().toString().substring(5, 22)} reorder started: index:$index');
+      // },
     );
   }
 }

@@ -55,62 +55,45 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
     double width = MediaQuery.of(context).size.width;
 
     final question = ref.watch(questionsProvider);
+    // send an index to the provider
 
     Widget chosenScreen;
 
-    // List<String> getShuffledAnswers() {
-    //   final currentQuestion = question[currentQuestionIndex];
-    //   // Shuffle the answers if the question is MultipleChoiceQuestion
-    //   if (currentQuestion is MultipleChoiceQuestion) {
-    //     final shuffledList = List.of(currentQuestion.answers);
-    //     shuffledList.shuffle();
-    //     return shuffledList;
-    //   }
-    // }
-
-    final currentQuestion = question[currentQuestionIndex];
-    if (currentQuestion is MultipleChoiceQuestion) {
-      chosenScreen = MultipleChoice(
-        question: currentQuestion.question,
-        answers: currentQuestion.getShuffledAnswers(),
-        correctAnswer: currentQuestion.correctAnswer,
-        handleCheckButton: _handleAnswerClick,
-        imageAsset: currentQuestion.imageAsset,
-      );
-    } else if (currentQuestion is ReorderStringQuestion) {
-      chosenScreen = ReorderString(
-        question: currentQuestion.question,
-        answers: currentQuestion.getShuffledAnswers(),
-        correctAnswer: currentQuestion.correctAnswer,
-        handleCheckButton: _handleAnswerClick,
-        imageAsset: currentQuestion.imageAsset,
-      );
-    } else if (currentQuestion is ConnectStringQuestion) {
-      chosenScreen = ConnectString(
-        question: currentQuestion.question,
-        leftAnswers:
-            currentQuestion.getShuffledAnswers(currentQuestion.leftAnswers),
-        rightAnswers:
-            currentQuestion.getShuffledAnswers(currentQuestion.rightAnswers),
-        correctAnswers: currentQuestion.correctAnswers,
-        handleCheckButton: _handleAnswerClick,
-        imageAsset: currentQuestion.imageAsset,
-      );
+    if (currentQuestionIndex == question.length) {
+      chosenScreen = ResultScreen(userScore: userScore);
     } else {
-      chosenScreen = LoadingScreen();
+      final currentQuestion = question[currentQuestionIndex];
+      if (currentQuestion is MultipleChoiceQuestion) {
+        chosenScreen = MultipleChoice(
+          question: currentQuestion.question,
+          answers: currentQuestion.getShuffledAnswers(),
+          correctAnswer: currentQuestion.correctAnswer,
+          handleCheckButton: _handleAnswerClick,
+          imageAsset: currentQuestion.imageAsset,
+        );
+      } else if (currentQuestion is ReorderStringQuestion) {
+        chosenScreen = ReorderString(
+          question: currentQuestion.question,
+          answers: currentQuestion.getShuffledAnswers(),
+          correctAnswer: currentQuestion.correctAnswer,
+          handleCheckButton: _handleAnswerClick,
+          imageAsset: currentQuestion.imageAsset,
+        );
+      } else if (currentQuestion is ConnectStringQuestion) {
+        chosenScreen = ConnectString(
+          question: currentQuestion.question,
+          leftAnswers:
+              currentQuestion.getShuffledAnswers(currentQuestion.leftAnswers),
+          rightAnswers:
+              currentQuestion.getShuffledAnswers(currentQuestion.rightAnswers),
+          correctAnswers: currentQuestion.correctAnswers,
+          handleCheckButton: _handleAnswerClick,
+          imageAsset: currentQuestion.imageAsset,
+        );
+      } else {
+        chosenScreen = LoadingScreen();
+      }
     }
-
-    // if (currentQuestionIndex == question.length) {
-    //   chosenScreen = ResultScreen(userScore: userScore);
-    // } else {
-    //   chosenScreen = MultipleChoice(
-    //     question: question[currentQuestionIndex].question,
-    //     answers: getShuffledAnswers(),
-    //     correctAnswer: question[currentQuestionIndex].correctAnswer,
-    //     handleCheckButton: _handleAnswerClick,
-    //     imageAsset: question[currentQuestionIndex].imageAsset,
-    //   );
-    // }
 
     return Scaffold(
       appBar: AppBar(
@@ -118,18 +101,6 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
         elevation: 0,
         title: Text('Question ${currentQuestionIndex + 1}'),
       ),
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   title: LinearPercentIndicator(
-      //     width: MediaQuery.of(context).size.width * 0.7,
-      //     lineHeight: 8.0,
-      //     percent: currentQuestionIndex / question.length,
-      //     progressColor: Colors.blue,
-      //     backgroundColor: Colors.white,
-      //   ),
-      // ),
-      // body: SafeArea(child: chosenScreen),
       body: SafeArea(
           child: Stack(
         children: [
@@ -139,7 +110,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
               vertical: 20,
             ),
             child: ProgressBar(
-                screenWidth: width,
+                screenWidth: width - 80,
                 ratio: currentQuestionIndex / question.length),
           ),
           chosenScreen,
@@ -172,10 +143,11 @@ class ProgressBar extends StatelessWidget {
         AnimatedContainer(
           width: screenWidth * ratio,
           height: 20,
-          // padding: EdgeInsets.only(
-          //     // right: screenWidth * (1 - 0.16),
-          //     // right: 20,
-          //     ),
+          // margin: EdgeInsets.symmetric(
+          //   // horizontal: screenWidth * 0.05,
+          //   horizontal: screenWidth * 0.01,
+          //   // right: 20,
+          // ),
           decoration: BoxDecoration(
             color: Colors.blue,
             borderRadius: BorderRadius.circular(20),
