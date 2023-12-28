@@ -90,19 +90,19 @@ class MyApp extends StatelessWidget {
       // ),
       // theme: ThemeData(useMaterial3: true),
       theme: theme,
-      // home: StreamBuilder(
-      //   stream: FirebaseAuth.instance.authStateChanges(),
-      //   builder: (context, snapshot) {
-      //     if (snapshot.connectionState == ConnectionState.waiting) {
-      //       return const LoadingScreen();
-      //     }
-      //     if (snapshot.hasData) {
-      //       return const MainScreen();
-      //     }
-      //     return const LoginScreen();
-      //   },
-      // ),
-      home: QuizScreen(),
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const LoadingScreen();
+          }
+          if (snapshot.hasData) {
+            return const MainScreen();
+          }
+          return const LoginScreen();
+        },
+      ),
+      // home: QuizScreen(),
       // home: ChangeProfileScreen(),
       // home: UserSetupScreen(resetMainPage: () {}),
       // home: TestWidget(),

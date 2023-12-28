@@ -4,5 +4,5 @@ import 'package:atoz_app/src/data/questions.dart';
 
 final questionsProvider = Provider((ref) {
   print(ref);
-  return dummyQuestions[0];
+  return dummyQuestions;
 });

@@ -95,17 +95,15 @@ class ConnectStringQuestion extends QuizQuestion {
 class WordsDistributionQuestion extends QuizQuestion {
   WordsDistributionQuestion({
     required this.question,
-    required this.leftAnswers,
-    required this.rightAnswers,
-    required this.correctAnswers,
-    required this.imageAsset,
+    required this.answers,
+    required this.correctAnswers1,
+    required this.correctAnswers2,
   });
 
   final String question;
-  final List<String> leftAnswers;
-  final List<String> rightAnswers;
-  final List<String> correctAnswers;
-  final String imageAsset;
+  final List<String> answers;
+  final List<String> correctAnswers1;
+  final List<String> correctAnswers2;
 
   List<String> getShuffledAnswers(List<String> answers) {
     final shuffledList = List.of(answers);
@@ -115,6 +113,6 @@ class WordsDistributionQuestion extends QuizQuestion {
 
   @override
   List<String> getAnswers() {
-    return correctAnswers;
+    return correctAnswers1;
   }
 }

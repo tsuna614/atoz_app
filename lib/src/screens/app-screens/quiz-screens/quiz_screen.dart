@@ -3,6 +3,7 @@ import 'package:atoz_app/src/providers/question_provider.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_connect_string.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_multiple_choice.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_reorder_string.dart';
+import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_words_distribution.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/result_screen.dart';
 import 'package:atoz_app/src/screens/loading_screen.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class QuizScreen extends ConsumerStatefulWidget {
-  const QuizScreen({super.key});
+  const QuizScreen({super.key, required this.currentState});
+
+  final int currentState;
 
   @override
   ConsumerState<QuizScreen> createState() => _QuizScreenState();
@@ -54,13 +57,30 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
 
-    final question = ref.watch(questionsProvider);
+    final question = ref.watch(questionsProvider)[widget.currentState];
     // send an index to the provider
 
-    Widget chosenScreen;
+    late Widget chosenScreen;
+
+    /* TEST START */
+    // final currentQuestion = question[0];
+    // if (currentQuestion is WordsDistributionQuestion) {
+    //   chosenScreen = WordDistribution(
+    //     question: currentQuestion.question,
+    //     answers: currentQuestion.answers,
+    //     correctAnswers1: currentQuestion.correctAnswers1,
+    //     correctAnswers2: currentQuestion.correctAnswers2,
+    //     handleCheckButton: _handleAnswerClick,
+    //   );
+    // }
+    /* TEST END */
 
     if (currentQuestionIndex == question.length) {
-      chosenScreen = ResultScreen(userScore: userScore);
+      chosenScreen = ResultScreen(
+        userScore: userScore,
+        totalScore: question.length,
+        oldUserStage: widget.currentState,
+      );
     } else {
       final currentQuestion = question[currentQuestionIndex];
       if (currentQuestion is MultipleChoiceQuestion) {
@@ -89,6 +109,14 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
           correctAnswers: currentQuestion.correctAnswers,
           handleCheckButton: _handleAnswerClick,
           imageAsset: currentQuestion.imageAsset,
+        );
+      } else if (currentQuestion is WordsDistributionQuestion) {
+        chosenScreen = WordDistribution(
+          question: currentQuestion.question,
+          answers: currentQuestion.answers,
+          correctAnswers1: currentQuestion.correctAnswers1,
+          correctAnswers2: currentQuestion.correctAnswers2,
+          handleCheckButton: _handleAnswerClick,
         );
       } else {
         chosenScreen = LoadingScreen();
