@@ -1,3 +1,5 @@
+import 'package:atoz_app/src/providers/question_provider.dart';
+import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:atoz_app/src/screens/app-screens/home_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/profile-screen/change_profile_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/profile-screen/profile_screen.dart';
@@ -14,9 +16,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:atoz_app/src/screens/test.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
+import 'package:provider/provider.dart' as provider;
 
 final theme = ThemeData(
   // useMaterial3: true,
@@ -71,9 +74,7 @@ Future<void> main() async {
     /* this block of code works when building web, but doesn't when building ios? */
   );
   runApp(
-    const ProviderScope(
-      child: MyApp(),
-    ),
+    const MyApp(),
   );
 }
 
@@ -82,31 +83,37 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Atoz App',
-      // theme: ThemeData(
-      //   primarySwatch: Colors.green,
-      // ),
-      // theme: ThemeData(useMaterial3: true),
-      theme: theme,
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const LoadingScreen();
-          }
-          if (snapshot.hasData) {
-            return const MainScreen();
-          }
-          return const LoginScreen();
-        },
+    return MultiProvider(
+      providers: [
+        provider.ChangeNotifierProvider(create: (_) => QuestionProvider()),
+        provider.ChangeNotifierProvider(create: (_) => UserProvider()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Atoz App',
+        // theme: ThemeData(
+        //   primarySwatch: Colors.green,
+        // ),
+        // theme: ThemeData(useMaterial3: true),
+        theme: theme,
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const LoadingScreen();
+            }
+            if (snapshot.hasData) {
+              return const MainScreen();
+            }
+            return const LoginScreen();
+          },
+        ),
+        // home: QuizScreen(),
+        // home: ChangeProfileScreen(),
+        // home: UserSetupScreen(resetMainPage: () {}),
+        // home: TestWidget(),
+        // home: ProfileScreen(),
       ),
-      // home: QuizScreen(),
-      // home: ChangeProfileScreen(),
-      // home: UserSetupScreen(resetMainPage: () {}),
-      // home: TestWidget(),
-      // home: ProfileScreen(),
     );
   }
 }

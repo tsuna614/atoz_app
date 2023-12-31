@@ -10,11 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:atoz_app/src/data/questions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:provider/provider.dart';
 
 class QuizScreen extends ConsumerStatefulWidget {
-  const QuizScreen({super.key, required this.currentState});
+  const QuizScreen({super.key, required this.currentStage});
 
-  final int currentState;
+  final int currentStage;
 
   @override
   ConsumerState<QuizScreen> createState() => _QuizScreenState();
@@ -57,8 +58,12 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
 
-    final question = ref.watch(questionsProvider)[widget.currentState];
-    // send an index to the provider
+    // final question = ref.watch(questionsProvider)[widget.currentStage];
+    // // send an index to the provider
+
+    final question = context
+        .read<QuestionProvider>()
+        .dummyQuestionProvider[widget.currentStage];
 
     late Widget chosenScreen;
 
@@ -79,7 +84,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
       chosenScreen = ResultScreen(
         userScore: userScore,
         totalScore: question.length,
-        oldUserStage: widget.currentState,
+        oldUserStage: widget.currentStage,
       );
     } else {
       final currentQuestion = question[currentQuestionIndex];

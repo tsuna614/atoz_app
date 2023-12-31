@@ -1,3 +1,4 @@
+import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_multiple_choice.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/quiz_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:dio/dio.dart';
 import 'package:atoz_app/src/data/global_data.dart' as global_data;
+import 'package:provider/provider.dart';
 
 final _firebase = FirebaseAuth.instance;
 final dio = Dio();
@@ -19,25 +21,26 @@ class JourneyScreen extends StatefulWidget {
 }
 
 class _JourneyScreenState extends State<JourneyScreen> {
-  int currentUserProgress = 0;
-
-  void getUserData() async {
-    Response response;
-    response = await dio.get(
-        '${global_data.atozApi}/user/getUserById/${_firebase.currentUser!.uid}');
-    setState(() {
-      currentUserProgress = response.data[0]['userStage'];
-    });
-  }
+  // void getUserData() async {
+  //   Response response;
+  //   response = await dio.get(
+  //       '${global_data.atozApi}/user/getUserById/${_firebase.currentUser!.uid}');
+  //   setState(() {
+  //     currentUserProgress = response.data[0]['userStage'];
+  //   });
+  // }
 
   @override
   void initState() {
     super.initState();
-    getUserData();
+    // getUserData();
+    // currentUserProgress = context.watch<UserProvider>().currentUserProgress;
   }
 
   @override
   Widget build(BuildContext context) {
+    int currentUserProgress = context.watch<UserProvider>().currentUserProgress;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -94,9 +97,6 @@ class _JourneyScreenState extends State<JourneyScreen> {
                           return GameNodeButton(
                             index: index + 1,
                             userProgress: currentUserProgress,
-                            resetPage: () {
-                              getUserData();
-                            },
                           );
                         },
                       ),
@@ -133,9 +133,6 @@ class _JourneyScreenState extends State<JourneyScreen> {
                           return GameNodeButton(
                             index: index + 11,
                             userProgress: currentUserProgress,
-                            resetPage: () {
-                              getUserData();
-                            },
                           );
                         },
                       ),
@@ -172,9 +169,6 @@ class _JourneyScreenState extends State<JourneyScreen> {
                           return GameNodeButton(
                             index: index + 21,
                             userProgress: currentUserProgress,
-                            resetPage: () {
-                              getUserData();
-                            },
                           );
                         },
                       ),
@@ -282,12 +276,10 @@ class GameNodeButton extends StatefulWidget {
     super.key,
     required this.index,
     required this.userProgress,
-    required this.resetPage,
   });
 
   final int index;
   final int userProgress;
-  final Function resetPage;
 
   @override
   State<GameNodeButton> createState() => _GameNodeButtonState();
@@ -306,12 +298,10 @@ class _GameNodeButtonState extends State<GameNodeButton> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => QuizScreen(
-                    currentState: widget.index - 1,
+                    currentStage: widget.index - 1,
                   ),
                 ),
-              ).then((value) {
-                widget.resetPage();
-              });
+              );
             },
       onTapDown: (_) {
         setState(() {

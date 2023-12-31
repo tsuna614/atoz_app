@@ -1,3 +1,4 @@
+import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:dio/dio.dart';
 import 'package:atoz_app/src/data/global_data.dart' as global_data;
+import 'package:provider/provider.dart';
 
 final _firebase = FirebaseAuth.instance;
 final dio = Dio();
@@ -21,15 +23,13 @@ class ResultScreen extends StatelessWidget {
   final int oldUserStage;
   // List<String> chosenAnswers;
 
-  void handleReturnHomePressed(BuildContext context) async {
-    print(oldUserStage + 2);
+  void handleReturnHomePressed() async {
     await dio.put(
       '${global_data.atozApi}/user/editUserById/${_firebase.currentUser!.uid}',
       data: {
         'userStage': oldUserStage + 2,
       },
     );
-    print('Success');
   }
 
   @override
@@ -59,7 +59,16 @@ class ResultScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
             child: CheckButton(
               onButtonPressed: () {
-                handleReturnHomePressed(context);
+                // if user complete the current stage that they are in, only then the current user progress will be updated
+                // increment user progress (in provider) by 2, and update user progress in database
+                // i did this so it doesn't need to wait to load everytime user complete a stage
+                if (oldUserStage + 1 ==
+                    context.read<UserProvider>().currentUserProgress) {
+                  context
+                      .read<UserProvider>()
+                      .setCurrentUserProgress(oldUserStage + 2);
+                  handleReturnHomePressed();
+                }
                 Navigator.pop(context);
               },
             ),

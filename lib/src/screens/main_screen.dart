@@ -1,3 +1,4 @@
+import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:atoz_app/src/screens/authentication-screens/user_setup_screen.dart';
 import 'package:atoz_app/src/screens/loading_screen.dart';
 import 'package:atoz_app/src/screens/tabs_screen.dart';
@@ -5,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:atoz_app/src/data/global_data.dart' as globals;
 import 'package:dio/dio.dart';
+import 'package:provider/provider.dart';
 
 final dio = Dio();
 
@@ -34,8 +36,7 @@ class _MainScreenState extends State<MainScreen> {
         await dio.get('${globals.atozApi}/user/getUserById/$id');
     // Response response = await dio.get(
     //     'http://localhost:3000/v1/user/getUserById/EIKSUu6uBQOIv8Pnx9UZ2wA0trn2');
-    // print(response.data.toString());
-    // print(response.data.toString());
+    // print(response.data[0]['userId']);
     setState(() {
       if (response.data.toString().contains('language')) {
         appScreen = TabsScreen();
@@ -45,6 +46,19 @@ class _MainScreenState extends State<MainScreen> {
         );
       }
     });
+
+    // save user data to provider
+    if (context.mounted) {
+      context
+          .read<UserProvider>()
+          .setUserId(response.data[0]['userId'].toString());
+      context
+          .read<UserProvider>()
+          .setUserEmail(response.data[0]['email'].toString());
+      context
+          .read<UserProvider>()
+          .setCurrentUserProgress(response.data[0]['userStage']);
+    }
   }
 
   @override
