@@ -3,6 +3,7 @@ import 'package:atoz_app/src/providers/question_provider.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_connect_string.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_multiple_choice.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_reorder_string.dart';
+import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_translate.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_words_distribution.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/result_screen.dart';
 import 'package:atoz_app/src/screens/loading_screen.dart';
@@ -121,6 +122,14 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
           answers: currentQuestion.answers,
           correctAnswers1: currentQuestion.correctAnswers1,
           correctAnswers2: currentQuestion.correctAnswers2,
+          handleCheckButton: _handleAnswerClick,
+        );
+      } else if (currentQuestion is TranslateQuestion) {
+        chosenScreen = GameTranslate(
+          question: currentQuestion.question,
+          word: currentQuestion.word,
+          correctAnswer: currentQuestion.correctAnswer,
+          imageAsset: currentQuestion.imageAsset,
           handleCheckButton: _handleAnswerClick,
         );
       } else {

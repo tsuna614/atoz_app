@@ -2,27 +2,27 @@ import '../models/quiz_question.dart';
 
 final List<List<QuizQuestion>> dummyQuestions = [
   [
-    // // WordsDistributionQuestion(
-    // //   question: 'What is the name of this vehicle?',
-    // //   answers: [
-    // //     'Train',
-    // //     'Bus',
-    // //     'Plane',
-    // //     'Boat',
-    // //   ],
-    // //   correctAnswers1: [
-    // //     'Train',
-    // //     'Bus',
-    // //     'Plane',
-    // //     'Boat',
-    // //   ],
-    // //   correctAnswers2: [
-    // //     'Train',
-    // //     'Bus',
-    // //     'Plane',
-    // //     'Boat',
-    // //   ],
-    // // ),
+    // WordsDistributionQuestion(
+    //   question: 'What is the name of this vehicle?',
+    //   answers: [
+    //     'Train',
+    //     'Bus',
+    //     'Plane',
+    //     'Boat',
+    //   ],
+    //   correctAnswers1: [
+    //     'Train',
+    //     'Bus',
+    //     'Plane',
+    //     'Boat',
+    //   ],
+    //   correctAnswers2: [
+    //     'Train',
+    //     'Bus',
+    //     'Plane',
+    //     'Boat',
+    //   ],
+    // ),
     // ConnectStringQuestion(
     //   question: 'Connect the words to its correct past tense:',
     //   leftAnswers: [
@@ -45,34 +45,34 @@ final List<List<QuizQuestion>> dummyQuestions = [
     //   ],
     //   imageAsset: 'assets/images/japan.png',
     // ),
-    // // ReorderStringQuestion(
-    // //   question: 'Re-order the words to make a meaningful sentence:',
-    // //   answers: [
-    // //     'Yesterday,',
-    // //     'I ate',
-    // //     'a',
-    // //     'lot',
-    // //     'of',
-    // //     'ice scream',
-    // //     'so',
-    // //     'I am',
-    // //     'having',
-    // //     'a stomachache',
-    // //   ],
-    // //   correctAnswer: [
-    // //     'Yesterday,',
-    // //     'I ate',
-    // //     'a',
-    // //     'lot',
-    // //     'of',
-    // //     'ice scream',
-    // //     'so',
-    // //     'I am',
-    // //     'having',
-    // //     'a stomachache',
-    // //   ],
-    // //   imageAsset: 'assets/images/japan.png',
-    // // ),
+    // ReorderStringQuestion(
+    //   question: 'Re-order the words to make a meaningful sentence:',
+    //   answers: [
+    //     'Yesterday,',
+    //     'I ate',
+    //     'a',
+    //     'lot',
+    //     'of',
+    //     'ice scream',
+    //     'so',
+    //     'I am',
+    //     'having',
+    //     'a stomachache',
+    //   ],
+    //   correctAnswer: [
+    //     'Yesterday,',
+    //     'I ate',
+    //     'a',
+    //     'lot',
+    //     'of',
+    //     'ice scream',
+    //     'so',
+    //     'I am',
+    //     'having',
+    //     'a stomachache',
+    //   ],
+    //   imageAsset: 'assets/images/japan.png',
+    // ),
     // MultipleChoiceQuestion(
     //   question: 'What is the name of this vehicle?',
     //   answers: [

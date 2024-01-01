@@ -1,16 +1,4 @@
-abstract class QuizQuestion {
-  // final String question;
-
-  // const QuizQuestion({
-  //   required this.question,
-  // });
-
-  String getClassName() {
-    return runtimeType.toString();
-  }
-
-  List<String> getAnswers();
-}
+abstract class QuizQuestion {}
 
 class MultipleChoiceQuestion extends QuizQuestion {
   MultipleChoiceQuestion({
@@ -24,14 +12,6 @@ class MultipleChoiceQuestion extends QuizQuestion {
   final List<String> answers;
   final String correctAnswer;
   final String imageAsset;
-
-  @override
-  List<String> getAnswers() {
-    // Shuffle the answers
-    final shuffledList = List.of(answers);
-    shuffledList.shuffle();
-    return shuffledList;
-  }
 
   getShuffledAnswers() {
     final shuffledList = List.of(answers);
@@ -58,11 +38,6 @@ class ReorderStringQuestion extends QuizQuestion {
     shuffledList.shuffle();
     return shuffledList;
   }
-
-  @override
-  List<String> getAnswers() {
-    return answers;
-  }
 }
 
 class ConnectStringQuestion extends QuizQuestion {
@@ -85,11 +60,6 @@ class ConnectStringQuestion extends QuizQuestion {
     shuffledList.shuffle();
     return shuffledList;
   }
-
-  @override
-  List<String> getAnswers() {
-    return correctAnswers;
-  }
 }
 
 class WordsDistributionQuestion extends QuizQuestion {
@@ -110,9 +80,18 @@ class WordsDistributionQuestion extends QuizQuestion {
     shuffledList.shuffle();
     return shuffledList;
   }
+}
 
-  @override
-  List<String> getAnswers() {
-    return correctAnswers1;
-  }
+class TranslateQuestion extends QuizQuestion {
+  TranslateQuestion({
+    required this.question,
+    required this.word,
+    required this.correctAnswer,
+    required this.imageAsset,
+  });
+
+  final String question;
+  final String word;
+  final String correctAnswer;
+  final String imageAsset;
 }
