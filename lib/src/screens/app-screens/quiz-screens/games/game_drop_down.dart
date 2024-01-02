@@ -1,4 +1,3 @@
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:atoz_app/src/models/quiz_question.dart';
@@ -68,7 +67,6 @@ class _DropDownGameState extends State<DropDownGame> {
 
   @override
   Widget build(BuildContext context) {
-    print(userAnswers);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Column(

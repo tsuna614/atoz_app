@@ -72,7 +72,6 @@ class _ReorderStringState extends State<ReorderString> {
         final element = tempAnswers.removeAt(oldIndex);
         tempAnswers.insert(newIndex, element);
       });
-      print(tempAnswers);
     });
   }
 

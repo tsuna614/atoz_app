@@ -6,12 +6,19 @@ import 'package:flutter/material.dart';
 // import 'package:flutter/src/widgets/framework.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
 
-class PracticeScreen extends StatelessWidget {
+class PracticeScreen extends StatefulWidget {
   PracticeScreen({super.key});
 
+  @override
+  State<PracticeScreen> createState() => _PracticeScreenState();
+}
+
+class _PracticeScreenState extends State<PracticeScreen> {
   final controller = PageController(
     initialPage: 0,
   );
+
+  int pageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +46,11 @@ class PracticeScreen extends StatelessWidget {
             // scroll vertically
             scrollDirection: Axis.vertical,
             controller: controller,
+            onPageChanged: (value) {
+              setState(() {
+                pageIndex = value;
+              });
+            },
             children: const [
               CardItem(
                 cardCategory: 'reading',
@@ -53,6 +65,11 @@ class PracticeScreen extends StatelessWidget {
                 cardCategory: 'speaking',
               ),
             ],
+          ),
+          Positioned(
+            top: 260,
+            right: 35,
+            child: buildScrollIndex(pageIndex),
           ),
           ClipPath(
             clipper: CustomClipPathBlue(context: context),
@@ -72,6 +89,92 @@ class PracticeScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget buildScrollIndex(int index) {
+    return Column(
+      children: [
+        AnimatedContainer(
+          width: 10,
+          height: index == 0 ? 30 : 10,
+          decoration: BoxDecoration(
+            color: index == 0 ? Colors.blue : Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 2,
+                blurRadius: 1,
+                offset: Offset(0, 0), // changes position of shadow
+              ),
+            ],
+          ),
+          duration: Duration(milliseconds: 300),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        AnimatedContainer(
+          width: 10,
+          height: index == 1 ? 30 : 10,
+          decoration: BoxDecoration(
+            color: index == 1 ? Colors.blue : Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 2,
+                blurRadius: 1,
+                offset: Offset(0, 0), // changes position of shadow
+              ),
+            ],
+          ),
+          duration: Duration(milliseconds: 300),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        AnimatedContainer(
+          width: 10,
+          height: index == 2 ? 30 : 10,
+          decoration: BoxDecoration(
+            color: index == 2 ? Colors.blue : Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 2,
+                blurRadius: 1,
+                offset: Offset(0, 0), // changes position of shadow
+              ),
+            ],
+          ),
+          duration: Duration(
+            milliseconds: 300,
+          ),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        AnimatedContainer(
+          width: 10,
+          height: index == 3 ? 30 : 10,
+          decoration: BoxDecoration(
+            color: index == 3 ? Colors.blue : Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 2,
+                blurRadius: 1,
+                offset: Offset(0, 0), // changes position of shadow
+              ),
+            ],
+          ),
+          duration: Duration(milliseconds: 300),
+        ),
+      ],
     );
   }
 }
@@ -176,57 +279,45 @@ class CardItem extends StatelessWidget {
                 if (cardCategory == 'reading')
                   Row(
                     children: [
-                      SizedBox(width: 30),
                       Expanded(
                         child: SizedBox(
                           height: 200,
                           child: Image.asset('assets/images/reading.png'),
                         ),
                       ),
-                      getScrollCircle(0),
-                      SizedBox(width: 20),
                     ],
                   )
                 else if (cardCategory == 'writing')
                   Row(
                     children: [
-                      SizedBox(width: 30),
                       Expanded(
                         child: SizedBox(
                           height: 200,
                           child: Image.asset('assets/images/writing.png'),
                         ),
                       ),
-                      getScrollCircle(1),
-                      SizedBox(width: 20),
                     ],
                   )
                 else if (cardCategory == 'listening')
                   Row(
                     children: [
-                      SizedBox(width: 30),
                       Expanded(
                         child: SizedBox(
                           height: 200,
                           child: Image.asset('assets/images/listening.png'),
                         ),
                       ),
-                      getScrollCircle(2),
-                      SizedBox(width: 20),
                     ],
                   )
                 else if (cardCategory == 'speaking')
                   Row(
                     children: [
-                      SizedBox(width: 30),
                       Expanded(
                         child: SizedBox(
                           height: 200,
                           child: Image.asset('assets/images/speaking.png'),
                         ),
                       ),
-                      getScrollCircle(3),
-                      SizedBox(width: 20),
                     ],
                   ),
                 SizedBox(height: 16),
@@ -302,83 +393,6 @@ class CardItem extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  Widget getScrollCircle(int index) {
-    return Column(
-      children: [
-        Container(
-          width: 10,
-          height: index == 0 ? 30 : 10,
-          decoration: BoxDecoration(
-            color: index == 0 ? Colors.blue : Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 2,
-                blurRadius: 1,
-                offset: Offset(0, 0), // changes position of shadow
-              ),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Container(
-          width: 10,
-          height: index == 1 ? 30 : 10,
-          decoration: BoxDecoration(
-              color: index == 1 ? Colors.blue : Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 1,
-                  offset: Offset(0, 0), // changes position of shadow
-                ),
-              ]),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Container(
-          width: 10,
-          height: index == 2 ? 30 : 10,
-          decoration: BoxDecoration(
-              color: index == 2 ? Colors.blue : Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 1,
-                  offset: Offset(0, 0), // changes position of shadow
-                ),
-              ]),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Container(
-          width: 10,
-          height: index == 3 ? 30 : 10,
-          decoration: BoxDecoration(
-              color: index == 3 ? Colors.blue : Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 1,
-                  offset: Offset(0, 0), // changes position of shadow
-                ),
-              ]),
-        ),
-      ],
     );
   }
 }

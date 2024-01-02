@@ -1,7 +1,7 @@
 import 'package:atoz_app/src/screens/app-screens/home_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/journey_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/leaderboard_screen.dart';
-import 'package:atoz_app/src/screens/app-screens/practice_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/practice-screens/practice_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/profile-screen/profile_screen.dart';
 import 'package:atoz_app/src/widgets/bottom_nav_bar_1.dart';
 import 'package:flutter/material.dart';
