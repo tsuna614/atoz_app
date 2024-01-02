@@ -1,6 +1,7 @@
 import 'package:atoz_app/src/models/quiz_question.dart';
 import 'package:atoz_app/src/providers/question_provider.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_connect_string.dart';
+import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_drop_down.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_multiple_choice.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_reorder_string.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_translate.dart';
@@ -132,8 +133,12 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
           imageAsset: currentQuestion.imageAsset,
           handleCheckButton: _handleAnswerClick,
         );
-      } else {
-        chosenScreen = LoadingScreen();
+      } else if (currentQuestion is DropDownQuestion) {
+        chosenScreen = DropDownGame(
+          question: currentQuestion.question,
+          sentenceList: currentQuestion.sentencesList,
+          handleCheckButton: _handleAnswerClick,
+        );
       }
     }
 

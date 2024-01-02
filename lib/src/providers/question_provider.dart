@@ -5,6 +5,41 @@ import 'package:flutter/material.dart';
 class QuestionProvider extends ChangeNotifier {
   List<List<QuizQuestion>> dummyQuestionProvider = [
     [
+      DropDownQuestion(
+        question: 'Select the correct answer in each sentence',
+        sentencesList: [
+          DropDownQuestionChild(
+            sentence1: 'I ',
+            answers: [
+              'am',
+              'is',
+              'are',
+            ],
+            correctAnswer: 'am',
+            sentence2: 'a student.',
+          ),
+          DropDownQuestionChild(
+            sentence1: 'She ',
+            answers: [
+              'am',
+              'is',
+              'are',
+            ],
+            correctAnswer: 'is',
+            sentence2: 'a teacher.',
+          ),
+          DropDownQuestionChild(
+            sentence1: 'They ',
+            answers: [
+              'am',
+              'is',
+              'are',
+            ],
+            correctAnswer: 'are',
+            sentence2: 'students.',
+          ),
+        ],
+      ),
       WordsDistributionQuestion(
         question: 'What is the name of this vehicle?',
         answers: [

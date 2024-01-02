@@ -95,3 +95,27 @@ class TranslateQuestion extends QuizQuestion {
   final String correctAnswer;
   final String imageAsset;
 }
+
+class DropDownQuestion extends QuizQuestion {
+  DropDownQuestion({
+    required this.question,
+    required this.sentencesList,
+  });
+
+  final String question;
+  final List<DropDownQuestionChild> sentencesList;
+}
+
+class DropDownQuestionChild {
+  DropDownQuestionChild({
+    required this.sentence1,
+    required this.sentence2,
+    required this.answers,
+    required this.correctAnswer,
+  });
+
+  final String sentence1;
+  final String sentence2;
+  final List<String> answers;
+  final String correctAnswer;
+}
