@@ -3,6 +3,7 @@ import 'package:atoz_app/src/providers/question_provider.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_connect_string.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_drop_down.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_multiple_choice.dart';
+import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_reading.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_reorder_string.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_translate.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_words_distribution.dart';
@@ -69,19 +70,6 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
 
     late Widget chosenScreen;
 
-    /* TEST START */
-    // final currentQuestion = question[0];
-    // if (currentQuestion is WordsDistributionQuestion) {
-    //   chosenScreen = WordDistribution(
-    //     question: currentQuestion.question,
-    //     answers: currentQuestion.answers,
-    //     correctAnswers1: currentQuestion.correctAnswers1,
-    //     correctAnswers2: currentQuestion.correctAnswers2,
-    //     handleCheckButton: _handleAnswerClick,
-    //   );
-    // }
-    /* TEST END */
-
     if (currentQuestionIndex == question.length) {
       chosenScreen = ResultScreen(
         userScore: userScore,
@@ -139,6 +127,14 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
           sentenceList: currentQuestion.sentencesList,
           handleCheckButton: _handleAnswerClick,
         );
+      } else if (currentQuestion is ReadingQuestion) {
+        chosenScreen = ReadingGame(
+          paragraphsList: currentQuestion.paragraphsList,
+          questionsList: currentQuestion.questionsList,
+          handleCheckPressed: _handleAnswerClick,
+        );
+      } else {
+        chosenScreen = LoadingScreen();
       }
     }
 

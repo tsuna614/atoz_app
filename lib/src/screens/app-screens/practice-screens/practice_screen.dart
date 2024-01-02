@@ -21,6 +21,13 @@ class _PracticeScreenState extends State<PracticeScreen> {
   int pageIndex = 0;
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,

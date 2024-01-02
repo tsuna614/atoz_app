@@ -5,6 +5,55 @@ import 'package:flutter/material.dart';
 class QuestionProvider extends ChangeNotifier {
   List<List<QuizQuestion>> dummyQuestionProvider = [
     [
+      ReadingQuestion(
+        paragraphsList: [
+          'I am a student. I go to school every day. I study English, Math, Science, and Art. I like to play football with my friends. I also like to play video games. I have a dog. His name is Max. He is very cute. I love my dog.',
+          'I am a student. I go to school every day. I study English, Math, Science, and Art. I like to play football with my friends. I also like to play video games. I have a dog. His name is Max. He is very cute. I love my dog.',
+          'I am a student. I go to school every day. I study English, Math, Science, and Art. I like to play football with my friends. I also like to play video games. I have a dog. His name is Max. He is very cute. I love my dog.',
+        ],
+        questionsList: [
+          ReadingMultipleChoiceQuestion(
+            question: 'What is the name of this vehicle?',
+            answers: [
+              'Train',
+              'Bus',
+              'Plane',
+              'Boat',
+            ],
+            correctAnswer: 'Train',
+          ),
+          ReadingMultipleChoiceQuestion(
+            question: 'What is the name of this vehicle?',
+            answers: [
+              'Train',
+              'Bus',
+              'Plane',
+              'Boat',
+            ],
+            correctAnswer: 'Bus',
+          ),
+          ReadingMultipleChoiceQuestion(
+            question: 'What is the name of this vehicle?',
+            answers: [
+              'Train',
+              'Bus',
+              'Plane',
+              'Boat',
+            ],
+            correctAnswer: 'Boat',
+          ),
+          ReadingMultipleChoiceQuestion(
+            question: 'What is the name of this vehicle?',
+            answers: [
+              'Train',
+              'Bus',
+              'Plane',
+              'Boat',
+            ],
+            correctAnswer: 'Plane',
+          ),
+        ],
+      ),
       DropDownQuestion(
         question: 'Select the correct answer in each sentence',
         sentencesList: [
