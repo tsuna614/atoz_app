@@ -58,6 +58,7 @@ class _MainScreenState extends State<MainScreen> {
       context
           .read<UserProvider>()
           .setCurrentUserProgress(response.data[0]['userStage']);
+      context.read<UserProvider>().setUserScore(response.data[0]['score']);
     }
   }
 

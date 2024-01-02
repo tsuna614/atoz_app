@@ -23,11 +23,17 @@ class ResultScreen extends StatelessWidget {
   final int oldUserStage;
   // List<String> chosenAnswers;
 
-  void handleReturnHomePressed() async {
+  void updateUserData(BuildContext context) async {
+    // get old user score and set new score
+    final oldUserScore = context.read<UserProvider>().userScore;
+    context.read<UserProvider>().setUserScore(oldUserScore + 20);
+
+    // update user's stage and score in database
     await dio.put(
       '${global_data.atozApi}/user/editUserById/${_firebase.currentUser!.uid}',
       data: {
         'userStage': oldUserStage + 2,
+        'score': oldUserScore + 20,
       },
     );
   }
@@ -67,7 +73,7 @@ class ResultScreen extends StatelessWidget {
                   context
                       .read<UserProvider>()
                       .setCurrentUserProgress(oldUserStage + 2);
-                  handleReturnHomePressed();
+                  updateUserData(context);
                 }
                 Navigator.pop(context);
               },

@@ -512,7 +512,6 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
 class CustomClipPathBlue extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    print(size);
     double w = size.width;
     double h = size.height;
 

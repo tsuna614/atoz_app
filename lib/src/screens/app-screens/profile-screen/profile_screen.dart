@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:atoz_app/src/screens/app-screens/chart/bar_chart.dart';
 import 'package:atoz_app/src/screens/app-screens/profile-screen/change_profile_screen.dart';
 import 'package:atoz_app/src/widgets/animated_button_1.dart';
@@ -10,6 +11,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 final dio = Dio();
 
@@ -537,8 +539,8 @@ class StudyingInfo extends StatelessWidget {
       child: Table(columnWidths: const {
         1: FixedColumnWidth(190),
         // 1: IntrinsicColumnWidth()
-      }, children: const [
-        TableRow(children: [
+      }, children: [
+        TableRow(children: const [
           TableCell(
             verticalAlignment: TableCellVerticalAlignment.bottom,
             child: Text(
@@ -551,7 +553,7 @@ class StudyingInfo extends StatelessWidget {
               child: Text('0')),
         ]),
         rowSpacer,
-        TableRow(children: [
+        TableRow(children: const [
           TableCell(
             verticalAlignment: TableCellVerticalAlignment.bottom,
             child: Text('Lessons completed',
@@ -570,10 +572,10 @@ class StudyingInfo extends StatelessWidget {
           ),
           TableCell(
               verticalAlignment: TableCellVerticalAlignment.bottom,
-              child: Text('0')),
+              child: Text(context.read<UserProvider>().userScore.toString())),
         ]),
         rowSpacer,
-        TableRow(children: [
+        TableRow(children: const [
           TableCell(
             verticalAlignment: TableCellVerticalAlignment.bottom,
             child: Text('Ranking',
