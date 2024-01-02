@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:atoz_app/src/widgets/check_button.dart';
 
 class GameTranslate extends StatefulWidget {
-  GameTranslate({
+  const GameTranslate({
     super.key,
     required this.question,
     required this.word,

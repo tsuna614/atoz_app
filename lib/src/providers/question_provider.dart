@@ -2,20 +2,39 @@ import 'package:atoz_app/src/models/quiz_question.dart';
 import 'package:flutter/material.dart';
 // import 'package:atoz_app/src/data/questions.dart';
 
-// final questionsProvider = Provider((ref) {
-//   return dummyQuestions;
-// });
-
 class QuestionProvider extends ChangeNotifier {
-  // List<QuizQuestion> questions = [];
-
-  // void setQuestions(int questionIndex) {
-  //   questions = dummyQuestions[questionIndex];
-  //   notifyListeners();
-  // }
-
   List<List<QuizQuestion>> dummyQuestionProvider = [
     [
+      WordsDistributionQuestion(
+        question: 'What is the name of this vehicle?',
+        answers: [
+          'Played',
+          'Watched',
+          'Seen',
+          'Done',
+          'Ploughed',
+        ],
+        correctAnswers1: [
+          'Played',
+          'Watched',
+          'Saw',
+          'Did',
+          'Played',
+          'Ploughed',
+          // 'PlayedPlayedPlayedPlayed',
+          // 'WatchedWatchedWatchedWatched',
+          // 'SawSawSawSaw',
+          // 'DidDidDidDid',
+        ],
+        correctAnswers2: [
+          'Played',
+          'Watched',
+          'Seen',
+          'Done',
+          'Played',
+          'Ploughed',
+        ],
+      ),
       TranslateQuestion(
         question: 'What is the name of this vehicle?',
         word: 'Train',
@@ -72,27 +91,6 @@ class QuestionProvider extends ChangeNotifier {
           'Sleep - Slept',
         ],
         imageAsset: 'assets/images/japan.png',
-      ),
-      WordsDistributionQuestion(
-        question: 'What is the name of this vehicle?',
-        answers: [
-          'Train',
-          'Bus',
-          'Plane',
-          'Boat',
-        ],
-        correctAnswers1: [
-          'Train',
-          'Bus',
-          'Plane',
-          'Boat',
-        ],
-        correctAnswers2: [
-          'Train',
-          'Bus',
-          'Plane',
-          'Boat',
-        ],
       ),
       MultipleChoiceQuestion(
         question: 'What is the name of this vehicle?',
