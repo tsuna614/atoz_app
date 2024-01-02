@@ -27,6 +27,11 @@ class ResultScreen extends StatelessWidget {
     // get old user score and set new score
     final oldUserScore = context.read<UserProvider>().userScore;
     context.read<UserProvider>().setUserScore(oldUserScore + 20);
+    final oldUserProgression =
+        context.read<UserProvider>().userProgressionPoint;
+    context
+        .read<UserProvider>()
+        .setUserProgressionPoint(oldUserProgression + 20);
 
     // update user's stage and score in database
     await dio.put(
@@ -34,6 +39,7 @@ class ResultScreen extends StatelessWidget {
       data: {
         'userStage': oldUserStage + 2,
         'score': oldUserScore + 20,
+        'progression': oldUserProgression + 20,
       },
     );
   }

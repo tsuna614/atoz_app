@@ -1,5 +1,6 @@
 abstract class QuizQuestion {}
 
+/////////////////////////  Multiple-choice question class  /////////////////////////
 class MultipleChoiceQuestion extends QuizQuestion {
   MultipleChoiceQuestion({
     required this.question,
@@ -20,6 +21,7 @@ class MultipleChoiceQuestion extends QuizQuestion {
   }
 }
 
+/////////////////////////  Reorder string question class  /////////////////////////
 class ReorderStringQuestion extends QuizQuestion {
   ReorderStringQuestion({
     required this.question,
@@ -40,6 +42,7 @@ class ReorderStringQuestion extends QuizQuestion {
   }
 }
 
+/////////////////////////  Connect string question class  /////////////////////////
 class ConnectStringQuestion extends QuizQuestion {
   ConnectStringQuestion({
     required this.question,
@@ -62,6 +65,7 @@ class ConnectStringQuestion extends QuizQuestion {
   }
 }
 
+/////////////////////////  Words distribution question class  /////////////////////////
 class WordsDistributionQuestion extends QuizQuestion {
   WordsDistributionQuestion({
     required this.question,
@@ -82,6 +86,7 @@ class WordsDistributionQuestion extends QuizQuestion {
   }
 }
 
+/////////////////////////  Translate question class  /////////////////////////
 class TranslateQuestion extends QuizQuestion {
   TranslateQuestion({
     required this.question,
@@ -96,6 +101,7 @@ class TranslateQuestion extends QuizQuestion {
   final String imageAsset;
 }
 
+/////////////////////////  Drop-down question class  /////////////////////////
 class DropDownQuestion extends QuizQuestion {
   DropDownQuestion({
     required this.question,
@@ -118,4 +124,33 @@ class DropDownQuestionChild {
   final String sentence2;
   final List<String> answers;
   final String correctAnswer;
+}
+
+/////////////////////////  Reading question class  /////////////////////////
+class ReadingQuestion extends QuizQuestion {
+  ReadingQuestion({
+    required this.paragraphsList,
+    required this.questionsList,
+  });
+
+  final List<String> paragraphsList;
+  final List<ReadingMultipleChoiceQuestion> questionsList;
+}
+
+class ReadingMultipleChoiceQuestion {
+  ReadingMultipleChoiceQuestion({
+    required this.question,
+    required this.answers,
+    required this.correctAnswer,
+  });
+
+  final String question;
+  final List<String> answers;
+  final String correctAnswer;
+
+  getShuffledAnswers() {
+    final shuffledList = List.of(answers);
+    shuffledList.shuffle();
+    return shuffledList;
+  }
 }

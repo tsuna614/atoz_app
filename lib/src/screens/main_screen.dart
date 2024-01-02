@@ -29,6 +29,7 @@ class _MainScreenState extends State<MainScreen> {
     // print(id);
     final email = auth.currentUser!.email;
     print(email);
+    print(id);
 
     // _firebase.signOut();
 
@@ -48,7 +49,7 @@ class _MainScreenState extends State<MainScreen> {
     });
 
     // save user data to provider
-    if (context.mounted) {
+    if (context.mounted && response.data.toString().contains('language')) {
       context
           .read<UserProvider>()
           .setUserId(response.data[0]['userId'].toString());
@@ -59,6 +60,9 @@ class _MainScreenState extends State<MainScreen> {
           .read<UserProvider>()
           .setCurrentUserProgress(response.data[0]['userStage']);
       context.read<UserProvider>().setUserScore(response.data[0]['score']);
+      context
+          .read<UserProvider>()
+          .setUserProgressionPoint(response.data[0]['progression']);
     }
   }
 

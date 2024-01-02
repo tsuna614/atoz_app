@@ -11,6 +11,7 @@ class UserProvider extends ChangeNotifier {
   String userEmail = '';
   int currentUserProgress = 0;
   int userScore = 0;
+  int userProgressionPoint = 0;
 
   // create UserProvider constructor
 
@@ -31,6 +32,11 @@ class UserProvider extends ChangeNotifier {
 
   void setUserScore(int point) {
     userScore = point;
+    notifyListeners();
+  }
+
+  void setUserProgressionPoint(int point) {
+    userProgressionPoint = point;
     notifyListeners();
   }
 }

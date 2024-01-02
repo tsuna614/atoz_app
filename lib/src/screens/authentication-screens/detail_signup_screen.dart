@@ -56,6 +56,7 @@ class _DetailSignUpScreenState extends State<DetailSignUpScreen> {
           'firstName': enteredFirstName,
           'lastName': enteredLastName,
           'age': enteredAge,
+          'userStage': 1,
         }).then((value) {
           print('User created successfully');
           return value;

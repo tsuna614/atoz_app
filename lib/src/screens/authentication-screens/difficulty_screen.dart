@@ -55,7 +55,8 @@ class _DifficultyScreenState extends State<DifficultyScreen> {
       '${global_data.atozApi}/user/editUserById/${id}',
       data: {
         'language': widget.chosenLanguage,
-        'score': score,
+        'progression': score,
+        'score': 0,
       },
     );
 
