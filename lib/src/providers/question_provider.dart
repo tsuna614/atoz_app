@@ -81,6 +81,15 @@ class QuestionProvider extends ChangeNotifier {
             'https://img.freepik.com/free-vector/gradient-tropical-sunset-background_52683-128662.jpg?size=626&ext=jpg&ga=GA1.1.1546980028.1704153600&semt=ais',
       ),
     ],
+    [
+      MultipleChoiceQuestion(
+        question: 'How do you greet someone?',
+        answers: ['Hello', 'Goodbye', 'Thank you', 'Sorry'],
+        correctAnswer: 'Hello',
+        imageAsset:
+            'https://www.shutterstock.com/shutterstock/videos/1098377523/thumb/4.jpg?ip=x480',
+      ),
+    ],
   ];
 
   List<List<QuizQuestion>> dummyJapaneseQuizz = [

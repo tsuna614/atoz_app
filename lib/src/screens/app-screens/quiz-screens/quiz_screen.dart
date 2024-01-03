@@ -10,63 +10,51 @@ import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_words_d
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/result_screen.dart';
 import 'package:atoz_app/src/screens/loading_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 
-class QuizScreen extends ConsumerStatefulWidget {
+class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key, required this.currentStage});
 
   final int currentStage;
 
   @override
-  ConsumerState<QuizScreen> createState() => _QuizScreenState();
+  State<QuizScreen> createState() => _QuizScreenState();
 }
 
-class _QuizScreenState extends ConsumerState<QuizScreen> {
+class _QuizScreenState extends State<QuizScreen> {
   int currentQuestionIndex = 0;
-
   // List<String> chosenAnswers = [];
-
   int userScore = 0;
+  List<QuizQuestion> question = [];
+  late Widget chosenScreen;
+
+  void getQuestions() {
+    question =
+        context.read<QuestionProvider>().dummyEnglishQuizz[widget.currentStage];
+  }
 
   void _handleAnswerClick(bool isCorrect) {
     if (isCorrect) {
       userScore++;
+    } else {
+      question.add(question[currentQuestionIndex]);
     }
     setState(() {
       currentQuestionIndex++;
     });
-    // final currentQuestion = ref.read(questionsProvider)[currentQuestionIndex];
-    // if (currentQuestion is MultipleChoiceQuestion) {
-    //   if (userAnswer == currentQuestion.correctAnswer) {
-    //     userScore++;
-    //   }
-    // } else if (currentQuestion is ReorderStringQuestion) {
-    //   if (userAnswer == currentQuestion.correctAnswer.join(' ')) {
-    //     userScore++;
-    //   }
-    // } else if (currentQuestion is ConnectStringQuestion) {
-    //   if (userAnswer == currentQuestion.correctAnswer) {
-    //     userScore++;
-    //   }
-    // }
-    // if (userAnswer == dummyQuestions[currentQuestionIndex].correctAnswer) {
-    //   userScore++;
-    // }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getQuestions();
   }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-
-    // final question = ref.watch(questionsProvider)[widget.currentStage];
-    // // send an index to the provider
-
-    final question =
-        context.read<QuestionProvider>().dummyEnglishQuizz[widget.currentStage];
-
-    late Widget chosenScreen;
 
     if (currentQuestionIndex == question.length) {
       chosenScreen = ResultScreen(
@@ -74,6 +62,10 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
         totalScore: question.length,
         oldUserStage: widget.currentStage,
       );
+      // clear question
+      Future.delayed(Duration(seconds: 2), () {
+        question = [];
+      });
     } else {
       final currentQuestion = question[currentQuestionIndex];
       if (currentQuestion is MultipleChoiceQuestion) {
@@ -141,6 +133,14 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
         backgroundColor: Colors.blue,
         elevation: 0,
         title: Text('Question ${currentQuestionIndex + 1}'),
+        leading: IconButton(
+          onPressed: () {
+            // clear question
+            question = [];
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios),
+        ),
       ),
       body: SafeArea(
           child: Stack(
