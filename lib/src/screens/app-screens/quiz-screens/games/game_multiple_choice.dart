@@ -102,24 +102,21 @@ class _MultipleChoiceState extends ConsumerState<MultipleChoice> {
           ),
           ClipRRect(
             borderRadius: BorderRadius.circular(20.0),
-            child: SizedBox.fromSize(
-              size: Size.fromHeight(400),
-              child: Image(
-                image: AssetImage(widget.imageAsset),
-              ),
+            // child: SizedBox.fromSize(
+            //   size: Size.fromHeight(400),
+            //   child: Image(
+            //     // image: AssetImage(widget.imageAsset),
+            //     image: Image.network(widget.imageAsset).image,
+            //   ),
+            // ),
+            child: Image.network(
+              widget.imageAsset,
+              height: 300,
+              width: double.infinity,
+              fit: BoxFit.cover,
             ),
           ),
           Expanded(child: Container()),
-          // Expanded(
-          //   child: ClipRRect(
-          //     borderRadius: BorderRadius.circular(20.0),
-          //     child: SizedBox.fromSize(
-          //       child: Image(
-          //         image: AssetImage('assets/images/train.png'),
-          //       ),
-          //     ),
-          //   ),
-          // ),
           GridView(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,

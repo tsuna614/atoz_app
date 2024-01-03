@@ -10,7 +10,6 @@ import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_words_d
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/result_screen.dart';
 import 'package:atoz_app/src/screens/loading_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:atoz_app/src/data/questions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
@@ -64,9 +63,8 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
     // final question = ref.watch(questionsProvider)[widget.currentStage];
     // // send an index to the provider
 
-    final question = context
-        .read<QuestionProvider>()
-        .dummyQuestionProvider[widget.currentStage];
+    final question =
+        context.read<QuestionProvider>().dummyEnglishQuizz[widget.currentStage];
 
     late Widget chosenScreen;
 

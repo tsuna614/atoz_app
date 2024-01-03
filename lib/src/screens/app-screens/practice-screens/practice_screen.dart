@@ -1,8 +1,14 @@
+import 'package:atoz_app/src/providers/user_provider.dart';
+import 'package:atoz_app/src/screens/app-screens/practice-screens/admin-practice-screen/view_listening.dart';
+import 'package:atoz_app/src/screens/app-screens/practice-screens/admin-practice-screen/view_reading_question.dart';
+import 'package:atoz_app/src/screens/app-screens/practice-screens/admin-practice-screen/view_speaking.dart';
+import 'package:atoz_app/src/screens/app-screens/practice-screens/admin-practice-screen/view_writing_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/practice-screens/listening_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/practice-screens/reading_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/practice-screens/speaking_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/practice-screens/writing_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 // import 'package:flutter/src/widgets/framework.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
 
@@ -357,7 +363,7 @@ class CardItem extends StatelessWidget {
                 ),
                 Expanded(child: Container()),
                 Padding(
-                  padding: EdgeInsets.all(32),
+                  padding: EdgeInsets.symmetric(horizontal: 32),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
@@ -391,10 +397,63 @@ class CardItem extends StatelessWidget {
                     },
                     child: const Text(
                       'Start',
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2,
+                      ),
                     ),
                   ),
                 ),
+                if (context.read<UserProvider>().userType == 'admin')
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: 32, right: 32, bottom: 32, top: 6),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue.shade700,
+                          minimumSize: Size.fromHeight(40)),
+                      onPressed: () {
+                        if (cardCategory == 'reading') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const ViewReadingScreen()),
+                          );
+                        } else if (cardCategory == 'listening') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const ViewListeningScreen()),
+                          );
+                        } else if (cardCategory == 'writing') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const ViewWritingScreen()),
+                          );
+                        } else if (cardCategory == 'speaking') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const ViewSpeakingScreen()),
+                          );
+                        }
+                      },
+                      child: const Text(
+                        'Edit Question',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),

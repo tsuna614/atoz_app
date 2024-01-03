@@ -1,250 +1,117 @@
 import 'package:atoz_app/src/models/quiz_question.dart';
+import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_connect_string.dart';
 import 'package:flutter/material.dart';
 // import 'package:atoz_app/src/data/questions.dart';
 
 class QuestionProvider extends ChangeNotifier {
-  List<List<QuizQuestion>> dummyQuestionProvider = [
+  // String language = 'English';
+
+  List<List<QuizQuestion>> dummyEnglishQuizz = [
     [
-      ReadingQuestion(
-        paragraphsList: [
-          'I am a student. I go to school every day. I study English, Math, Science, and Art. I like to play football with my friends. I also like to play video games. I have a dog. His name is Max. He is very cute. I love my dog.',
-          'I am a student. I go to school every day. I study English, Math, Science, and Art. I like to play football with my friends. I also like to play video games. I have a dog. His name is Max. He is very cute. I love my dog.',
-          'I am a student. I go to school every day. I study English, Math, Science, and Art. I like to play football with my friends. I also like to play video games. I have a dog. His name is Max. He is very cute. I love my dog.',
-        ],
-        questionsList: [
-          ReadingMultipleChoiceQuestion(
-            question: 'What is the name of this vehicle?',
-            answers: [
-              'Train',
-              'Bus',
-              'Plane',
-              'Boat',
-            ],
-            correctAnswer: 'Train',
-          ),
-          ReadingMultipleChoiceQuestion(
-            question: 'What is the name of this vehicle?',
-            answers: [
-              'Train',
-              'Bus',
-              'Plane',
-              'Boat',
-            ],
-            correctAnswer: 'Bus',
-          ),
-          ReadingMultipleChoiceQuestion(
-            question: 'What is the name of this vehicle?',
-            answers: [
-              'Train',
-              'Bus',
-              'Plane',
-              'Boat',
-            ],
-            correctAnswer: 'Boat',
-          ),
-          ReadingMultipleChoiceQuestion(
-            question: 'What is the name of this vehicle?',
-            answers: [
-              'Train',
-              'Bus',
-              'Plane',
-              'Boat',
-            ],
-            correctAnswer: 'Plane',
-          ),
-        ],
+      MultipleChoiceQuestion(
+        question: 'How do you greet someone?',
+        answers: ['Hello', 'Goodbye', 'Thank you', 'Sorry'],
+        correctAnswer: 'Hello',
+        imageAsset:
+            'https://www.shutterstock.com/shutterstock/videos/1098377523/thumb/4.jpg?ip=x480',
       ),
-      DropDownQuestion(
-        question: 'Select the correct answer in each sentence',
-        sentencesList: [
-          DropDownQuestionChild(
-            sentence1: 'I ',
-            answers: [
-              'am',
-              'is',
-              'are',
-            ],
-            correctAnswer: 'am',
-            sentence2: 'a student.',
-          ),
-          DropDownQuestionChild(
-            sentence1: 'She ',
-            answers: [
-              'am',
-              'is',
-              'are',
-            ],
-            correctAnswer: 'is',
-            sentence2: 'a teacher.',
-          ),
-          DropDownQuestionChild(
-            sentence1: 'They ',
-            answers: [
-              'am',
-              'is',
-              'are',
-            ],
-            correctAnswer: 'are',
-            sentence2: 'students.',
-          ),
-        ],
-      ),
-      WordsDistributionQuestion(
-        question: 'What is the name of this vehicle?',
-        answers: [
-          'Played',
-          'Watched',
-          'Seen',
-          'Done',
-          'Ploughed',
-        ],
-        correctAnswers1: [
-          'Played',
-          'Watched',
-          'Saw',
-          'Did',
-          'Played',
-          'Ploughed',
-          // 'PlayedPlayedPlayedPlayed',
-          // 'WatchedWatchedWatchedWatched',
-          // 'SawSawSawSaw',
-          // 'DidDidDidDid',
-        ],
-        correctAnswers2: [
-          'Played',
-          'Watched',
-          'Seen',
-          'Done',
-          'Played',
-          'Ploughed',
-        ],
-      ),
-      TranslateQuestion(
-        question: 'What is the name of this vehicle?',
-        word: 'Train',
-        correctAnswer: 'Train',
-        imageAsset: 'assets/images/train.png',
-        // imageAsset: '',
+      MultipleChoiceQuestion(
+        question: 'Select the correct answer',
+        answers: ['Hello', 'Good afternoon', 'Good morning', 'Good evening'],
+        correctAnswer: 'Good morning',
+        imageAsset:
+            'https://st2.depositphotos.com/3745043/5334/v/950/depositphotos_53342633-stock-illustration-sunrise-at-early-morning-landscape.jpg',
       ),
       ReorderStringQuestion(
-        question: 'Re-order the words to make a meaningful sentence:',
+        question: 'Reorder the words to form a correct sentence',
         answers: [
-          'Yesterday,',
-          'I ate',
-          'a',
-          'lot',
-          'of',
-          'ice scream',
-          'so',
-          'I am',
-          'having',
-          'a stomachache',
+          'Good morning',
+          'Mike,',
+          'how',
+          'was',
+          'your',
+          'weekend?',
         ],
         correctAnswer: [
-          'Yesterday,',
-          'I ate',
-          'a',
-          'lot',
-          'of',
-          'ice scream',
-          'so',
-          'I am',
-          'having',
-          'a stomachache',
+          'Good morning',
+          'Mike,',
+          'how',
+          'was',
+          'your',
+          'weekend?',
         ],
-        imageAsset: 'assets/images/japan.png',
+        imageAsset:
+            'https://img.freepik.com/free-vector/two-men-shake-hands-with-each-other-isolated-white-background-meeting-greeting-friends-businessmen-deal-agreement-illustration-partnership-cooperation-communication_575670-2344.jpg?size=626&ext=jpg&ga=GA1.1.1546980028.1704067200&semt=ais',
       ),
       ConnectStringQuestion(
-        question: 'Connect the words to its correct past tense:',
+        question: 'Connect the words to form a correct sentence',
         leftAnswers: [
-          'Go',
-          'Eat',
-          'Play',
-          'Sleep',
+          'Good morning',
+          'Good afternoon',
+          'Good evening',
+          'Good night',
         ],
         rightAnswers: [
-          'Went',
-          'Ate',
-          'Played',
-          'Slept',
+          'Chào buổi sáng',
+          'Chào buổi chiều',
+          'Chào buổi tối',
+          'Chúc ngủ ngon',
         ],
         correctAnswers: [
-          'Go - Went',
-          'Eat - Ate',
-          'Play - Played',
-          'Sleep - Slept',
+          'Good morning - Chào buổi sáng',
+          'Good afternoon - Chào buổi chiều',
+          'Good evening - Chào buổi tối',
+          'Good night - Chúc ngủ ngon',
         ],
-        imageAsset: 'assets/images/japan.png',
+        imageAsset:
+            'https://i.pinimg.com/474x/c3/d0/a4/c3d0a4c4fb0efd09fd6ea0f0c9d97c02.jpg',
       ),
       MultipleChoiceQuestion(
-        question: 'What is the name of this vehicle?',
-        answers: [
-          'Train',
-          'Bus',
-          'Plane',
-          'Boat',
-        ],
-        correctAnswer: 'Plane',
-        imageAsset: 'assets/images/plane.png',
-      ),
-    ],
-    [
-      MultipleChoiceQuestion(
-        question: 'What is the name of this vehicle?',
-        answers: [
-          'Train',
-          'Bus',
-          'Plane',
-          'Boat',
-        ],
-        correctAnswer: 'Train',
-        imageAsset: 'assets/images/train.png',
+        question: 'Select the correct answer',
+        answers: ['Hello', 'Good afternoon', 'Good morning', 'Good evening'],
+        correctAnswer: 'Good evening',
+        imageAsset:
+            'https://i.pinimg.com/474x/c3/d0/a4/c3d0a4c4fb0efd09fd6ea0f0c9d97c02.jpg',
       ),
       MultipleChoiceQuestion(
-        question: 'What is the name of this vehicle?',
-        answers: [
-          'Train',
-          'Bus',
-          'Plane',
-          'Boat',
-        ],
-        correctAnswer: 'Bus',
-        imageAsset: 'assets/images/bus.png',
-      ),
-      MultipleChoiceQuestion(
-        question: 'What is the name of this vehicle?',
-        answers: [
-          'Train',
-          'Bus',
-          'Plane',
-          'Boat',
-        ],
-        correctAnswer: 'Boat',
-        imageAsset: 'assets/images/boat.png',
-      ),
-      MultipleChoiceQuestion(
-        question: 'What is the name of this vehicle?',
-        answers: [
-          'Train',
-          'Bus',
-          'Plane',
-          'Boat',
-        ],
-        correctAnswer: 'Plane',
-        imageAsset: 'assets/images/plane.png',
+        question: 'Select the correct answer',
+        answers: ['Hello', 'Good afternoon', 'Good morning', 'Good evening'],
+        correctAnswer: 'Good afternoon',
+        imageAsset:
+            'https://img.freepik.com/free-vector/gradient-tropical-sunset-background_52683-128662.jpg?size=626&ext=jpg&ga=GA1.1.1546980028.1704153600&semt=ais',
       ),
     ],
+  ];
+
+  List<List<QuizQuestion>> dummyJapaneseQuizz = [
     [
       MultipleChoiceQuestion(
-        question: 'What is the name of this vehicle?',
-        answers: [
-          'Train',
-          'Bus',
-          'Plane',
-          'Boat',
-        ],
-        correctAnswer: 'Plane',
-        imageAsset: 'assets/images/plane.png',
+        question: 'How do you greet someone?',
+        answers: ['こんにちは', 'さようなら', 'ありがとう', 'ごめん'],
+        correctAnswer: 'こんにちは',
+        imageAsset:
+            'https://img.freepik.com/free-vector/two-men-shake-hands-with-each-other-isolated-white-background-meeting-greeting-friends-businessmen-deal-agreement-illustration-partnership-cooperation-communication_575670-2344.jpg?size=626&ext=jpg&ga=GA1.1.1546980028.1704067200&semt=ais',
+      ),
+      MultipleChoiceQuestion(
+        question: 'Select the correct answer',
+        answers: ['こんにちは', 'ありがとう', 'おはよう', 'こんばんは'],
+        correctAnswer: 'おはよう',
+        imageAsset:
+            'https://st2.depositphotos.com/3745043/5334/v/950/depositphotos_53342633-stock-illustration-sunrise-at-early-morning-landscape.jpg',
+      ),
+      MultipleChoiceQuestion(
+        question: 'Select the correct answer',
+        answers: ['こんにちは', 'ありがとう', 'おはよう', 'こんばんは'],
+        correctAnswer: 'こんばんは',
+        imageAsset:
+            'https://i.pinimg.com/474x/c3/d0/a4/c3d0a4c4fb0efd09fd6ea0f0c9d97c02.jpg',
+      ),
+      MultipleChoiceQuestion(
+        question: 'Select the correct answer',
+        answers: ['こんにちは', 'ありがとう', 'おはよう', 'こんばんは'],
+        correctAnswer: 'こんにちは',
+        imageAsset:
+            'https://img.freepik.com/free-vector/gradient-tropical-sunset-background_52683-128662.jpg?size=626&ext=jpg&ga=GA1.1.1546980028.1704153600&semt=ais',
       ),
     ]
   ];

@@ -114,11 +114,17 @@ class _ReorderStringState extends State<ReorderString> {
           ),
           ClipRRect(
             borderRadius: BorderRadius.circular(20.0),
-            child: SizedBox.fromSize(
-              size: Size.fromHeight(300),
-              child: Image(
-                image: AssetImage('assets/images/stomachache.png'),
-              ),
+            // child: SizedBox.fromSize(
+            //   size: Size.fromHeight(300),
+            //   child: Image(
+            //     image: AssetImage('assets/images/stomachache.png'),
+            //   ),
+            // ),
+            child: Image.network(
+              widget.imageAsset,
+              height: 300,
+              width: double.infinity,
+              fit: BoxFit.cover,
             ),
           ),
           SizedBox(

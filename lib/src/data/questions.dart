@@ -1,167 +1,410 @@
-import '../models/quiz_question.dart';
+// import '../models/quiz_question.dart';
 
-final List<List<QuizQuestion>> dummyQuestions = [
-  [
-    // WordsDistributionQuestion(
-    //   question: 'What is the name of this vehicle?',
-    //   answers: [
-    //     'Train',
-    //     'Bus',
-    //     'Plane',
-    //     'Boat',
-    //   ],
-    //   correctAnswers1: [
-    //     'Train',
-    //     'Bus',
-    //     'Plane',
-    //     'Boat',
-    //   ],
-    //   correctAnswers2: [
-    //     'Train',
-    //     'Bus',
-    //     'Plane',
-    //     'Boat',
-    //   ],
-    // ),
-    // ConnectStringQuestion(
-    //   question: 'Connect the words to its correct past tense:',
-    //   leftAnswers: [
-    //     'Go',
-    //     'Eat',
-    //     'Play',
-    //     'Sleep',
-    //   ],
-    //   rightAnswers: [
-    //     'Went',
-    //     'Ate',
-    //     'Played',
-    //     'Slept',
-    //   ],
-    //   correctAnswers: [
-    //     'Go - Went',
-    //     'Eat - Ate',
-    //     'Play - Played',
-    //     'Sleep - Slept',
-    //   ],
-    //   imageAsset: 'assets/images/japan.png',
-    // ),
-    // ReorderStringQuestion(
-    //   question: 'Re-order the words to make a meaningful sentence:',
-    //   answers: [
-    //     'Yesterday,',
-    //     'I ate',
-    //     'a',
-    //     'lot',
-    //     'of',
-    //     'ice scream',
-    //     'so',
-    //     'I am',
-    //     'having',
-    //     'a stomachache',
-    //   ],
-    //   correctAnswer: [
-    //     'Yesterday,',
-    //     'I ate',
-    //     'a',
-    //     'lot',
-    //     'of',
-    //     'ice scream',
-    //     'so',
-    //     'I am',
-    //     'having',
-    //     'a stomachache',
-    //   ],
-    //   imageAsset: 'assets/images/japan.png',
-    // ),
-    // MultipleChoiceQuestion(
-    //   question: 'What is the name of this vehicle?',
-    //   answers: [
-    //     'Train',
-    //     'Bus',
-    //     'Plane',
-    //     'Boat',
-    //   ],
-    //   correctAnswer: 'Train',
-    //   imageAsset: 'assets/images/train.png',
-    // ),
-    // MultipleChoiceQuestion(
-    //   question: 'What is the name of this vehicle?',
-    //   answers: [
-    //     'Train',
-    //     'Bus',
-    //     'Plane',
-    //     'Boat',
-    //   ],
-    //   correctAnswer: 'Bus',
-    //   imageAsset: 'assets/images/bus.png',
-    // ),
-    // MultipleChoiceQuestion(
-    //   question: 'What is the name of this vehicle?',
-    //   answers: [
-    //     'Train',
-    //     'Bus',
-    //     'Plane',
-    //     'Boat',
-    //   ],
-    //   correctAnswer: 'Boat',
-    //   imageAsset: 'assets/images/boat.png',
-    // ),
-    MultipleChoiceQuestion(
-      question: 'What is the name of this vehicle?',
-      answers: [
-        'Train',
-        'Bus',
-        'Plane',
-        'Boat',
-      ],
-      correctAnswer: 'Plane',
-      imageAsset: 'assets/images/plane.png',
-    ),
-  ],
-  [
-    MultipleChoiceQuestion(
-      question: 'What is the name of this vehicle?',
-      answers: [
-        'Train',
-        'Bus',
-        'Plane',
-        'Boat',
-      ],
-      correctAnswer: 'Train',
-      imageAsset: 'assets/images/train.png',
-    ),
-    MultipleChoiceQuestion(
-      question: 'What is the name of this vehicle?',
-      answers: [
-        'Train',
-        'Bus',
-        'Plane',
-        'Boat',
-      ],
-      correctAnswer: 'Bus',
-      imageAsset: 'assets/images/bus.png',
-    ),
-    MultipleChoiceQuestion(
-      question: 'What is the name of this vehicle?',
-      answers: [
-        'Train',
-        'Bus',
-        'Plane',
-        'Boat',
-      ],
-      correctAnswer: 'Boat',
-      imageAsset: 'assets/images/boat.png',
-    ),
-    MultipleChoiceQuestion(
-      question: 'What is the name of this vehicle?',
-      answers: [
-        'Train',
-        'Bus',
-        'Plane',
-        'Boat',
-      ],
-      correctAnswer: 'Plane',
-      imageAsset: 'assets/images/plane.png',
-    ),
-  ]
-];
+// final List<List<QuizQuestion>> dummyQuestions = [
+//   [
+//     // WordsDistributionQuestion(
+//     //   question: 'What is the name of this vehicle?',
+//     //   answers: [
+//     //     'Train',
+//     //     'Bus',
+//     //     'Plane',
+//     //     'Boat',
+//     //   ],
+//     //   correctAnswers1: [
+//     //     'Train',
+//     //     'Bus',
+//     //     'Plane',
+//     //     'Boat',
+//     //   ],
+//     //   correctAnswers2: [
+//     //     'Train',
+//     //     'Bus',
+//     //     'Plane',
+//     //     'Boat',
+//     //   ],
+//     // ),
+//     // ConnectStringQuestion(
+//     //   question: 'Connect the words to its correct past tense:',
+//     //   leftAnswers: [
+//     //     'Go',
+//     //     'Eat',
+//     //     'Play',
+//     //     'Sleep',
+//     //   ],
+//     //   rightAnswers: [
+//     //     'Went',
+//     //     'Ate',
+//     //     'Played',
+//     //     'Slept',
+//     //   ],
+//     //   correctAnswers: [
+//     //     'Go - Went',
+//     //     'Eat - Ate',
+//     //     'Play - Played',
+//     //     'Sleep - Slept',
+//     //   ],
+//     //   imageAsset: 'assets/images/japan.png',
+//     // ),
+//     // ReorderStringQuestion(
+//     //   question: 'Re-order the words to make a meaningful sentence:',
+//     //   answers: [
+//     //     'Yesterday,',
+//     //     'I ate',
+//     //     'a',
+//     //     'lot',
+//     //     'of',
+//     //     'ice scream',
+//     //     'so',
+//     //     'I am',
+//     //     'having',
+//     //     'a stomachache',
+//     //   ],
+//     //   correctAnswer: [
+//     //     'Yesterday,',
+//     //     'I ate',
+//     //     'a',
+//     //     'lot',
+//     //     'of',
+//     //     'ice scream',
+//     //     'so',
+//     //     'I am',
+//     //     'having',
+//     //     'a stomachache',
+//     //   ],
+//     //   imageAsset: 'assets/images/japan.png',
+//     // ),
+//     // MultipleChoiceQuestion(
+//     //   question: 'What is the name of this vehicle?',
+//     //   answers: [
+//     //     'Train',
+//     //     'Bus',
+//     //     'Plane',
+//     //     'Boat',
+//     //   ],
+//     //   correctAnswer: 'Train',
+//     //   imageAsset: 'assets/images/train.png',
+//     // ),
+//     // MultipleChoiceQuestion(
+//     //   question: 'What is the name of this vehicle?',
+//     //   answers: [
+//     //     'Train',
+//     //     'Bus',
+//     //     'Plane',
+//     //     'Boat',
+//     //   ],
+//     //   correctAnswer: 'Bus',
+//     //   imageAsset: 'assets/images/bus.png',
+//     // ),
+//     // MultipleChoiceQuestion(
+//     //   question: 'What is the name of this vehicle?',
+//     //   answers: [
+//     //     'Train',
+//     //     'Bus',
+//     //     'Plane',
+//     //     'Boat',
+//     //   ],
+//     //   correctAnswer: 'Boat',
+//     //   imageAsset: 'assets/images/boat.png',
+//     // ),
+//     MultipleChoiceQuestion(
+//       question: 'What is the name of this vehicle?',
+//       answers: [
+//         'Train',
+//         'Bus',
+//         'Plane',
+//         'Boat',
+//       ],
+//       correctAnswer: 'Plane',
+//       imageAsset: 'assets/images/plane.png',
+//     ),
+//   ],
+//   [
+//     MultipleChoiceQuestion(
+//       question: 'What is the name of this vehicle?',
+//       answers: [
+//         'Train',
+//         'Bus',
+//         'Plane',
+//         'Boat',
+//       ],
+//       correctAnswer: 'Train',
+//       imageAsset: 'assets/images/train.png',
+//     ),
+//     MultipleChoiceQuestion(
+//       question: 'What is the name of this vehicle?',
+//       answers: [
+//         'Train',
+//         'Bus',
+//         'Plane',
+//         'Boat',
+//       ],
+//       correctAnswer: 'Bus',
+//       imageAsset: 'assets/images/bus.png',
+//     ),
+//     MultipleChoiceQuestion(
+//       question: 'What is the name of this vehicle?',
+//       answers: [
+//         'Train',
+//         'Bus',
+//         'Plane',
+//         'Boat',
+//       ],
+//       correctAnswer: 'Boat',
+//       imageAsset: 'assets/images/boat.png',
+//     ),
+//     MultipleChoiceQuestion(
+//       question: 'What is the name of this vehicle?',
+//       answers: [
+//         'Train',
+//         'Bus',
+//         'Plane',
+//         'Boat',
+//       ],
+//       correctAnswer: 'Plane',
+//       imageAsset: 'assets/images/plane.png',
+//     ),
+//   ]
+// ];
+
+// ReadingQuestion(
+//         paragraphsList: [
+//           'I am a student. I go to school every day. I study English, Math, Science, and Art. I like to play football with my friends. I also like to play video games. I have a dog. His name is Max. He is very cute. I love my dog.',
+//           'I am a student. I go to school every day. I study English, Math, Science, and Art. I like to play football with my friends. I also like to play video games. I have a dog. His name is Max. He is very cute. I love my dog.',
+//           'I am a student. I go to school every day. I study English, Math, Science, and Art. I like to play football with my friends. I also like to play video games. I have a dog. His name is Max. He is very cute. I love my dog.',
+//         ],
+//         questionsList: [
+//           ReadingMultipleChoiceQuestion(
+//             question: 'What is the name of this vehicle?',
+//             answers: [
+//               'Train',
+//               'Bus',
+//               'Plane',
+//               'Boat',
+//             ],
+//             correctAnswer: 'Train',
+//           ),
+//           ReadingMultipleChoiceQuestion(
+//             question: 'What is the name of this vehicle?',
+//             answers: [
+//               'Train',
+//               'Bus',
+//               'Plane',
+//               'Boat',
+//             ],
+//             correctAnswer: 'Bus',
+//           ),
+//           ReadingMultipleChoiceQuestion(
+//             question: 'What is the name of this vehicle?',
+//             answers: [
+//               'Train',
+//               'Bus',
+//               'Plane',
+//               'Boat',
+//             ],
+//             correctAnswer: 'Boat',
+//           ),
+//           ReadingMultipleChoiceQuestion(
+//             question: 'What is the name of this vehicle?',
+//             answers: [
+//               'Train',
+//               'Bus',
+//               'Plane',
+//               'Boat',
+//             ],
+//             correctAnswer: 'Plane',
+//           ),
+//         ],
+//       ),
+//       DropDownQuestion(
+//         question: 'Select the correct answer in each sentence',
+//         sentencesList: [
+//           DropDownQuestionChild(
+//             sentence1: 'I ',
+//             answers: [
+//               'am',
+//               'is',
+//               'are',
+//             ],
+//             correctAnswer: 'am',
+//             sentence2: 'a student.',
+//           ),
+//           DropDownQuestionChild(
+//             sentence1: 'She ',
+//             answers: [
+//               'am',
+//               'is',
+//               'are',
+//             ],
+//             correctAnswer: 'is',
+//             sentence2: 'a teacher.',
+//           ),
+//           DropDownQuestionChild(
+//             sentence1: 'They ',
+//             answers: [
+//               'am',
+//               'is',
+//               'are',
+//             ],
+//             correctAnswer: 'are',
+//             sentence2: 'students.',
+//           ),
+//         ],
+//       ),
+//       WordsDistributionQuestion(
+//         question: 'What is the name of this vehicle?',
+//         answers: [
+//           'Played',
+//           'Watched',
+//           'Seen',
+//           'Done',
+//           'Ploughed',
+//         ],
+//         correctAnswers1: [
+//           'Played',
+//           'Watched',
+//           'Saw',
+//           'Did',
+//           'Played',
+//           'Ploughed',
+//           // 'PlayedPlayedPlayedPlayed',
+//           // 'WatchedWatchedWatchedWatched',
+//           // 'SawSawSawSaw',
+//           // 'DidDidDidDid',
+//         ],
+//         correctAnswers2: [
+//           'Played',
+//           'Watched',
+//           'Seen',
+//           'Done',
+//           'Played',
+//           'Ploughed',
+//         ],
+//       ),
+//       TranslateQuestion(
+//         question: 'What is the name of this vehicle?',
+//         word: 'Train',
+//         correctAnswer: 'Train',
+//         imageAsset: 'assets/images/train.png',
+//         // imageAsset: '',
+//       ),
+//       ReorderStringQuestion(
+//         question: 'Re-order the words to make a meaningful sentence:',
+//         answers: [
+//           'Yesterday,',
+//           'I ate',
+//           'a',
+//           'lot',
+//           'of',
+//           'ice scream',
+//           'so',
+//           'I am',
+//           'having',
+//           'a stomachache',
+//         ],
+//         correctAnswer: [
+//           'Yesterday,',
+//           'I ate',
+//           'a',
+//           'lot',
+//           'of',
+//           'ice scream',
+//           'so',
+//           'I am',
+//           'having',
+//           'a stomachache',
+//         ],
+//         imageAsset: 'assets/images/japan.png',
+//       ),
+//       ConnectStringQuestion(
+//         question: 'Connect the words to its correct past tense:',
+//         leftAnswers: [
+//           'Go',
+//           'Eat',
+//           'Play',
+//           'Sleep',
+//         ],
+//         rightAnswers: [
+//           'Went',
+//           'Ate',
+//           'Played',
+//           'Slept',
+//         ],
+//         correctAnswers: [
+//           'Go - Went',
+//           'Eat - Ate',
+//           'Play - Played',
+//           'Sleep - Slept',
+//         ],
+//         imageAsset: 'assets/images/japan.png',
+//       ),
+//       MultipleChoiceQuestion(
+//         question: 'What is the name of this vehicle?',
+//         answers: [
+//           'Train',
+//           'Bus',
+//           'Plane',
+//           'Boat',
+//         ],
+//         correctAnswer: 'Plane',
+//         imageAsset: 'assets/images/plane.png',
+//       ),
+//     ],
+//     [
+//       MultipleChoiceQuestion(
+//         question: 'What is the name of this vehicle?',
+//         answers: [
+//           'Train',
+//           'Bus',
+//           'Plane',
+//           'Boat',
+//         ],
+//         correctAnswer: 'Train',
+//         imageAsset: 'assets/images/train.png',
+//       ),
+//       MultipleChoiceQuestion(
+//         question: 'What is the name of this vehicle?',
+//         answers: [
+//           'Train',
+//           'Bus',
+//           'Plane',
+//           'Boat',
+//         ],
+//         correctAnswer: 'Bus',
+//         imageAsset: 'assets/images/bus.png',
+//       ),
+//       MultipleChoiceQuestion(
+//         question: 'What is the name of this vehicle?',
+//         answers: [
+//           'Train',
+//           'Bus',
+//           'Plane',
+//           'Boat',
+//         ],
+//         correctAnswer: 'Boat',
+//         imageAsset: 'assets/images/boat.png',
+//       ),
+//       MultipleChoiceQuestion(
+//         question: 'What is the name of this vehicle?',
+//         answers: [
+//           'Train',
+//           'Bus',
+//           'Plane',
+//           'Boat',
+//         ],
+//         correctAnswer: 'Plane',
+//         imageAsset: 'assets/images/plane.png',
+//       ),
+//     ],
+    // [
+    //   MultipleChoiceQuestion(
+    //     question: 'What is the name of this vehicle?',
+    //     answers: [
+    //       'Train',
+    //       'Bus',
+    //       'Plane',
+    //       'Boat',
+    //     ],
+    //     correctAnswer: 'Plane',
+    //     imageAsset: 'assets/images/plane.png',
+    //   ),
+    // ]

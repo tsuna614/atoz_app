@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class UserProvider extends ChangeNotifier {
   String userId = '';
   String userEmail = '';
+  String userType = 'student';
   int currentUserProgress = 0;
   int userScore = 0;
   int userProgressionPoint = 0;
@@ -37,6 +38,11 @@ class UserProvider extends ChangeNotifier {
 
   void setUserProgressionPoint(int point) {
     userProgressionPoint = point;
+    notifyListeners();
+  }
+
+  void setUserType(String type) {
+    userType = type;
     notifyListeners();
   }
 }
