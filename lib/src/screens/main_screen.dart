@@ -63,6 +63,9 @@ class _MainScreenState extends State<MainScreen> {
       context
           .read<UserProvider>()
           .setUserProgressionPoint(response.data[0]['progression']);
+      context
+          .read<UserProvider>()
+          .setUserLanguage(response.data[0]['language'].toString());
       if (response.data.toString().contains('userType')) {
         context
             .read<UserProvider>()

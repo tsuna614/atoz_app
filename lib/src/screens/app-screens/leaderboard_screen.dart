@@ -335,7 +335,7 @@ class TopPlayerCard extends StatelessWidget {
                         children: [
                           CircleAvatar(
                             backgroundImage:
-                                AssetImage("assets/images/pfp.jpeg"),
+                                AssetImage("assets/images/profile.jpg"),
                           ),
                         ],
                       ),
@@ -352,7 +352,7 @@ class TopPlayerCard extends StatelessWidget {
                         children: [
                           CircleAvatar(
                             backgroundImage:
-                                AssetImage("assets/images/pfp.jpeg"),
+                                AssetImage("assets/images/profile.jpg"),
                           ),
                         ],
                       ),
@@ -372,7 +372,7 @@ class TopPlayerCard extends StatelessWidget {
                         children: [
                           CircleAvatar(
                             backgroundImage:
-                                AssetImage("assets/images/pfp.jpeg"),
+                                AssetImage("assets/images/profile.jpg"),
                           ),
                         ],
                       ),

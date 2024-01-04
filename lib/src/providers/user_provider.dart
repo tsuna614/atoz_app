@@ -10,6 +10,7 @@ class UserProvider extends ChangeNotifier {
   String userId = '';
   String userEmail = '';
   String userType = 'student';
+  String userLanguage = 'English';
   int currentUserProgress = 0;
   int userScore = 0;
   int userProgressionPoint = 0;
@@ -43,6 +44,11 @@ class UserProvider extends ChangeNotifier {
 
   void setUserType(String type) {
     userType = type;
+    notifyListeners();
+  }
+
+  void setUserLanguage(String language) {
+    userLanguage = language;
     notifyListeners();
   }
 }

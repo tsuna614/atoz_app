@@ -98,7 +98,9 @@ class _QuizScreenState extends State<QuizScreen> {
       } else if (currentQuestion is WordsDistributionQuestion) {
         chosenScreen = WordDistribution(
           question: currentQuestion.question,
-          answers: currentQuestion.answers,
+          answers: currentQuestion.getShuffledAnswers(currentQuestion.answers),
+          group1Name: currentQuestion.group1Name,
+          group2Name: currentQuestion.group2Name,
           correctAnswers1: currentQuestion.correctAnswers1,
           correctAnswers2: currentQuestion.correctAnswers2,
           handleCheckButton: _handleAnswerClick,
@@ -143,20 +145,23 @@ class _QuizScreenState extends State<QuizScreen> {
         ),
       ),
       body: SafeArea(
-          child: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 40,
-              vertical: 20,
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 40,
+                vertical: 20,
+              ),
+              child: ProgressBar(
+                  screenWidth: width - 80,
+                  ratio: question.length != 0
+                      ? currentQuestionIndex / question.length
+                      : 1 / 1),
             ),
-            child: ProgressBar(
-                screenWidth: width - 80,
-                ratio: currentQuestionIndex / question.length),
-          ),
-          chosenScreen,
-        ],
-      )),
+            chosenScreen,
+          ],
+        ),
+      ),
       backgroundColor: Colors.white,
     );
   }

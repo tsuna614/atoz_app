@@ -48,21 +48,41 @@ class ResultScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Center(
-          child: CircularPercentIndicator(
-            radius: 100,
-            lineWidth: 10,
-            percent: userScore / totalScore,
-            animation: true,
-            animationDuration: 2000,
-            progressColor: Colors.blue,
-            center: Text(
-              '${(userScore / totalScore * 100).toStringAsFixed(0)}%',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
+        Align(
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 50),
+            child: Text(
+              'Congratulations on completing the test!',
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
             ),
+          ),
+        ),
+        Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Your score:',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              SizedBox(height: 20),
+              CircularPercentIndicator(
+                radius: 100,
+                lineWidth: 10,
+                percent: userScore / totalScore,
+                animation: true,
+                animationDuration: 2000,
+                progressColor: Colors.blue,
+                center: Text(
+                  '${(userScore / totalScore * 100).toStringAsFixed(0)}%',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         Align(

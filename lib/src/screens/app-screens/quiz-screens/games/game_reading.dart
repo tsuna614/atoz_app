@@ -77,7 +77,7 @@ class _ReadingGameState extends State<ReadingGame> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 60),
+            SizedBox(height: 30),
             Expanded(
               child: PageView(
                 controller: _pageController,

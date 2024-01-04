@@ -102,20 +102,35 @@ class _DropDownGameState extends State<DropDownGame> {
   Widget buildSentence(DropDownQuestionChild sentence, int index) {
     return Container(
       margin: EdgeInsets.only(bottom: 20),
-      child: Row(
-        children: [
-          Text(
-            '${index + 1}.       ${sentence.sentence1}',
-            style: TextStyle(fontSize: 20),
-          ),
-          SizedBox(width: 10),
-          buildDropDownButton(sentence.answers, index),
-          SizedBox(width: 10),
-          Text(
-            sentence.sentence2,
-            style: TextStyle(fontSize: 20),
-          ),
-        ],
+      // child: Row(
+      //   children: [
+      //     Text(
+      //       '${index + 1}.       ${sentence.sentence1}',
+      //       style: TextStyle(fontSize: 20),
+      //     ),
+      //     SizedBox(width: 10),
+      //     buildDropDownButton(sentence.answers, index),
+      //     SizedBox(width: 10),
+      //     Text(
+      //       sentence.sentence2,
+      //       style: TextStyle(fontSize: 20),
+      //     ),
+      //   ],
+      // ),
+      // use TextSpan instead
+      child: RichText(
+        text: TextSpan(
+          style: TextStyle(fontSize: 20, color: Colors.black, height: 2),
+          children: [
+            TextSpan(text: '${index + 1}.       '),
+            TextSpan(text: '${sentence.sentence1}    '),
+            WidgetSpan(
+              child: buildDropDownButton(sentence.answers, index),
+            ),
+            TextSpan(text: '    '),
+            TextSpan(text: sentence.sentence2),
+          ],
+        ),
       ),
     );
   }
@@ -132,7 +147,7 @@ class _DropDownGameState extends State<DropDownGame> {
         return DropdownMenuItem(
           value: answer,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(0),
             child: Text(answer, style: TextStyle(fontSize: 20)),
           ),
         );

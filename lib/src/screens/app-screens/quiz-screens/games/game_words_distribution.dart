@@ -16,6 +16,8 @@ class WordDistribution extends StatefulWidget {
     super.key,
     required this.question,
     required this.answers,
+    required this.group1Name,
+    required this.group2Name,
     required this.correctAnswers1,
     required this.correctAnswers2,
     required this.handleCheckButton,
@@ -23,6 +25,8 @@ class WordDistribution extends StatefulWidget {
 
   final String question;
   final List<String> answers;
+  final String group1Name;
+  final String group2Name;
   final List<String> correctAnswers1;
   final List<String> correctAnswers2;
   final void Function(bool correctAnswers) handleCheckButton;
@@ -106,7 +110,7 @@ class _WordDistributionState extends State<WordDistribution> {
           SizedBox(
             height: 60,
           ),
-          buildTitleDivider('Past tense'),
+          buildTitleDivider(widget.group1Name),
           DragTarget<Word>(
             builder: (context, candidateData, rejectedData) {
               return Card(
@@ -133,7 +137,7 @@ class _WordDistributionState extends State<WordDistribution> {
           SizedBox(
             height: 20,
           ),
-          buildTitleDivider('Past participle'),
+          buildTitleDivider(widget.group2Name),
           DragTarget<Word>(
             builder: (context, candidateData, rejectedData) {
               return Card(

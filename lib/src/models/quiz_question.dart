@@ -70,12 +70,16 @@ class WordsDistributionQuestion extends QuizQuestion {
   WordsDistributionQuestion({
     required this.question,
     required this.answers,
+    required this.group1Name,
+    required this.group2Name,
     required this.correctAnswers1,
     required this.correctAnswers2,
   });
 
   final String question;
   final List<String> answers;
+  final String group1Name;
+  final String group2Name;
   final List<String> correctAnswers1;
   final List<String> correctAnswers2;
 
@@ -124,6 +128,12 @@ class DropDownQuestionChild {
   final String sentence2;
   final List<String> answers;
   final String correctAnswer;
+
+  getShuffledAnswers() {
+    final shuffledList = List.of(answers);
+    shuffledList.shuffle();
+    return shuffledList;
+  }
 }
 
 /////////////////////////  Reading question class  /////////////////////////
@@ -144,9 +154,9 @@ class ReadingMultipleChoiceQuestion {
     required this.correctAnswer,
   });
 
-  final String question;
-  final List<String> answers;
-  final String correctAnswer;
+  String question;
+  List<String> answers;
+  String correctAnswer;
 
   getShuffledAnswers() {
     final shuffledList = List.of(answers);

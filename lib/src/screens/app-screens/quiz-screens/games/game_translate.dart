@@ -33,6 +33,9 @@ class _GameTranslateState extends State<GameTranslate> {
   }
 
   void handleCheckClick(String selectedAnswer) {
+    if (selectedAnswer.isEmpty) {
+      return;
+    }
     String answer =
         "${selectedAnswer[0].toUpperCase()}${selectedAnswer.substring(1).toLowerCase()}";
     answer == widget.correctAnswer
@@ -113,11 +116,17 @@ class _GameTranslateState extends State<GameTranslate> {
         SizedBox(height: 20),
         ClipRRect(
           borderRadius: BorderRadius.circular(20.0),
-          child: SizedBox.fromSize(
-            size: Size.fromHeight(400),
-            child: Image(
-              image: AssetImage(widget.imageAsset),
-            ),
+          // child: SizedBox.fromSize(
+          //   size: Size.fromHeight(400),
+          //   child: Image(
+          //     image: AssetImage(widget.imageAsset),
+          //   ),
+          // ),
+          child: Image.network(
+            widget.imageAsset,
+            height: 300,
+            width: double.infinity,
+            fit: BoxFit.cover,
           ),
         ),
       ],
