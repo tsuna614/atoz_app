@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import './bar_data.dart';
+import 'package:intl/intl.dart';
 
 class MyBarGraph extends StatelessWidget {
   const MyBarGraph(
@@ -23,7 +24,7 @@ class MyBarGraph extends StatelessWidget {
     );
     data.initializeBarData();
     return BarChart(BarChartData(
-      maxY: highestValue != 0 ? highestValue : 100,
+      maxY: highestValue > 100 ? highestValue : 100,
       minY: 0,
       gridData: FlGridData(show: false),
       borderData: FlBorderData(show: false),
@@ -69,32 +70,41 @@ Widget getBottomTiles(double value, TitleMeta meta) {
       // fontWeight: FontWeight.bold,
       // fontSize: 14,
       );
+  DateTime date = DateTime.now();
+
+  final dayOfWeek = [];
+
+  for (int i = 6; i >= 0; i--) {
+    dayOfWeek.add(DateFormat('EEEE')
+        .format(date.subtract(Duration(days: i)))
+        .substring(0, 2));
+  }
 
   Widget text;
   switch (value.toInt()) {
     case 1:
-      text = const Text('Mo', style: style);
+      text = Text(dayOfWeek[0], style: style);
       break;
     case 2:
-      text = const Text('Tu', style: style);
+      text = Text(dayOfWeek[1], style: style);
       break;
     case 3:
-      text = const Text('We', style: style);
+      text = Text(dayOfWeek[2], style: style);
       break;
     case 4:
-      text = const Text('Th', style: style);
+      text = Text(dayOfWeek[3], style: style);
       break;
     case 5:
-      text = const Text('Fr', style: style);
+      text = Text(dayOfWeek[4], style: style);
       break;
     case 6:
-      text = const Text('Sa', style: style);
+      text = Text(dayOfWeek[5], style: style);
       break;
     case 7:
-      text = const Text('Su', style: style);
+      text = Text('Today', style: style);
       break;
     default:
-      text = const Text('Null', style: style);
+      text = Text('Null', style: style);
       break;
   }
   return text;

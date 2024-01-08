@@ -334,8 +334,15 @@ class TopPlayerCard extends StatelessWidget {
                         fit: StackFit.expand,
                         children: [
                           CircleAvatar(
-                            backgroundImage:
-                                AssetImage("assets/images/profile.jpg"),
+                            backgroundImage: userData[1]
+                                    .toString()
+                                    .contains('profileImage')
+                                ? Image.asset(
+                                        'assets/images/avatar/${userData[1]['profileImage']}.jpeg')
+                                    .image
+                                : AssetImage(
+                                    "assets/images/profile.jpg",
+                                  ),
                           ),
                         ],
                       ),
@@ -351,8 +358,15 @@ class TopPlayerCard extends StatelessWidget {
                         fit: StackFit.expand,
                         children: [
                           CircleAvatar(
-                            backgroundImage:
-                                AssetImage("assets/images/profile.jpg"),
+                            backgroundImage: userData[0]
+                                    .toString()
+                                    .contains('profileImage')
+                                ? Image.asset(
+                                        'assets/images/avatar/${userData[0]['profileImage']}.jpeg')
+                                    .image
+                                : AssetImage(
+                                    "assets/images/profile.jpg",
+                                  ),
                           ),
                         ],
                       ),
@@ -371,8 +385,15 @@ class TopPlayerCard extends StatelessWidget {
                         fit: StackFit.expand,
                         children: [
                           CircleAvatar(
-                            backgroundImage:
-                                AssetImage("assets/images/profile.jpg"),
+                            backgroundImage: userData[2]
+                                    .toString()
+                                    .contains('profileImage')
+                                ? Image.asset(
+                                        'assets/images/avatar/${userData[2]['profileImage']}.jpeg')
+                                    .image
+                                : AssetImage(
+                                    "assets/images/profile.jpg",
+                                  ),
                           ),
                         ],
                       ),
@@ -451,11 +472,17 @@ class PlayerTitleCard extends StatelessWidget {
                   width: 50,
                   child: Stack(
                     fit: StackFit.expand,
-                    children: const [
+                    children: [
                       CircleAvatar(
-                        backgroundImage: AssetImage(
-                          "assets/images/profile.jpg",
-                        ),
+                        backgroundImage: userData[index]
+                                .toString()
+                                .contains('profileImage')
+                            ? Image.asset(
+                                    'assets/images/avatar/${userData[index]['profileImage']}.jpeg')
+                                .image
+                            : AssetImage(
+                                "assets/images/profile.jpg",
+                              ),
                       ),
                     ],
                   ),

@@ -405,6 +405,10 @@ class CardItem extends StatelessWidget {
                     ),
                   ),
                 ),
+                if (context.read<UserProvider>().userType != 'admin')
+                  SizedBox(
+                    height: 32,
+                  ),
                 if (context.read<UserProvider>().userType == 'admin')
                   Padding(
                     padding: EdgeInsets.only(

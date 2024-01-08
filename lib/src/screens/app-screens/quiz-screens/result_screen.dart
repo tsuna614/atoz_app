@@ -90,7 +90,7 @@ class ResultScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
             child: CheckButton(
-              onButtonPressed: () {
+              onButtonPressed: () async {
                 // if user complete the current stage that they are in, only then the current user progress will be updated
                 // increment user progress (in provider) by 2, and update user progress in database
                 // i did this so it doesn't need to wait to load everytime user complete a stage
@@ -102,6 +102,13 @@ class ResultScreen extends StatelessWidget {
                   updateUserData(context);
                 }
                 Navigator.pop(context);
+                await dio.post(
+                  '${global_data.atozApi}/userScore/addUserScore',
+                  data: {
+                    'userId': _firebase.currentUser!.uid,
+                    'score': 20,
+                  },
+                );
               },
             ),
           ),

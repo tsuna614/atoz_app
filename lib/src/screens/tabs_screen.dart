@@ -110,7 +110,7 @@ class _TabsScreenState extends State<TabsScreen> {
                 selectedColor: Colors.pink,
               ),
               SalomonBottomBarItem(
-                  icon: Icon(FontAwesomeIcons.rankingStar),
+                  icon: Icon(FontAwesomeIcons.medal),
                   title: Text('Leaderboard'),
                   selectedColor: Colors.yellow.shade700),
               SalomonBottomBarItem(

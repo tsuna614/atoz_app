@@ -197,8 +197,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           children: [
                             if (hasImage)
                               CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    '${global.atozApi}/user/getProfileImage/${_firebase.currentUser!.uid}'),
+                                backgroundImage: Image.asset(
+                                        'assets/images/avatar/${userData['profileImage']}.jpeg')
+                                    .image,
                               )
                             else
                               CircleAvatar(
@@ -262,10 +263,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             lastName: userData["lastName"],
                             age: userData["age"],
                             emailAddress: userData["email"],
-                            userImage: hasImage
-                                ? NetworkImage(
-                                    '${global.atozApi}/user/getProfileImage/${_firebase.currentUser!.uid}')
-                                : null,
+                            userImage: hasImage ? userData["profileImage"] : '',
                           ),
                         ),
                       ).then((value) {
@@ -525,6 +523,16 @@ class StudyingInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userProgression = context.read<UserProvider>().userProgressionPoint;
+    String difficulty = 'Novice';
+    if (userProgression >= 200) {
+      difficulty = 'Intermediate';
+    } else if (userProgression >= 500) {
+      difficulty = 'Expert';
+    } else if (userProgression >= 1000) {
+      difficulty = 'Master';
+    }
+
     const rowSpacer = TableRow(children: [
       SizedBox(
         height: 8,
@@ -540,28 +548,34 @@ class StudyingInfo extends StatelessWidget {
         1: FixedColumnWidth(190),
         // 1: IntrinsicColumnWidth()
       }, children: [
-        TableRow(children: const [
+        // TableRow(children: const [
+        //   TableCell(
+        //     verticalAlignment: TableCellVerticalAlignment.bottom,
+        //     child: Text(
+        //       'Hours of study',
+        //       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        //     ),
+        //   ),
+        //   TableCell(
+        //       verticalAlignment: TableCellVerticalAlignment.bottom,
+        //       child: Text('0')),
+        // ]),
+        // rowSpacer,
+        TableRow(children: [
           TableCell(
             verticalAlignment: TableCellVerticalAlignment.bottom,
-            child: Text(
-              'Hours of study',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-          ),
-          TableCell(
-              verticalAlignment: TableCellVerticalAlignment.bottom,
-              child: Text('0')),
-        ]),
-        rowSpacer,
-        TableRow(children: const [
-          TableCell(
-            verticalAlignment: TableCellVerticalAlignment.bottom,
-            child: Text('Lessons completed',
+            child: Text('Difficulty',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           ),
           TableCell(
-              verticalAlignment: TableCellVerticalAlignment.bottom,
-              child: Text('0')),
+            verticalAlignment: TableCellVerticalAlignment.bottom,
+            child: Text(
+              difficulty,
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),
+          ),
         ]),
         rowSpacer,
         TableRow(children: [

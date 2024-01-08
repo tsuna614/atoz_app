@@ -93,6 +93,15 @@ flutter:
     - assets/images/boat.png
     - assets/images/plane.png
     - assets/images/stomachache.png
+    - assets/images/avatar/cat.jpeg
+    - assets/images/avatar/chicken.jpeg
+    - assets/images/avatar/cow.jpeg
+    - assets/images/avatar/elephant.jpeg
+    - assets/images/avatar/lion.jpeg
+    - assets/images/avatar/panda.jpeg
+    - assets/images/avatar/penguin.jpeg
+    - assets/images/avatar/rabbit.jpeg
+    - assets/images/avatar/technoblade.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

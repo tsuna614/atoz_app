@@ -123,6 +123,7 @@ class _QuizScreenState extends State<QuizScreen> {
         chosenScreen = ReadingGame(
           paragraphsList: currentQuestion.paragraphsList,
           questionsList: currentQuestion.questionsList,
+          title: currentQuestion.title,
           handleCheckPressed: _handleAnswerClick,
         );
       } else {

@@ -26,6 +26,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
   Widget chosenScreen = LoadingScreen();
   List<String> paragraphsList = [];
   List<ReadingMultipleChoiceQuestion> questionsList = [];
+  String title = '';
 
   int getRandomLevel(int maxLevel) {
     Random random = Random();
@@ -36,8 +37,6 @@ class _ReadingScreenState extends State<ReadingScreen> {
   void initQuiz() async {
     final userLanguage = context.read<UserProvider>().userLanguage;
     final userProgression = context.read<UserProvider>().userProgressionPoint;
-    print(userLanguage);
-    print(userProgression);
 
     final response = await dio
         .get('${global.atozApi}/readingQuiz/getAllQuizzesWithCondition', data: {
@@ -46,6 +45,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
     });
     final data = response.data.length;
     int randomLevel = getRandomLevel(data);
+    title = response.data[randomLevel]['title'];
     for (int i = 0;
         i < response.data[randomLevel]['paragraphsList'].length;
         i++) {
@@ -103,6 +103,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
         child: ReadingGame(
           paragraphsList: paragraphsList,
           questionsList: questionsList,
+          title: title,
           handleCheckPressed: handleCheckButtonPressed,
         ),
       ),

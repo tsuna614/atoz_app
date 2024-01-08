@@ -24,7 +24,8 @@ class ChangeProfileScreen extends StatefulWidget {
   final String lastName;
   final int age;
   final String emailAddress;
-  final NetworkImage? userImage;
+  // final NetworkImage? userImage;
+  final String userImage;
 
   @override
   State<ChangeProfileScreen> createState() => _ChangeProfileScreenState();
@@ -70,7 +71,7 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
         _lastNameTextField.text != widget.lastName ||
         _ageTextField.text != widget.age.toString() ||
         _emailTextField.text != widget.emailAddress ||
-        image != null) {
+        image.isNotEmpty) {
       return true;
     } else {
       return false;
@@ -86,6 +87,7 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
         "lastName": _lastNameTextField.text,
         "age": _ageTextField.text,
         "email": _emailTextField.text,
+        "profileImage": image.isEmpty ? widget.userImage : image,
       },
     );
 
@@ -102,57 +104,70 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
   /////////////////////////////////////////
   ////////////// Image picker /////////////
 
-  XFile? image;
-  final ImagePicker picker = ImagePicker();
-  //we can upload image from camera or from gallery based on parameter
-  Future getImage(ImageSource media) async {
-    var img = await picker.pickImage(source: media);
+  String image = '';
+  // final ImagePicker picker = ImagePicker();
+  // //we can upload image from camera or from gallery based on parameter
+  // Future getImage(ImageSource media) async {
+  //   var img = await picker.pickImage(source: media);
 
-    setState(() {
-      image = img;
-    });
-  }
+  //   setState(() {
+  //     image = img;
+  //   });
+  // }
 
   void myAlert() {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            title: Text('Please choose media to upload'),
-            content: Container(
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 200),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.white,
+              ),
+              padding: EdgeInsets.all(20),
               height: 100,
               child: Column(
                 children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      getImage(ImageSource.gallery);
-                    },
-                    child: Row(
-                      children: const [
-                        Icon(Icons.image),
-                        Text('From Gallery'),
-                      ],
-                    ),
+                  GridView.count(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    children: [
+                      buildAnimalAvatar(context, 'cat'),
+                      buildAnimalAvatar(context, 'chicken'),
+                      buildAnimalAvatar(context, 'cow'),
+                      buildAnimalAvatar(context, 'elephant'),
+                      buildAnimalAvatar(context, 'lion'),
+                      buildAnimalAvatar(context, 'panda'),
+                      buildAnimalAvatar(context, 'penguin'),
+                      buildAnimalAvatar(context, 'rabbit'),
+                      buildAnimalAvatar(context, 'technoblade'),
+                    ],
                   ),
+                  SizedBox(height: 10),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
+                    onPressed: () => Navigator.pop(context),
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.transparent),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                          side: BorderSide(color: Colors.black),
+                        ),
+                      ),
+                      elevation: MaterialStateProperty.all(0),
                     ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      getImage(ImageSource.camera);
-                    },
-                    child: Row(
-                      children: const [
-                        Icon(Icons.camera),
-                        Text('From Camera'),
-                      ],
+                    child: Text(
+                      'CANCEL',
+                      style: TextStyle(
+                        color: Colors.black,
+                        letterSpacing: 5,
+                      ),
                     ),
                   ),
                 ],
@@ -160,6 +175,26 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
             ),
           );
         });
+  }
+
+  Widget buildAnimalAvatar(BuildContext context, String animalName) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          image = animalName;
+        });
+        Navigator.pop(context);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          image: DecorationImage(
+            image: AssetImage('assets/images/avatar/$animalName.jpeg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    );
   }
 
   /////////////////////////////////////////
@@ -270,13 +305,17 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
                               CircleAvatar(
                                 // if image is null (user hasn't upload image when editing profile), then use the userImage from profile_screen
                                 // if image is not null (user has upload image when editing profile), then use the image from image picker
-                                backgroundImage: image == null
-                                    ? widget.userImage == null
+                                backgroundImage: image.isEmpty
+                                    ? widget.userImage.isEmpty
                                         ? Image.asset(
                                                 'assets/images/profile.jpg')
                                             .image
-                                        : widget.userImage!
-                                    : Image.file(File(image!.path)).image,
+                                        : Image.asset(
+                                                'assets/images/avatar/${widget.userImage}.jpeg')
+                                            .image
+                                    : Image.asset(
+                                            'assets/images/avatar/$image.jpeg')
+                                        .image,
                               ),
                               Positioned(
                                   bottom: -10,
@@ -292,7 +331,7 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
                                       // padding: EdgeInsets.all(15.0),
                                       shape: CircleBorder(),
                                       child: Icon(
-                                        Icons.camera_alt_outlined,
+                                        Icons.image,
                                         color: Colors.grey,
                                         size: 25,
                                       ),

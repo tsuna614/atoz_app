@@ -43,6 +43,13 @@ class _ViewReadingScreenState extends State<ViewReadingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('List of Reading Questions',
+            style: TextStyle(color: Colors.black)),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
       body: readingTitle.isEmpty
           ? Center(
               child: Text('No Reading Question Found'),
@@ -109,7 +116,7 @@ class _ViewReadingScreenState extends State<ViewReadingScreen> {
                 ),
               )
               .then((value) => {
-                    setState(() {
+                    Future.delayed(Duration(seconds: 1), () {
                       initQuestionList();
                     })
                   });

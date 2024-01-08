@@ -245,6 +245,7 @@ class QuestionProvider extends ChangeNotifier {
         ],
       ),
       ReadingQuestion(
+        title: 'A summer day',
         paragraphsList: [
           'I am a student. I go to school every day. I study English, Math, Science, and Art. I like to play football with my friends. I also like to play video games. I have a dog. His name is Max. He is very cute. I love my dog.',
           'I am a student. I go to school every day. I study English, Math, Science, and Art. I like to play football with my friends. I also like to play video games. I have a dog. His name is Max. He is very cute. I love my dog.',

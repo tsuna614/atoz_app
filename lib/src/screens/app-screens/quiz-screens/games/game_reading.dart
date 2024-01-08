@@ -10,10 +10,12 @@ class ReadingGame extends StatefulWidget {
       {super.key,
       required this.paragraphsList,
       required this.questionsList,
+      required this.title,
       required this.handleCheckPressed});
 
   final List<String> paragraphsList;
   final List<ReadingMultipleChoiceQuestion> questionsList;
+  final String title;
   final void Function(bool isAnswerCorrect) handleCheckPressed;
 
   @override
@@ -105,7 +107,14 @@ class _ReadingGameState extends State<ReadingGame> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: 20),
+        SizedBox(height: 30),
+        Text(
+          widget.title,
+          style: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         Flexible(
           child: ListView.builder(
             itemCount: widget.paragraphsList.length,

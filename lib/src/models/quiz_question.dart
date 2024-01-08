@@ -141,10 +141,12 @@ class ReadingQuestion extends QuizQuestion {
   ReadingQuestion({
     required this.paragraphsList,
     required this.questionsList,
+    required this.title,
   });
 
   final List<String> paragraphsList;
   final List<ReadingMultipleChoiceQuestion> questionsList;
+  final String title;
 }
 
 class ReadingMultipleChoiceQuestion {

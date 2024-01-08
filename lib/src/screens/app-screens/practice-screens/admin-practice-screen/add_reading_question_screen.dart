@@ -31,8 +31,15 @@ class _AddReadingQuestionScreenState extends State<AddReadingQuestionScreen> {
         _difficulty.text.isEmpty ||
         _paragraphs.isEmpty ||
         _question.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please fill in all necessary fields'),
+          backgroundColor: Colors.red,
+        ),
+      );
       return;
     }
+    Navigator.of(context).pop();
     for (int i = 0; i < _question.length; i++) {
       Response response = await dio.post(
         '${global.atozApi}/readingMultipleChoice/addQuiz',
@@ -54,9 +61,6 @@ class _AddReadingQuestionScreenState extends State<AddReadingQuestionScreen> {
         'difficulty': _difficulty.text,
       },
     );
-    if (context.mounted) {
-      Navigator.of(context).pop();
-    }
   }
 
   @override
