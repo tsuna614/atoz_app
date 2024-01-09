@@ -1,3 +1,4 @@
+import 'package:atoz_app/src/screens/authentication-screens/user_test_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:atoz_app/src/data/global_data.dart' as global_data;
@@ -130,7 +131,7 @@ class _DifficultyScreenState extends State<DifficultyScreen> {
                     Text(
                       'What\'s your current ${widget.chosenLanguage} level?',
                       style: TextStyle(
-                          fontSize: 36,
+                          fontSize: 30,
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
                     ),
@@ -168,7 +169,26 @@ class _DifficultyScreenState extends State<DifficultyScreen> {
                           chosenDifficulty: chosenDifficulty,
                           onDifficultyPress: onDifficultyPress,
                         ),
-                        SizedBox(height: 16),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => UserTestScreen(
+                                  chosenLanguage: widget.chosenLanguage,
+                                  resetMainPage: widget.resetMainPage,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Text(
+                              'Don\'t know your current level? Take a test now!',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              )),
+                        ),
+                        SizedBox(height: 30),
                         // FilledButton(
                         //   style: ElevatedButton.styleFrom(
                         //       minimumSize: Size.fromHeight(60),

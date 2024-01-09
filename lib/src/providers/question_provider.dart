@@ -5,6 +5,64 @@ import 'package:flutter/material.dart';
 class QuestionProvider extends ChangeNotifier {
   // String language = 'English';
 
+  List<QuizQuestion> dummyTestQuizz = [
+    MultipleChoiceQuestion(
+        question: 'Choose the correct answer',
+        answers: ['Coffee', 'Water', 'Tea', 'Milk'],
+        correctAnswer: 'Coffee',
+        imageAsset:
+            'https://static.vecteezy.com/system/resources/previews/013/860/284/original/hand-drawn-cartoon-coffee-with-beans-free-png.png'),
+    ReorderStringQuestion(
+      question: 'Re-order the string to form a correct sentence',
+      answers: ['Good morning.', 'Would', 'you', 'like', 'some', 'coffee?'],
+      correctAnswer: [
+        'Good morning.',
+        'Would',
+        'you',
+        'like',
+        'some',
+        'coffee?'
+      ],
+      imageAsset:
+          'https://www.shutterstock.com/image-photo/smiling-female-waitress-take-order-600nw-1492617746.jpg',
+    ),
+    TranslateQuestion(
+      question: 'How do you greet someone in the morning?',
+      word: '',
+      correctAnswer: 'Good morning',
+      imageAsset:
+          'https://st2.depositphotos.com/3745043/5334/v/950/depositphotos_53342633-stock-illustration-sunrise-at-early-morning-landscape.jpg',
+    ),
+    MultipleChoiceQuestion(
+      question: 'Choose the correct answer',
+      answers: ['Coffee', 'Water', 'Tea', 'Milk'],
+      correctAnswer: 'Milk',
+      imageAsset: 'https://illustoon.com/photo/4920.png',
+    ),
+    ConnectStringQuestion(
+      question: 'Connect the word to its meaning',
+      leftAnswers: [
+        'Coffee',
+        'Water',
+        'Tea',
+        'Milk',
+      ],
+      rightAnswers: [
+        'Cà phê',
+        'Nước',
+        'Trà',
+        'Sữa',
+      ],
+      correctAnswers: [
+        'Coffee - Cà phê',
+        'Water - Nước',
+        'Tea - Trà',
+        'Milk - Sữa'
+      ],
+      imageAsset: '',
+    ),
+  ];
+
   List<List<QuizQuestion>> dummyEnglishQuizz = [
     [
       MultipleChoiceQuestion(

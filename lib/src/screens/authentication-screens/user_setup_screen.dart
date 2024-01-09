@@ -41,67 +41,67 @@ class _UserSetupScreenState extends State<UserSetupScreen> {
               },
             ),
           ),
-          SafeArea(
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SizedBox(
-                        width: 50,
-                      ),
-                      AnimatedContainer(
-                        width: containerWidth,
-                        height: 10,
-                        decoration: BoxDecoration(
-                          color: containerWidth == 100
-                              ? Colors.white
-                              : Colors.green.withOpacity(0.4),
-                          borderRadius: BorderRadius.circular(20),
-                          // boxShadow: [
-                          //   containerWidth == 10
-                          //       ? BoxShadow(
-                          //           color: Colors.green,
-                          //           blurRadius: 10,
-                          //           offset: Offset(0, 0),
-                          //         )
-                          //       : BoxShadow(color: Colors.transparent),
-                          // ],
-                        ),
-                        duration: Duration(milliseconds: 200),
-                      ),
-                      AnimatedContainer(
-                        width: 110 - containerWidth,
-                        height: 10,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          // boxShadow: [
-                          //   containerWidth == 10
-                          //       ? BoxShadow(
-                          //           color: Colors.white,
-                          //           blurRadius: 10,
-                          //           offset: Offset(0, 0),
-                          //         )
-                          //       : BoxShadow(color: Colors.transparent),
-                          // ],
-                        ),
-                        duration: Duration(milliseconds: 200),
-                      ),
-                      SizedBox(
-                        width: 50,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
+          // SafeArea(
+          //   child: Align(
+          //     alignment: Alignment.topCenter,
+          //     child: Column(
+          //       children: [
+          //         SizedBox(
+          //           height: 20,
+          //         ),
+          //         Row(
+          //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //           children: [
+          //             SizedBox(
+          //               width: 50,
+          //             ),
+          //             AnimatedContainer(
+          //               width: containerWidth,
+          //               height: 10,
+          //               decoration: BoxDecoration(
+          //                 color: containerWidth == 100
+          //                     ? Colors.white
+          //                     : Colors.green.withOpacity(0.4),
+          //                 borderRadius: BorderRadius.circular(20),
+          //                 // boxShadow: [
+          //                 //   containerWidth == 10
+          //                 //       ? BoxShadow(
+          //                 //           color: Colors.green,
+          //                 //           blurRadius: 10,
+          //                 //           offset: Offset(0, 0),
+          //                 //         )
+          //                 //       : BoxShadow(color: Colors.transparent),
+          //                 // ],
+          //               ),
+          //               duration: Duration(milliseconds: 200),
+          //             ),
+          //             AnimatedContainer(
+          //               width: 110 - containerWidth,
+          //               height: 10,
+          //               decoration: BoxDecoration(
+          //                 color: Colors.white,
+          //                 borderRadius: BorderRadius.circular(20),
+          //                 // boxShadow: [
+          //                 //   containerWidth == 10
+          //                 //       ? BoxShadow(
+          //                 //           color: Colors.white,
+          //                 //           blurRadius: 10,
+          //                 //           offset: Offset(0, 0),
+          //                 //         )
+          //                 //       : BoxShadow(color: Colors.transparent),
+          //                 // ],
+          //               ),
+          //               duration: Duration(milliseconds: 200),
+          //             ),
+          //             SizedBox(
+          //               width: 50,
+          //             ),
+          //           ],
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

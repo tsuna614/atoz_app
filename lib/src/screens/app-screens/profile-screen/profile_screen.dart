@@ -96,6 +96,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         SizedBox(height: 400, child: MyBarChart()),
                         SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          'User\'s score chart',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
                           height: 50,
                         ),
                         Padding(

@@ -14,6 +14,7 @@ class UserProvider extends ChangeNotifier {
   int currentUserProgress = 0;
   int userScore = 0;
   int userProgressionPoint = 0;
+  int userRanking = 1;
 
   // create UserProvider constructor
 
@@ -49,6 +50,11 @@ class UserProvider extends ChangeNotifier {
 
   void setUserLanguage(String language) {
     userLanguage = language;
+    notifyListeners();
+  }
+
+  void setUserRanking(int ranking) {
+    userRanking = ranking;
     notifyListeners();
   }
 }
