@@ -5,6 +5,44 @@ import 'package:flutter/material.dart';
 class QuestionProvider extends ChangeNotifier {
   // String language = 'English';
 
+  List<QuizQuestion> dummyWritingQuizz = [
+    DropDownQuestion(
+      question: 'Select the correct answer for each sentence.',
+      sentencesList: [
+        DropDownQuestionChild(
+          sentence1: 'Yesterday, I',
+          sentence2: 'to school at 8 AM.',
+          answers: ['Go', 'Went', 'Gone', 'Is going'],
+          correctAnswer: 'Went',
+        ),
+        DropDownQuestionChild(
+          sentence1: '',
+          sentence2: 'I known about the news, I wouldn\'t have come',
+          answers: ['Had', 'Have', 'Hadn\'t', 'Having'],
+          correctAnswer: 'Had',
+        ),
+        DropDownQuestionChild(
+          sentence1: 'I',
+          sentence2: 'to the cinema tomorrow, are you coming with me?',
+          answers: ['Go', 'Goes', 'Going', 'Will go'],
+          correctAnswer: 'Will go',
+        ),
+        DropDownQuestionChild(
+          sentence1: 'This job',
+          sentence2: 'at least 2 people.',
+          answers: ['Required', 'Requires', 'Require', 'Requiring'],
+          correctAnswer: 'Requires',
+        ),
+        DropDownQuestionChild(
+          sentence1: 'Jack,',
+          sentence2: 'to do your homework okay?',
+          answers: ['Remember', 'Remembered', 'Remembering', 'Will remember'],
+          correctAnswer: 'Remember',
+        ),
+      ],
+    ),
+  ];
+
   List<QuizQuestion> dummyTestQuizz = [
     MultipleChoiceQuestion(
         question: 'Choose the correct answer',
@@ -249,8 +287,8 @@ class QuestionProvider extends ChangeNotifier {
       ),
       MultipleChoiceQuestion(
         question: 'Choose the correct answer',
-        answers: ['Coffee', 'Water', 'Tea', 'Milk'],
-        correctAnswer: 'Water',
+        answers: ['Morning', 'Night', 'Afternoon', 'Evening'],
+        correctAnswer: 'Evening',
         imageAsset:
             'https://img.freepik.com/free-vector/gradient-tropical-sunset-background_52683-128662.jpg?size=626&ext=jpg&ga=GA1.1.1546980028.1704153600&semt=ais',
       ),
@@ -338,7 +376,7 @@ class QuestionProvider extends ChangeNotifier {
               'Plane',
               'Boat',
             ],
-            correctAnswer: 'Boat',
+            correctAnswer: 'Plane',
           ),
           ReadingMultipleChoiceQuestion(
             question: 'What is the name of this vehicle?',
@@ -348,7 +386,7 @@ class QuestionProvider extends ChangeNotifier {
               'Plane',
               'Boat',
             ],
-            correctAnswer: 'Plane',
+            correctAnswer: 'Boat',
           ),
         ],
       ),

@@ -33,7 +33,6 @@ class _UserTestScreenState extends State<UserTestScreen> {
 
   void getQuestions() {
     question = context.read<QuestionProvider>().dummyTestQuizz;
-    print(question);
   }
 
   void _handleAnswerClick(bool isCorrect) {
