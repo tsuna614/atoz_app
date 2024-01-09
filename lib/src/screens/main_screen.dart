@@ -28,8 +28,8 @@ class _MainScreenState extends State<MainScreen> {
     final id = auth.currentUser!.uid;
     // print(id);
     final email = auth.currentUser!.email;
-    print(email);
-    print(id);
+    // print(email);
+    // print(id);
 
     // _firebase.signOut();
 

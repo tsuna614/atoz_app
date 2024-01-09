@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:atoz_app/src/data/global_data.dart' as global_data;
+import 'package:dio/dio.dart';
+
+final dio = Dio();
 
 final _firebase = FirebaseAuth.instance;
 
@@ -60,6 +64,23 @@ class _LoginScreenState extends State<LoginScreen> {
       ));
       setState(() {
         _isLoading = false;
+      });
+    }
+  }
+
+  void signUpGoogleUser(String userId, String email) async {
+    // print('${global_data.atozApi}/user/getUserById/$userId');
+    Response response =
+        await dio.get('${global_data.atozApi}/user/getUserById/$userId');
+
+    if (response.data.toString().contains('userId') == false) {
+      await dio.post('${global_data.atozApi}/user/addUser', data: {
+        'userId': userId,
+        'email': email,
+        'firstName': 'First name',
+        'lastName': 'Last name',
+        'age': 0,
+        'userStage': 1,
       });
     }
   }
@@ -200,8 +221,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.white,
                                 minimumSize: Size.fromHeight(40)),
-                            onPressed: () {
-                              AuthService().signInWithGoogle();
+                            onPressed: () async {
+                              await AuthService().signInWithGoogle();
+                              signUpGoogleUser(_firebase.currentUser!.uid,
+                                  _firebase.currentUser!.email!);
                               // _handleSignIn();
                             },
                             child: Ink(

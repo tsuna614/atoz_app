@@ -1,5 +1,6 @@
 import 'package:atoz_app/src/models/quiz_question.dart';
 import 'package:atoz_app/src/providers/question_provider.dart';
+import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_connect_string.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_drop_down.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_multiple_choice.dart';
@@ -30,8 +31,17 @@ class _QuizScreenState extends State<QuizScreen> {
   late Widget chosenScreen;
 
   void getQuestions() {
-    question =
-        context.read<QuestionProvider>().dummyEnglishQuizz[widget.currentStage];
+    // question =
+    //     context.read<QuestionProvider>().dummyEnglishQuizz[widget.currentStage];
+    if (context.read<UserProvider>().userLanguage == 'English') {
+      question = context
+          .read<QuestionProvider>()
+          .dummyEnglishQuizz[widget.currentStage];
+    } else if (context.read<UserProvider>().userLanguage == 'Japanese') {
+      question = context
+          .read<QuestionProvider>()
+          .dummyJapaneseQuizz[widget.currentStage];
+    }
   }
 
   void _handleAnswerClick(bool isCorrect) {
