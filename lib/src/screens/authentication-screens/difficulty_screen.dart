@@ -52,7 +52,7 @@ class _DifficultyScreenState extends State<DifficultyScreen> {
       default:
         break;
     }
-    Response response = await dio.put(
+    await dio.put(
       '${global_data.atozApi}/user/editUserById/${id}',
       data: {
         'language': widget.chosenLanguage,

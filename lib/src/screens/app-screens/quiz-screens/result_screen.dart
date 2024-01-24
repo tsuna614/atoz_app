@@ -2,7 +2,6 @@ import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:dio/dio.dart';
 import 'package:atoz_app/src/data/global_data.dart' as global_data;

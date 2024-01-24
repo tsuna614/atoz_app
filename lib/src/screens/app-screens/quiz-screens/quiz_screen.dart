@@ -11,7 +11,6 @@ import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_words_d
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/result_screen.dart';
 import 'package:atoz_app/src/screens/loading_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 class QuizScreen extends StatefulWidget {
@@ -156,21 +155,24 @@ class _QuizScreenState extends State<QuizScreen> {
         ),
       ),
       body: SafeArea(
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 40,
-                vertical: 20,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 40,
+                  vertical: 20,
+                ),
+                child: ProgressBar(
+                    screenWidth: width - 80,
+                    ratio: question.length != 0
+                        ? currentQuestionIndex / question.length
+                        : 1 / 1),
               ),
-              child: ProgressBar(
-                  screenWidth: width - 80,
-                  ratio: question.length != 0
-                      ? currentQuestionIndex / question.length
-                      : 1 / 1),
-            ),
-            chosenScreen,
-          ],
+              chosenScreen,
+            ],
+          ),
         ),
       ),
       backgroundColor: Colors.white,

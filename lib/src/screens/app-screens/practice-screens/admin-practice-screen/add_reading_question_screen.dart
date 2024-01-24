@@ -1,7 +1,6 @@
 import 'package:atoz_app/src/models/quiz_question.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:atoz_app/src/data/global_data.dart' as global;
 import 'package:dio/dio.dart';
 
@@ -51,7 +50,7 @@ class _AddReadingQuestionScreenState extends State<AddReadingQuestionScreen> {
       );
       allQuestionIds.add(response.data['_id'].toString());
     }
-    Response response = await dio.post(
+    await dio.post(
       '${global.atozApi}/readingQuiz/addQuiz',
       data: {
         'title': _title.text,

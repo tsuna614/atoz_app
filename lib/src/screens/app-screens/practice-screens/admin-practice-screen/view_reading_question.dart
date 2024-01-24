@@ -1,9 +1,7 @@
 import 'package:atoz_app/src/screens/app-screens/practice-screens/admin-practice-screen/add_reading_question_screen.dart';
-import 'package:atoz_app/src/screens/app-screens/practice-screens/admin-practice-screen/detail_reading_question.dart';
-import 'package:atoz_app/src/screens/loading_screen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:atoz_app/src/data/global_data.dart' as global;
 import 'package:dio/dio.dart';
 

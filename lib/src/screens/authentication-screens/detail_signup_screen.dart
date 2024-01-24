@@ -1,5 +1,3 @@
-import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:atoz_app/src/data/global_data.dart' as global_data;
@@ -30,7 +28,7 @@ class _DetailSignUpScreenState extends State<DetailSignUpScreen> {
   final _lastNameTextField = TextEditingController();
   final _ageTextField = TextEditingController();
 
-  File? _selectedImage;
+  // File? _selectedImage;
 
   void _submit() async {
     final isValid = _detailForm.currentState!.validate();
@@ -44,13 +42,11 @@ class _DetailSignUpScreenState extends State<DetailSignUpScreen> {
       setState(() {
         _isLoading = true;
       });
-      // create new user
-      final userCredential = await _firebase
+      await _firebase
           .createUserWithEmailAndPassword(
               email: widget.email, password: widget.password)
           .then((value) async {
-        Response response;
-        response = await dio.post('${global_data.atozApi}/user/addUser', data: {
+        await dio.post('${global_data.atozApi}/user/addUser', data: {
           'userId': value.user!.uid,
           'email': widget.email,
           'firstName': enteredFirstName,
@@ -62,6 +58,7 @@ class _DetailSignUpScreenState extends State<DetailSignUpScreen> {
           return value;
         }).catchError((onError) {
           print(onError);
+          return onError;
           // // delete user on firebase
           // value.user!.delete();
         });

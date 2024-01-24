@@ -1,8 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:reorderables/reorderables.dart';
 
 class ReorderString extends StatefulWidget {
@@ -15,11 +13,11 @@ class ReorderString extends StatefulWidget {
     required this.imageAsset,
   });
 
-  String question;
-  List<String> answers;
-  List<String> correctAnswer;
-  String imageAsset;
-  void Function(bool isCorrect) handleCheckButton;
+  final String question;
+  final List<String> answers;
+  final List<String> correctAnswer;
+  final String imageAsset;
+  final void Function(bool isCorrect) handleCheckButton;
 
   @override
   State<ReorderString> createState() => _ReorderStringState();

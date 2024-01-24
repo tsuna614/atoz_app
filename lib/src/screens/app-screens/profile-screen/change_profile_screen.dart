@@ -1,11 +1,7 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:atoz_app/src/data/global_data.dart' as global;
-import 'package:image_picker/image_picker.dart';
 
 final dio = Dio();
 final _firebase = FirebaseAuth.instance;
@@ -120,7 +116,7 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
         context: context,
         builder: (BuildContext context) {
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 200),
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 180),
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),

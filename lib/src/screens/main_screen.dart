@@ -27,7 +27,6 @@ class _MainScreenState extends State<MainScreen> {
   Future<void> changeScreen() async {
     final id = auth.currentUser!.uid;
     // print(id);
-    final email = auth.currentUser!.email;
     // print(email);
     // print(id);
 

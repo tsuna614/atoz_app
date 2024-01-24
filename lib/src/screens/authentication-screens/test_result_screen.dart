@@ -1,12 +1,9 @@
-import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:dio/dio.dart';
 import 'package:atoz_app/src/data/global_data.dart' as global_data;
-import 'package:provider/provider.dart';
 
 final _firebase = FirebaseAuth.instance;
 final dio = Dio();
@@ -38,7 +35,7 @@ class TestResult extends StatelessWidget {
       userProgression = 0;
     }
 
-    Response response = await dio.put(
+    await dio.put(
       '${global_data.atozApi}/user/editUserById/${_firebase.currentUser!.uid}',
       data: {
         'language': chosenLanguage,

@@ -99,6 +99,44 @@ class QuestionProvider extends ChangeNotifier {
       ],
       imageAsset: '',
     ),
+    ReadingQuestion(
+      title: 'My next summer holiday plan',
+      paragraphsList: [
+        "I usually teach English at a language school in the summer. I often can’t enjoy the summer because I am so busy. So this summer, I’m not planning to work. Instead, I’m going to have a proper summer holiday. I’m going to buy a campervan and drive around Ireland. I’m going to visit lots of beautiful beaches and learn to surf! I’m mostly going to travel alone, but I will visit friends. One friend, Cathy, is a school teacher, so she has a long summer holiday, so hopefully, we will spend a week or two together. Another Irish friend, Joe, has a new house there, so I’ll stay with him for a few days and help him paint the rooms.",
+        "Last year, I did a surfing instructor course, and I spent the summer teaching people to surf. It was great! I was in the sea and sun all day, and every evening, my friends and I had a barbecue on the beach. The surf school asked me to return this summer, but I’m not going to do that. Last autumn, I learned to scuba dive, and I’m going to do a diving instructor course soon. Then, I plan to teach diving all summer to earn some money. I don’t want to stay in the UK. It’s too cold here! I want to fly to Greece or Egypt. I’ll go there alone. I’m sure I will meet lots of cool people there!",
+        "Well, last month, my friend Alfie and I had a crazy idea. We decided to cycle from the south of England to the north of Scotland, from Land’s End to John o’Groats. It’s an 874-mile trip! It takes ten to fourteen days. But I’m not a fast cyclist, and I want to enjoy visiting different places, so we plan to ride for four weeks. We will visit historic cities like Bath and Edinburgh, cycle through the pretty countryside and visit museums and castles on the way. Alfie wanted to camp, but I’d like a comfortable bed at the end of each day, so we are going to stay in guest houses. I hope it doesn’t rain a lot, but I hope it’s not too hot either!",
+      ],
+      questionsList: [
+        ReadingMultipleChoiceQuestion(
+          question: 'Which person is going to work this summer?',
+          answers: [
+            'Emma',
+            'Jayden',
+            'Pamela',
+          ],
+          correctAnswer: 'Emma',
+        ),
+        ReadingMultipleChoiceQuestion(
+          question: 'Which person is going to stay in the UK?',
+          answers: [
+            'Emma',
+            'Jayden',
+            'Pamela',
+          ],
+          correctAnswer: 'Jayden',
+        ),
+        ReadingMultipleChoiceQuestion(
+          question:
+              "Which person wants to learn a new sport during the summer?",
+          answers: [
+            'Emma',
+            'Jayden',
+            'Pamela',
+          ],
+          correctAnswer: 'Pamela',
+        ),
+      ],
+    ),
   ];
 
   List<List<QuizQuestion>> dummyEnglishQuizz = [
@@ -309,7 +347,7 @@ class QuestionProvider extends ChangeNotifier {
       TranslateQuestion(
         question: 'How do you greet someone in the morning?',
         word: '',
-        correctAnswer: 'Good morning',
+        correctAnswer: 'Morning',
         imageAsset:
             'https://st2.depositphotos.com/3745043/5334/v/950/depositphotos_53342633-stock-illustration-sunrise-at-early-morning-landscape.jpg',
       ),

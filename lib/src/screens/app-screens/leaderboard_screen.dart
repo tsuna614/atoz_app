@@ -1,11 +1,9 @@
-import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:flutter/src/widgets/framework.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:dio/dio.dart';
 import 'package:atoz_app/src/data/global_data.dart' as globals;
-import 'package:provider/provider.dart';
 
 final dio = Dio();
 

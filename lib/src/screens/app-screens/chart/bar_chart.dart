@@ -1,9 +1,8 @@
 import 'package:atoz_app/src/providers/user_provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './bar_graph.dart';
-import 'package:intl/intl.dart';
 import 'package:dio/dio.dart';
 import 'package:atoz_app/src/data/global_data.dart' as globals;
 
@@ -17,13 +16,13 @@ class MyBarChart extends StatefulWidget {
 }
 
 class _MyBarChartState extends State<MyBarChart> {
-  double day1Value = 0;
-  double day2Value = 0;
-  double day3Value = 0;
-  double day4Value = 0;
-  double day5Value = 0;
-  double day6Value = 0;
-  double day7Value = 0;
+  double day1Value = 10;
+  double day2Value = 15;
+  double day3Value = 20;
+  double day4Value = 5;
+  double day5Value = 30;
+  double day6Value = 60;
+  double day7Value = 55;
 
   double highestValue = 0;
 
@@ -186,7 +185,7 @@ class _MyBarChartState extends State<MyBarChart> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getLastWeekRevenue(context);
+    // getLastWeekRevenue(context);
   }
 
   // getLastWeekRevenue();

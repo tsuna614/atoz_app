@@ -1,9 +1,7 @@
-import 'package:atoz_app/src/screens/app-screens/home_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/journey_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/leaderboard_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/practice-screens/practice_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/profile-screen/profile_screen.dart';
-import 'package:atoz_app/src/widgets/bottom_nav_bar_1.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
@@ -17,8 +15,6 @@ class TabsScreen extends StatefulWidget {
 
 class _TabsScreenState extends State<TabsScreen> {
   int _selectedIndex = 0;
-  Widget _chosenScreen = JourneyScreen();
-  String _chosenScreenName = 'Journey';
   final _pageController = PageController();
   final _pages = [
     JourneyScreen(),
@@ -27,39 +23,13 @@ class _TabsScreenState extends State<TabsScreen> {
     ProfileScreen(),
   ];
 
-  void _onItemTap(int index) {
-    setState(() {
-      _selectedIndex = index;
-      switch (index) {
-        case 0:
-          _chosenScreen = JourneyScreen();
-          _chosenScreenName = 'Journey';
-          break;
-        case 1:
-          _chosenScreen = PracticeScreen();
-          _chosenScreenName = 'Practice';
-          break;
-        case 2:
-          _chosenScreen = LeaderboardScreen();
-          _chosenScreenName = 'Leaderboard';
-          break;
-        case 3:
-          _chosenScreen = ProfileScreen();
-          _chosenScreenName = 'Profile';
-          break;
-        default:
-          break;
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: AppBar(
       //   title: Text(_chosenScreenName),
       // ),
-      backgroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
+      // backgroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
       body: PageView(
         onPageChanged: (index) {
           setState(() {

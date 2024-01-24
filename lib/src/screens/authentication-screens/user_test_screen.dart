@@ -11,7 +11,6 @@ import 'package:atoz_app/src/screens/authentication-screens/test_result_screen.d
 import 'package:atoz_app/src/screens/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
 
 class UserTestScreen extends StatefulWidget {

@@ -1,21 +1,10 @@
 import 'package:atoz_app/src/providers/question_provider.dart';
 import 'package:atoz_app/src/providers/user_provider.dart';
-import 'package:atoz_app/src/screens/app-screens/home_screen.dart';
-import 'package:atoz_app/src/screens/app-screens/profile-screen/change_profile_screen.dart';
-import 'package:atoz_app/src/screens/app-screens/profile-screen/profile_screen.dart';
-import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_connect_string.dart';
-import 'package:atoz_app/src/screens/app-screens/quiz-screens/quiz_screen.dart';
-import 'package:atoz_app/src/screens/authentication-screens/detail_signup_screen.dart';
-import 'package:atoz_app/src/screens/authentication-screens/difficulty_screen.dart';
-import 'package:atoz_app/src/screens/authentication-screens/language_select_screen.dart';
-import 'package:atoz_app/src/screens/authentication-screens/user_setup_screen.dart';
 import 'package:atoz_app/src/screens/loading_screen.dart';
 import 'package:atoz_app/src/screens/main_screen.dart';
 import 'package:atoz_app/src/screens/authentication-screens/login_screen.dart';
-import 'package:atoz_app/src/screens/tabs_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:atoz_app/src/screens/test.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -25,8 +14,8 @@ import 'package:provider/provider.dart' as provider;
 final theme = ThemeData(
   // useMaterial3: true,
   // colorScheme: ColorScheme.fromSeed(
-  //   brightness: Brightness.dark,
-  //   seedColor: const Color.fromARGB(255, 131, 57, 0),
+  //   brightness: Brightness.light,
+  //   seedColor: const Color.fromARGB(255, 0, 70, 149),
   // ),
   primaryColor: Color.fromARGB(255, 0, 70, 149),
   colorScheme: ThemeData().colorScheme.copyWith(
@@ -109,6 +98,7 @@ class MyApp extends StatelessWidget {
             return const LoginScreen();
           },
         ),
+        // home: const TestWidget(),
         // home: QuizScreen(
         //   currentStage: 0,
         // ),

@@ -1,7 +1,6 @@
 import 'package:atoz_app/src/screens/authentication-screens/language_select_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class UserSetupScreen extends StatefulWidget {
   const UserSetupScreen({

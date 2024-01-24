@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class ConnectString extends StatefulWidget {
   ConnectString({
@@ -15,12 +14,12 @@ class ConnectString extends StatefulWidget {
     required this.imageAsset,
   });
 
-  String question;
-  List<String> leftAnswers;
-  List<String> rightAnswers;
-  List<String> correctAnswers;
-  String imageAsset;
-  void Function(bool correctAnswers) handleCheckButton;
+  final String question;
+  final List<String> leftAnswers;
+  final List<String> rightAnswers;
+  final List<String> correctAnswers;
+  final String imageAsset;
+  final void Function(bool correctAnswers) handleCheckButton;
 
   @override
   State<ConnectString> createState() => _ConnectStringState();
