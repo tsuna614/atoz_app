@@ -9,7 +9,7 @@ import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_reorder
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_translate.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_words_distribution.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/result_screen.dart';
-import 'package:atoz_app/src/screens/loading_screen.dart';
+import 'package:atoz_app/src/screens/main-screens/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

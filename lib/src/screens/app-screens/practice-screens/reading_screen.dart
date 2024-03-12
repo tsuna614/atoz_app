@@ -2,7 +2,7 @@ import 'package:atoz_app/src/models/quiz_question.dart';
 import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/games/game_reading.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/result_screen.dart';
-import 'package:atoz_app/src/screens/loading_screen.dart';
+import 'package:atoz_app/src/screens/main-screens/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:atoz_app/src/data/global_data.dart' as global;

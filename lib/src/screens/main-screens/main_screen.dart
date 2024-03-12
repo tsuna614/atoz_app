@@ -1,7 +1,7 @@
 import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:atoz_app/src/screens/authentication-screens/user_setup_screen.dart';
-import 'package:atoz_app/src/screens/loading_screen.dart';
-import 'package:atoz_app/src/screens/tabs_screen.dart';
+import 'package:atoz_app/src/screens/main-screens/loading_screen.dart';
+import 'package:atoz_app/src/screens/main-screens/tabs_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:atoz_app/src/data/global_data.dart' as globals;
