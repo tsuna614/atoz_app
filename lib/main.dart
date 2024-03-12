@@ -3,6 +3,7 @@ import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:atoz_app/src/screens/loading_screen.dart';
 import 'package:atoz_app/src/screens/main_screen.dart';
 import 'package:atoz_app/src/screens/authentication-screens/login_screen.dart';
+// import 'package:atoz_app/src/screens/test.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';

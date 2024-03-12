@@ -976,16 +976,81 @@
 // }
 
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 
-class TestWidget extends StatelessWidget {
+class TestWidget extends StatefulWidget {
   const TestWidget({super.key});
 
   @override
+  State<TestWidget> createState() => _TestWidgetState();
+}
+
+class _TestWidgetState extends State<TestWidget> {
+  final audioPlayer = AudioPlayer();
+  bool isPlaying = false;
+  Duration audioDuration = Duration();
+  Duration currentDuration = Duration();
+  String url = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
+
+  @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('Hello World'),
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Slider(
+              value: currentDuration.inSeconds.toDouble(),
+              min: 0,
+              max: audioDuration.inSeconds.toDouble(),
+              divisions: 100,
+              onChanged: (double value) {
+                setState(() {});
+              },
+            ),
+            Row(
+              children: [
+                Text(formatTime(currentDuration)),
+                Spacer(),
+                Text(formatTime(audioDuration)),
+              ],
+            ),
+            CircleAvatar(
+              radius: 35,
+              child: IconButton(
+                icon: isPlaying ? Icon(Icons.pause) : Icon(Icons.play_arrow),
+                iconSize: 50,
+                color: Colors.white,
+                onPressed: () async {
+                  if (isPlaying) {
+                    await audioPlayer.pause();
+                    isPlaying = false;
+                  } else {
+                    print('object');
+                    await audioPlayer.play(UrlSource(url));
+                    isPlaying = true;
+                  }
+                },
+              ),
+            )
+          ],
+        ),
       ),
     );
+  }
+
+  String formatTime(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+
+    final hour = twoDigits(duration.inHours);
+    final minute = twoDigits(duration.inMinutes.remainder(60));
+    final second = twoDigits(duration.inSeconds.remainder(60));
+
+    return [
+      if (duration.inHours > 0) hour,
+      minute,
+      second,
+    ].join(':');
   }
 }
