@@ -40,7 +40,7 @@ class _JourneyScreenState extends State<JourneyScreen> {
     int currentUserProgress = context.watch<UserProvider>().currentUserProgress;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      // extendBodyBehindAppBar: true,
       body: Stack(
         children: [
           ClipPath(

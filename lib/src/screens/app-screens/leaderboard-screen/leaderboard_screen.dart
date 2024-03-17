@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:flutter/src/widgets/framework.dart';
@@ -45,77 +46,57 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        ClipPath(
-          clipper: CustomClipPathLightBlue(context: context),
-          child: Container(
-            // gradient
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-                  Colors.lightBlue.shade600,
-                  Colors.lightBlue.shade400,
+        Column(
+          children: [
+            SizedBox(height: 50),
+            Container(
+              height: 350.0,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                color: Colors.lightBlue.shade100,
+                // border:
+                // only bottom border
+                // border: Border(
+                //   bottom: BorderSide(
+                //     color: Colors.grey.shade300,
+                //     width: 1.0,
+                //   ),
+                // ),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  userData == null
+                      ? Expanded(
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.blue,
+                            ),
+                          ),
+                        )
+                      : buildTopPlayerCard(context),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
             ),
-          ),
-        ),
-        Positioned(
-          // top: 0,
-          child: Column(
-            children: [
-              SizedBox(height: 50),
-              Container(
-                height: 350.0,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: Colors.lightBlue.shade100,
-                  // border:
-                  // only bottom border
-                  // border: Border(
-                  //   bottom: BorderSide(
-                  //     color: Colors.grey.shade300,
-                  //     width: 1.0,
-                  //   ),
-                  // ),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    userData == null
-                        ? Expanded(
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.blue,
-                              ),
-                            ),
-                          )
-                        : TopPlayerCard(userData: userData),
-                    SizedBox(
-                      height: 20,
+            userData == null
+                ? Expanded(
+                    child: Center(
+                      child: CircularProgressIndicator(),
                     ),
-                  ],
-                ),
-              ),
-              userData == null
-                  ? Expanded(
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    )
-                  : Expanded(
-                      child: ListView.builder(
-                        itemCount: userData == null ? 0 : userData.length,
-                        itemBuilder: (context, index) {
-                          return PlayerTitleCard(
-                              index: index, userData: userData);
-                        },
-                      ),
+                  )
+                : Expanded(
+                    child: ListView.builder(
+                      itemCount: userData == null ? 0 : userData.length,
+                      itemBuilder: (context, index) {
+                        return buildPlayerTitleCard(context, index);
+                      },
                     ),
-            ],
-          ),
+                  ),
+          ],
         ),
         ClipPath(
           clipper: CustomClipPathLightBlue(context: context),
@@ -152,15 +133,8 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
       ],
     );
   }
-}
 
-class TopPlayerCard extends StatelessWidget {
-  const TopPlayerCard({super.key, required this.userData});
-
-  final List<dynamic> userData;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget buildTopPlayerCard(BuildContext context) {
     return Stack(
       children: [
         Column(
@@ -417,103 +391,157 @@ class TopPlayerCard extends StatelessWidget {
       ],
     );
   }
-}
 
-//////////////// THIS IS THE PLAYER LIST TILE CARD ////////////////
-
-class PlayerTitleCard extends StatelessWidget {
-  const PlayerTitleCard(
-      {super.key, required this.index, required this.userData});
-
-  final int index;
-  final List<dynamic> userData;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(0),
-      child: ListTile(
-        // leading: Text(
-        //   index.toString(),
-        //   style: TextStyle(
-        //     fontSize: 20,
-        //     fontWeight: FontWeight.bold,
-        //   ),
-        // ),
-        title: Container(
-          height: 65,
-          decoration: BoxDecoration(
-            color: Colors.grey.shade100,
-            borderRadius: BorderRadius.circular(30),
-          ),
+  Future<void> showPopUpMenu(
+      BuildContext context, Offset globalPosition) async {
+    double left = globalPosition.dx;
+    double top = globalPosition.dy;
+    await showMenu(
+      color: Colors.white,
+      //add your color
+      context: context,
+      position: RelativeRect.fromLTRB(left, top, 0, 0),
+      items: [
+        PopupMenuItem(
+          value: 1,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.only(left: 0, right: 40),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  (index + 1).toString(),
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(width: 20),
+              children: const [
+                Icon(Icons.person),
                 SizedBox(
-                  height: 50,
-                  width: 50,
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: userData[index]
-                                .toString()
-                                .contains('profileImage')
-                            ? Image.asset(
-                                    'assets/images/avatar/${userData[index]['profileImage']}.jpeg')
-                                .image
-                            : AssetImage(
-                                "assets/images/profile.jpg",
-                              ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(width: 20),
-                // Text(
-                //   'Khanh Nguyen Quoc',
-                //   style: TextStyle(
-                //     // fontSize: 16,
-                //     fontWeight: FontWeight.bold,
-                //   ),
-                // ),
-                Expanded(
-                  child: Text(
-                    userData[index]['firstName'] +
-                        ' ' +
-                        userData[index]['lastName'],
-                    style: TextStyle(
-                      // fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  width: 10,
                 ),
                 Text(
-                  userData[index]['score'].toString(),
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue),
+                  "View profile",
+                  style: TextStyle(color: Colors.black),
                 ),
               ],
             ),
           ),
         ),
-        // trailing: Text(
-        //   '2190',
-        //   style: TextStyle(
-        //       fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
-        // ),
+        PopupMenuItem(
+          value: 2,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 0, right: 40),
+            child: Row(
+              children: const [
+                Icon(Icons.message),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  "Message",
+                  style: TextStyle(color: Colors.black),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+      elevation: 8.0,
+    ).then((value) {
+      if (value == 1) {
+        //do your task here for menu 1
+      }
+      if (value == 2) {
+        //do your task here for menu 2
+      }
+    });
+  }
+
+  Widget buildPlayerTitleCard(BuildContext context, int index) {
+    return Padding(
+      padding: const EdgeInsets.all(0),
+      child: GestureDetector(
+        onLongPressEnd: (LongPressEndDetails details) {
+          showPopUpMenu(context, details.globalPosition);
+        },
+        child: ListTile(
+          // leading: Text(
+          //   index.toString(),
+          //   style: TextStyle(
+          //     fontSize: 20,
+          //     fontWeight: FontWeight.bold,
+          //   ),
+          // ),
+          title: Container(
+            padding: EdgeInsets.symmetric(
+              vertical: 10,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(30),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    (index + 1).toString(),
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        CircleAvatar(
+                          backgroundImage: userData[index]
+                                  .toString()
+                                  .contains('profileImage')
+                              ? Image.asset(
+                                      'assets/images/avatar/${userData[index]['profileImage']}.jpeg')
+                                  .image
+                              : AssetImage(
+                                  "assets/images/profile.jpg",
+                                ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  // Text(
+                  //   'Khanh Nguyen Quoc',
+                  //   style: TextStyle(
+                  //     // fontSize: 16,
+                  //     fontWeight: FontWeight.bold,
+                  //   ),
+                  // ),
+                  Expanded(
+                    child: Text(
+                      userData[index]['firstName'] +
+                          ' ' +
+                          userData[index]['lastName'],
+                      style: TextStyle(
+                        // fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    userData[index]['score'].toString(),
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          // trailing: Text(
+          //   '2190',
+          //   style: TextStyle(
+          //       fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
+          // ),
+        ),
       ),
     );
   }

@@ -1,5 +1,7 @@
 import 'package:atoz_app/src/providers/user_provider.dart';
+import 'package:atoz_app/src/screens/app-screens/profile-screen/profile_screen.dart';
 import 'package:atoz_app/src/screens/authentication-screens/user_setup_screen.dart';
+import 'package:atoz_app/src/screens/main-screens/drawer_screen.dart';
 import 'package:atoz_app/src/screens/main-screens/loading_screen.dart';
 import 'package:atoz_app/src/screens/main-screens/tabs_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,7 +26,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   Widget appScreen = LoadingScreen();
 
-  Future<void> changeScreen() async {
+  Future<void> initScreen() async {
     final id = auth.currentUser!.uid;
     // print(id);
     // print(email);
@@ -42,7 +44,7 @@ class _MainScreenState extends State<MainScreen> {
         appScreen = TabsScreen();
       } else {
         appScreen = UserSetupScreen(
-          resetMainPage: changeScreen,
+          resetMainPage: initScreen,
         );
       }
     });
@@ -73,15 +75,108 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+  void switchScreen(int screenIndex) {
+    setState(() {
+      // switch to another screen
+      if (screenIndex == 0) {
+        appScreen = TabsScreen();
+      } else if (screenIndex == 1) {
+        appScreen = ProfileScreen(
+          userId: context.read<UserProvider>().userId,
+        );
+      } else if (screenIndex == 2) {
+        appScreen = TabsScreen();
+      } else if (screenIndex == 3) {
+        appScreen = TabsScreen();
+      }
+
+      // // close the drawer
+      // if (isDrawerOpen) {
+      //   // wait 0.2s
+      //   Future.delayed(Duration(milliseconds: 250), () {
+      //     alternateDrawer();
+      //   });
+      // }
+    });
+  }
+
+  double xOffset = 0;
+  double yOffset = 0;
+
+  bool isDrawerOpen = false;
+
+  void alternateDrawer() {
+    isDrawerOpen
+        ? setState(() {
+            xOffset = 0;
+            yOffset = 0;
+            isDrawerOpen = false;
+          })
+        : setState(() {
+            xOffset = 290;
+            yOffset = 80;
+            isDrawerOpen = true;
+          });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    changeScreen();
+    initScreen();
   }
 
   @override
   Widget build(BuildContext context) {
-    return appScreen;
+    return Stack(
+      children: <Widget>[
+        // drawer screen is behind
+        DrawerScreen(
+          switchScreen: switchScreen,
+        ),
+
+        // the main screen is on top, and when user press the menu button
+        // the screen will shrink and move the the right showing the drawer screen behind
+        AnimatedContainer(
+          transform: Matrix4.translationValues(xOffset, yOffset, 0)
+            ..scale(isDrawerOpen ? 0.85 : 1.00),
+          duration: Duration(milliseconds: 200),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: isDrawerOpen
+                ? BorderRadius.circular(40)
+                : BorderRadius.circular(0),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(40),
+            child: GestureDetector(
+              onTap: () {
+                if (isDrawerOpen) {
+                  alternateDrawer();
+                }
+              },
+              child: Scaffold(
+                extendBodyBehindAppBar: true,
+                appBar: AppBar(
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  leading: IconButton(
+                    icon: Icon(
+                      Icons.menu,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                    onPressed: () {
+                      alternateDrawer();
+                    },
+                  ),
+                ),
+                body: appScreen,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

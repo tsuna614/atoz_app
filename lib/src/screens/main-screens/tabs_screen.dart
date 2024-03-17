@@ -1,7 +1,6 @@
 import 'package:atoz_app/src/screens/app-screens/journey_screen.dart';
-import 'package:atoz_app/src/screens/app-screens/leaderboard_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/leaderboard-screen/leaderboard_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/practice-screens/practice_screen.dart';
-import 'package:atoz_app/src/screens/app-screens/profile-screen/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
@@ -15,29 +14,50 @@ class TabsScreen extends StatefulWidget {
 
 class _TabsScreenState extends State<TabsScreen> {
   int _selectedIndex = 0;
-  final _pageController = PageController();
-  final _pages = [
+  final _pageController = PageController(initialPage: 0);
+  final List<Widget> _pages = [
     JourneyScreen(),
     PracticeScreen(),
     LeaderboardScreen(),
-    ProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // extendBodyBehindAppBar: true,
       // appBar: AppBar(
-      //   title: Text(_chosenScreenName),
+      //   backgroundColor: Colors.transparent,
+      //   elevation: 0,
+      //   leading: IconButton(
+      //     icon: Icon(
+      //       Icons.menu,
+      //       color: Colors.white,
+      //       size: 30,
+      //     ),
+      //     onPressed: () {
+      //       alternateDrawer();
+      //     },
+      //   ),
       // ),
-      // backgroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
-      body: PageView(
-        onPageChanged: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        controller: _pageController,
-        children: _pages,
+      body: NotificationListener<OverscrollIndicatorNotification>(
+        // onNotification: (notification) {
+        //   // if (notification.metrics.extentBefore == 0.0 && !isDrawerOpen) {
+        //   //   print('object');
+        //   //   alternateDrawer();
+        //   // }
+        //   // return true;
+        //   if (!isDrawerOpen) alternateDrawer();
+        //   return true;
+        // },
+        child: PageView(
+          onPageChanged: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
+          controller: _pageController,
+          children: _pages,
+        ),
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
@@ -83,10 +103,6 @@ class _TabsScreenState extends State<TabsScreen> {
                   icon: Icon(FontAwesomeIcons.medal),
                   title: Text('Leaderboard'),
                   selectedColor: Colors.yellow.shade700),
-              SalomonBottomBarItem(
-                  icon: Icon(FontAwesomeIcons.user),
-                  title: Text('Profile'),
-                  selectedColor: Colors.green),
             ],
           ),
         ),

@@ -16,7 +16,9 @@ final dio = Dio();
 final _firebase = FirebaseAuth.instance;
 
 class ProfileScreen extends StatefulWidget {
-  ProfileScreen({super.key});
+  ProfileScreen({super.key, required this.userId});
+
+  final String userId;
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -28,8 +30,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   request() async {
     Response response;
-    response = await dio.get(
-        '${global.atozApi}/user/getUserById/${_firebase.currentUser!.uid}');
+    // response = await dio.get(
+    //     '${global.atozApi}/user/getUserById/${_firebase.currentUser!.uid}');
+    response =
+        await dio.get('${global.atozApi}/user/getUserById/${widget.userId}');
 
     if (response.data.toString().contains('profileImage')) {
       hasImage = true;
@@ -118,7 +122,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             },
                             child: const Text(
                               'Log Out',
-                              style: TextStyle(fontSize: 16),
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.white),
                             ),
                           ),
                         ),
