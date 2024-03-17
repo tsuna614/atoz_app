@@ -118,7 +118,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 backgroundColor: Colors.red,
                                 minimumSize: Size.fromHeight(40)),
                             onPressed: () {
-                              _firebase.signOut();
+                              // _firebase.signOut();
+                              print("object");
                             },
                             child: const Text(
                               'Log Out',
@@ -161,24 +162,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
+
                 ClipPath(
-                  clipper: CustomClipPathLightBlue(context: context),
-                  child: Container(
-                    height: 200.0,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        colors: [
-                          Colors.lightBlue.shade400,
-                          Colors.lightBlue.shade100,
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                ClipPath(
-                  clipper: CustomClipPathBlue(context: context),
+                  clipper: CustomClipPathPurple(context: context),
                   child: Container(
                     height: 200.0,
                     decoration: BoxDecoration(
@@ -186,9 +172,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       gradient: LinearGradient(
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
+                        colors: [Colors.blue.shade500, Colors.blue.shade500],
+                      ),
+                    ),
+                  ),
+                ),
+                ClipPath(
+                  clipper: CustomClipPathPurpleAccent(context: context),
+                  child: Container(
+                    height: 200.0,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
                         colors: [
-                          Colors.blue.shade900,
-                          Colors.indigo.shade900,
+                          Colors.lightBlue.shade700,
+                          Colors.lightBlue.shade400,
                         ],
                       ),
                     ),
@@ -269,6 +268,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   right: 10,
                   child: IconButton(
                     onPressed: () {
+                      print("object");
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -303,71 +303,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
           );
-  }
-}
-
-class CustomClipPathBlue extends CustomClipper<Path> {
-  CustomClipPathBlue({required this.context});
-
-  final BuildContext context;
-
-  @override
-  Path getClip(Size size) {
-    // print(size);
-    // double w = size.width;
-    // double h = size.height;
-
-    double w = MediaQuery.of(context).size.width;
-    double h = MediaQuery.of(context).size.height;
-
-    final path = Path();
-
-    path.moveTo(0, 0);
-    path.lineTo(0, h * 0.1);
-    path.quadraticBezierTo(w * 0.3, h * 0.1, w * 0.5, h * 0.12);
-    path.quadraticBezierTo(w * 0.88, h * 0.15, w, h * 0.12);
-    path.lineTo(w, 0);
-    path.close();
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
-    return false;
-  }
-}
-
-class CustomClipPathLightBlue extends CustomClipper<Path> {
-  CustomClipPathLightBlue({required this.context});
-
-  final BuildContext context;
-
-  @override
-  Path getClip(Size size) {
-    // print(size);
-    // double w = size.width;
-    // double h = size.height;
-
-    double w = MediaQuery.of(context).size.width;
-    double h = MediaQuery.of(context).size.height;
-
-    final path = Path();
-
-    path.moveTo(0, 0);
-    path.lineTo(0, h * 0.14);
-    path.quadraticBezierTo(w * 0.2, h * 0.06, w * 0.6, h * 0.14);
-    path.quadraticBezierTo(w * 0.8, h * 0.18, w, h * 0.13);
-    // path.quadraticBezierTo(w * 0.3, h * 0.05, w, h * 0.2);
-    path.lineTo(w, 0);
-    path.close();
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
-    return false;
   }
 }
 
@@ -627,7 +562,7 @@ class UserProfileLoadingScreen extends StatelessWidget {
       body: Stack(
         children: [
           ClipPath(
-            clipper: CustomClipPathLightBlue(context: context),
+            clipper: CustomClipPathPurpleAccent(context: context),
             child: Container(
               height: 200.0,
               decoration: BoxDecoration(
@@ -643,7 +578,7 @@ class UserProfileLoadingScreen extends StatelessWidget {
             ),
           ),
           ClipPath(
-            clipper: CustomClipPathBlue(context: context),
+            clipper: CustomClipPathPurple(context: context),
             child: Container(
               height: 200.0,
               decoration: BoxDecoration(
@@ -663,5 +598,77 @@ class UserProfileLoadingScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class CustomClipPathPurple extends CustomClipper<Path> {
+  CustomClipPathPurple({required this.context});
+
+  final BuildContext context;
+
+  @override
+  Path getClip(Size size) {
+    // print(size);
+    // double w = size.width;
+    // double h = size.height;
+
+    double w = MediaQuery.of(context).size.width;
+    double h = MediaQuery.of(context).size.height;
+
+    final path = Path();
+
+    // path.moveTo(0, 0);
+    // path.lineTo(w * 0.5, h * 0.0);
+    // path.lineTo(w * 0.85, h * 0.12);
+    // path.lineTo(w, h * 0.12);
+
+    path.moveTo(0, 0);
+    path.lineTo(0, h * 0.05);
+    path.lineTo(w, h * 0.2);
+    // path.quadraticBezierTo(w * 0.1, h * 0.12, w * 0.5, h * 0.08);
+    // path.quadraticBezierTo(w * 0.8, h * 0.05, w, h * 0.11);
+    path.lineTo(w, 0);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return false;
+  }
+}
+
+class CustomClipPathPurpleAccent extends CustomClipper<Path> {
+  CustomClipPathPurpleAccent({required this.context});
+
+  final BuildContext context;
+
+  @override
+  Path getClip(Size size) {
+    // print(size);
+    // double w = size.width;
+    // double h = size.height;
+
+    double w = MediaQuery.of(context).size.width;
+    double h = MediaQuery.of(context).size.height;
+
+    final path = Path();
+
+    path.moveTo(0, 0);
+    path.lineTo(0, h * 0.2);
+    path.lineTo(w, h * 0.05);
+
+    // path.quadraticBezierTo(w * 0.1, h * 0.1, w * 0.7, h * 0.12);
+    // path.quadraticBezierTo(w * 1, h * 0.13, w, h * 0.08);
+    path.lineTo(w, 0);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return false;
   }
 }

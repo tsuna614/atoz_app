@@ -1,5 +1,6 @@
 import 'package:atoz_app/src/providers/question_provider.dart';
 import 'package:atoz_app/src/providers/user_provider.dart';
+// import 'package:atoz_app/src/screens/app-screens/profile-screen/profile_screen.dart';
 import 'package:atoz_app/src/screens/main-screens/loading_screen.dart';
 import 'package:atoz_app/src/screens/main-screens/main_screen.dart';
 import 'package:atoz_app/src/screens/authentication-screens/login_screen.dart';
@@ -98,6 +99,7 @@ class MyApp extends StatelessWidget {
             return const LoginScreen();
           },
         ),
+        // home: ProfileScreen(userId: FirebaseAuth.instance.currentUser!.uid),
       ),
     );
   }

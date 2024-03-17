@@ -157,21 +157,38 @@ class _MainScreenState extends State<MainScreen> {
               },
               child: Scaffold(
                 extendBodyBehindAppBar: true,
-                appBar: AppBar(
-                  backgroundColor: Colors.transparent,
-                  elevation: 0,
-                  leading: IconButton(
-                    icon: Icon(
-                      Icons.menu,
-                      color: Colors.white,
-                      size: 30,
+                // appBar: AppBar(
+                //   backgroundColor: Colors.transparent,
+                //   elevation: 0,
+                //   leading: IconButton(
+                //     icon: Icon(
+                //       Icons.menu,
+                //       color: Colors.white,
+                //       size: 30,
+                //     ),
+                //     onPressed: () {
+                //       alternateDrawer();
+                //     },
+                //   ),
+                // ),
+                body: Stack(
+                  children: [
+                    appScreen,
+                    SafeArea(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: IconButton(
+                          onPressed: () => alternateDrawer(),
+                          icon: Icon(
+                            Icons.menu,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                        ),
+                      ),
                     ),
-                    onPressed: () {
-                      alternateDrawer();
-                    },
-                  ),
+                  ],
                 ),
-                body: appScreen,
               ),
             ),
           ),
