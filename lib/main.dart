@@ -99,7 +99,10 @@ class MyApp extends StatelessWidget {
             return const LoginScreen();
           },
         ),
-        // home: ProfileScreen(userId: FirebaseAuth.instance.currentUser!.uid),
+        // home: ProfileScreen(
+        //   userId: FirebaseAuth.instance.currentUser!.uid,
+        //   isDirectedFromLeaderboard: false,
+        // ),
       ),
     );
   }

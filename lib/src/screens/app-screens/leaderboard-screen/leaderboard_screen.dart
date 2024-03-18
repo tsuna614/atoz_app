@@ -1,3 +1,5 @@
+import 'package:atoz_app/src/providers/user_provider.dart';
+import 'package:atoz_app/src/screens/app-screens/profile-screen/profile_screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -5,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:dio/dio.dart';
 import 'package:atoz_app/src/data/global_data.dart' as globals;
+import 'package:provider/provider.dart';
 
 final dio = Dio();
 
@@ -33,6 +36,11 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
       userData = response.data;
       arrangeUserData();
     });
+  }
+
+  void addFriend(String userId) {
+    // add friend to the user
+    print('add friend to $userId');
   }
 
   @override
@@ -393,7 +401,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
   }
 
   Future<void> showPopUpMenu(
-      BuildContext context, Offset globalPosition) async {
+      BuildContext context, Offset globalPosition, int userIndex) async {
     double left = globalPosition.dx;
     double top = globalPosition.dy;
     await showMenu(
@@ -408,7 +416,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
             padding: const EdgeInsets.only(left: 0, right: 40),
             child: Row(
               children: const [
-                Icon(Icons.person),
+                Icon(FontAwesomeIcons.circleUser),
                 SizedBox(
                   width: 10,
                 ),
@@ -422,6 +430,24 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
         ),
         PopupMenuItem(
           value: 2,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 0, right: 40),
+            child: Row(
+              children: const [
+                Icon(Icons.person_add_alt_1_outlined),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  "Send friend request",
+                  style: TextStyle(color: Colors.black),
+                ),
+              ],
+            ),
+          ),
+        ),
+        PopupMenuItem(
+          value: 3,
           child: Padding(
             padding: const EdgeInsets.only(left: 0, right: 40),
             child: Row(
@@ -442,10 +468,33 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
       elevation: 8.0,
     ).then((value) {
       if (value == 1) {
-        //do your task here for menu 1
+        // push profile screen
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => ProfileScreen(
+        //       userId: userData[userIndex]['userId'],
+        //       isDirectedFromLeaderboard: true,
+        //     ),
+        //   ),
+        // );
+        showModalBottomSheet<dynamic>(
+          context: context,
+          isScrollControlled: true,
+          useSafeArea: true,
+          // backgroundColor: Colors.transparent,
+          builder: (context) => Container(
+            height: MediaQuery.of(context).size.height * 0.6,
+            child: ProfileScreen(
+              userId: userData[userIndex]['userId'],
+              isDirectedFromLeaderboard: true,
+            ),
+          ),
+        );
       }
       if (value == 2) {
         //do your task here for menu 2
+        addFriend(userData[userIndex]['userId']);
       }
     });
   }
@@ -455,16 +504,9 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
       padding: const EdgeInsets.all(0),
       child: GestureDetector(
         onLongPressEnd: (LongPressEndDetails details) {
-          showPopUpMenu(context, details.globalPosition);
+          showPopUpMenu(context, details.globalPosition, index);
         },
         child: ListTile(
-          // leading: Text(
-          //   index.toString(),
-          //   style: TextStyle(
-          //     fontSize: 20,
-          //     fontWeight: FontWeight.bold,
-          //   ),
-          // ),
           title: Container(
             padding: EdgeInsets.symmetric(
               vertical: 10,
@@ -507,13 +549,6 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                     ),
                   ),
                   SizedBox(width: 20),
-                  // Text(
-                  //   'Khanh Nguyen Quoc',
-                  //   style: TextStyle(
-                  //     // fontSize: 16,
-                  //     fontWeight: FontWeight.bold,
-                  //   ),
-                  // ),
                   Expanded(
                     child: Text(
                       userData[index]['firstName'] +
@@ -521,7 +556,14 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                           userData[index]['lastName'],
                       style: TextStyle(
                         // fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                        color: userData[index]['userId'] ==
+                                context.watch<UserProvider>().userId
+                            ? Colors.black
+                            : Colors.grey.shade800,
+                        fontWeight: userData[index]['userId'] ==
+                                context.watch<UserProvider>().userId
+                            ? FontWeight.bold
+                            : FontWeight.w500,
                       ),
                     ),
                   ),

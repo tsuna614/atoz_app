@@ -16,9 +16,13 @@ final dio = Dio();
 final _firebase = FirebaseAuth.instance;
 
 class ProfileScreen extends StatefulWidget {
-  ProfileScreen({super.key, required this.userId});
+  ProfileScreen(
+      {super.key,
+      required this.userId,
+      required this.isDirectedFromLeaderboard});
 
   final String userId;
+  final bool isDirectedFromLeaderboard;
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -27,6 +31,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   var userData;
   bool hasImage = false;
+  int selectedTab = 0;
 
   request() async {
     Response response;
@@ -52,7 +57,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // print(userData);
+    // // this is the CURRENTLY SIGNED IN account
+    // // it's might be different from widget.userId because you might be seeing someone else's profile
+    // bool isCurrentlySignedInUser =
+    //     context.watch<UserProvider>().userId == widget.userId;
+
     return userData == null
         ? UserProfileLoadingScreen()
         : Scaffold(
@@ -63,86 +72,64 @@ class _ProfileScreenState extends State<ProfileScreen> {
             body: Stack(
               children: [
                 // THIS IS THE INFO CARD BELOW THE PROFILE
-                Align(
-                  alignment: Alignment(0, 0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 350,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Card(
-                            color: Colors.white,
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: double.infinity,
-                                ),
-                                DetailInfo(
-                                  userData: userData,
-                                ),
-                                Divider(
-                                  height: 20,
-                                  thickness: 2,
-                                  indent: 20,
-                                  endIndent: 20,
-                                ),
-                                StudyingInfo(),
-                              ],
+                if (selectedTab == 0)
+                  Align(
+                    alignment: Alignment(0, 0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 350,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Card(
+                              color: Colors.white,
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width: double.infinity,
+                                  ),
+                                  DetailInfo(
+                                    userData: userData,
+                                  ),
+                                  Divider(
+                                    height: 20,
+                                    thickness: 2,
+                                    indent: 20,
+                                    endIndent: 20,
+                                  ),
+                                  StudyingInfo(),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 50,
-                        ),
-                        SizedBox(height: 400, child: MyBarChart()),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          'User\'s score chart',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                          SizedBox(
+                            height: 50,
                           ),
-                        ),
-                        SizedBox(
-                          height: 50,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(16),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red,
-                                minimumSize: Size.fromHeight(40)),
-                            onPressed: () {
-                              // _firebase.signOut();
-                              print("object");
-                            },
-                            child: const Text(
-                              'Log Out',
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.white),
+                          SizedBox(height: 400, child: MyBarChart()),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            'User\'s score chart',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ),
-                      ],
+                          SizedBox(
+                            height: 50,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                // THIS IS THE 2 BACKGROUND CONTAINERS
+                // THIS IS THE BACKGROUND CONTAINER
                 Positioned(
                   top: 0,
                   child: Column(
                     children: [
-                      // Container(
-                      //   height: 50.0,
-                      //   decoration: BoxDecoration(
-                      //     color: Theme.of(context).primaryColor,
-                      //   ),
-                      // ),
                       SizedBox(height: 50),
                       Container(
                         height: 300.0,
@@ -162,7 +149,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
-
                 ClipPath(
                   clipper: CustomClipPathPurple(context: context),
                   child: Container(
@@ -241,34 +227,111 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             fontSize: 18, fontWeight: FontWeight.w100),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 30,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: const [
-                          ProfileNumberWidget(number: 0, title: 'Friends'),
-                          ProfileNumberWidget(number: 0, title: 'Follower'),
-                          ProfileNumberWidget(number: 0, title: 'Following'),
-                          // Expanded(
-                          //   child: Padding(
-                          //     padding: const EdgeInsets.symmetric(horizontal: 20),
-                          //     child: AnimatedButton1(
-                          //         buttonText: 'Change profile',
-                          //         voidFunction: () {}),
-                          //   ),
-                          // ),
+                        children: [
+                          Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selectedTab = 0;
+                                  });
+                                },
+                                child: Text(
+                                  "Stats",
+                                  style: TextStyle(
+                                    color: selectedTab == 0
+                                        ? Colors.blue
+                                        : Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                              AnimatedContainer(
+                                duration: Duration(milliseconds: 300),
+                                height: 3,
+                                width: selectedTab == 0 ? 30 : 0,
+                                margin: EdgeInsets.only(top: 5),
+                                decoration: BoxDecoration(
+                                  color: selectedTab == 0
+                                      ? Colors.blue
+                                      : Colors.grey,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selectedTab = 1;
+                                  });
+                                },
+                                child: Text(
+                                  "Friends",
+                                  style: TextStyle(
+                                    color: selectedTab == 1
+                                        ? Colors.blue
+                                        : Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                              AnimatedContainer(
+                                duration: Duration(milliseconds: 300),
+                                height: 3,
+                                width: selectedTab == 1 ? 30 : 0,
+                                margin: EdgeInsets.only(top: 5),
+                                decoration: BoxDecoration(
+                                  color: selectedTab == 1
+                                      ? Colors.blue
+                                      : Colors.grey,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
-                      ),
+                      )
                     ],
                   ),
                 ),
+                // THIS IS THE IOS BACK BUTTON ON THE TOP LEFT
+                if (widget.isDirectedFromLeaderboard)
+                  Positioned(
+                    top: 60,
+                    left: 10,
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(
+                        Icons.arrow_back_ios,
+                        shadows: [
+                          Shadow(
+                            blurRadius: 8.0,
+                            color: Colors.black.withOpacity(0.8),
+                            offset: Offset(0, 0),
+                          ),
+                        ],
+                      ),
+                      color: Colors.white,
+                      // add shadow to icon
+                    ),
+                  ),
                 // THIS IS THE PENCIL ICON BUTTON ON THE TOP RIGHT
                 Positioned(
                   top: 60,
                   right: 10,
                   child: IconButton(
                     onPressed: () {
-                      print("object");
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -299,7 +362,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     color: Colors.white,
                     // add shadow to icon
                   ),
-                )
+                ),
               ],
             ),
           );
@@ -412,57 +475,6 @@ class DetailInfo extends StatelessWidget {
                   child: Text(userData["language"])),
             ]),
           ]),
-      // child: Row(
-      //   mainAxisAlignment: MainAxisAlignment.start,
-      //   children: [
-      //     Column(
-      //       crossAxisAlignment: CrossAxisAlignment.start,
-      //       children: const [
-      //         Text(
-      //           'Name:',
-      //           style: TextStyle(
-      //               fontSize: 16,
-      //               fontWeight: FontWeight.bold),
-      //         ),
-      //         Text(
-      //           'Email address:',
-      //           style: TextStyle(
-      //               fontSize: 16,
-      //               fontWeight: FontWeight.bold),
-      //         ),
-      //         Text(
-      //           'Number:',
-      //           style: TextStyle(
-      //               fontSize: 16,
-      //               fontWeight: FontWeight.bold),
-      //         ),
-      //         Text(
-      //           'Languages:',
-      //           style: TextStyle(
-      //               fontSize: 16,
-      //               fontWeight: FontWeight.bold),
-      //         )
-      //       ],
-      //     ),
-      //     SizedBox(
-      //       width: 80,
-      //     ),
-      //     Column(
-      //       crossAxisAlignment: CrossAxisAlignment.start,
-      //       children: const [
-      //         Align(
-      //           alignment: Alignment.centerLeft,
-      //           child: Text(
-      //             'Name:',
-      //           ),
-      //         ),
-      //         Text('Email address:'),
-      //         Text('Number:'),
-      //         Text('Languages:')
-      //       ],
-      //     ),
-      //   ],
-      // ),
     );
   }
 }
@@ -562,22 +574,6 @@ class UserProfileLoadingScreen extends StatelessWidget {
       body: Stack(
         children: [
           ClipPath(
-            clipper: CustomClipPathPurpleAccent(context: context),
-            child: Container(
-              height: 200.0,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: [
-                    Colors.lightBlue.shade400,
-                    Colors.lightBlue.shade100,
-                  ],
-                ),
-              ),
-            ),
-          ),
-          ClipPath(
             clipper: CustomClipPathPurple(context: context),
             child: Container(
               height: 200.0,
@@ -586,9 +582,22 @@ class UserProfileLoadingScreen extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
+                  colors: [Colors.blue.shade500, Colors.blue.shade500],
+                ),
+              ),
+            ),
+          ),
+          ClipPath(
+            clipper: CustomClipPathPurpleAccent(context: context),
+            child: Container(
+              height: 200.0,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
                   colors: [
-                    Colors.blue.shade900,
-                    Colors.indigo.shade900,
+                    Colors.lightBlue.shade700,
+                    Colors.lightBlue.shade400,
                   ],
                 ),
               ),

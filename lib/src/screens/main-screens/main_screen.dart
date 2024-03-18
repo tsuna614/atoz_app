@@ -1,5 +1,6 @@
 import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:atoz_app/src/screens/app-screens/profile-screen/profile_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/social-screens/social_screen.dart';
 import 'package:atoz_app/src/screens/authentication-screens/user_setup_screen.dart';
 import 'package:atoz_app/src/screens/main-screens/drawer_screen.dart';
 import 'package:atoz_app/src/screens/main-screens/loading_screen.dart';
@@ -42,6 +43,7 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {
       if (response.data.toString().contains('language')) {
         appScreen = TabsScreen();
+        // appScreen = SocialScreen();
       } else {
         appScreen = UserSetupScreen(
           resetMainPage: initScreen,
@@ -67,6 +69,13 @@ class _MainScreenState extends State<MainScreen> {
       context
           .read<UserProvider>()
           .setUserLanguage(response.data[0]['language'].toString());
+      context.read<UserProvider>().setUserFullName(
+            response.data[0]['firstName'].toString(),
+            response.data[0]['lastName'].toString(),
+          );
+      context.read<UserProvider>().setProfileImage(
+            response.data[0]['profileImage'].toString(),
+          );
       if (response.data.toString().contains('userType')) {
         context
             .read<UserProvider>()
@@ -83,9 +92,10 @@ class _MainScreenState extends State<MainScreen> {
       } else if (screenIndex == 1) {
         appScreen = ProfileScreen(
           userId: context.read<UserProvider>().userId,
+          isDirectedFromLeaderboard: false,
         );
       } else if (screenIndex == 2) {
-        appScreen = TabsScreen();
+        appScreen = SocialScreen();
       } else if (screenIndex == 3) {
         appScreen = TabsScreen();
       }
@@ -131,24 +141,23 @@ class _MainScreenState extends State<MainScreen> {
     return Stack(
       children: <Widget>[
         // drawer screen is behind
-        DrawerScreen(
-          switchScreen: switchScreen,
-        ),
-
+        DrawerScreen(switchScreen: switchScreen),
         // the main screen is on top, and when user press the menu button
         // the screen will shrink and move the the right showing the drawer screen behind
         AnimatedContainer(
           transform: Matrix4.translationValues(xOffset, yOffset, 0)
             ..scale(isDrawerOpen ? 0.85 : 1.00),
           duration: Duration(milliseconds: 200),
-          decoration: BoxDecoration(
-            color: Colors.white,
+          // decoration: BoxDecoration(
+          //   color: Colors.white,
+          //   borderRadius: isDrawerOpen
+          //       ? BorderRadius.circular(40)
+          //       : BorderRadius.circular(0),
+          // ),
+          child: ClipRRect(
             borderRadius: isDrawerOpen
                 ? BorderRadius.circular(40)
                 : BorderRadius.circular(0),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(40),
             child: GestureDetector(
               onTap: () {
                 if (isDrawerOpen) {
@@ -157,20 +166,6 @@ class _MainScreenState extends State<MainScreen> {
               },
               child: Scaffold(
                 extendBodyBehindAppBar: true,
-                // appBar: AppBar(
-                //   backgroundColor: Colors.transparent,
-                //   elevation: 0,
-                //   leading: IconButton(
-                //     icon: Icon(
-                //       Icons.menu,
-                //       color: Colors.white,
-                //       size: 30,
-                //     ),
-                //     onPressed: () {
-                //       alternateDrawer();
-                //     },
-                //   ),
-                // ),
                 body: Stack(
                   children: [
                     appScreen,
