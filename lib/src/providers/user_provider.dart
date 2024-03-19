@@ -13,8 +13,10 @@ class UserProvider extends ChangeNotifier {
   int userScore = 0;
   int userProgressionPoint = 0;
   int userRanking = 1;
+  int userAge = 0;
 
-  String userFullName = '';
+  String userFirstName = '';
+  String userLastName = '';
   String profileImagePath = '';
 
   // create UserProvider constructor
@@ -59,13 +61,23 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setUserFullName(String firstName, String lastName) {
-    userFullName = '$firstName $lastName';
+  void setUserFirstName(String firstName) {
+    userFirstName = firstName;
+    notifyListeners();
+  }
+
+  void setUserLastName(String lastName) {
+    userLastName = lastName;
     notifyListeners();
   }
 
   void setProfileImage(String image) {
     profileImagePath = image;
+    notifyListeners();
+  }
+
+  void setUserAge(int age) {
+    userAge = age;
     notifyListeners();
   }
 }

@@ -1,5 +1,5 @@
 import 'package:atoz_app/src/providers/user_provider.dart';
-import 'package:atoz_app/src/screens/app-screens/profile-screen/profile_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/profile-screen/spectate_profile.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -8,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:dio/dio.dart';
 import 'package:atoz_app/src/data/global_data.dart' as globals;
 import 'package:provider/provider.dart';
+import 'package:wtf_sliding_sheet/wtf_sliding_sheet.dart';
 
 final dio = Dio();
 
@@ -468,35 +469,91 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
       elevation: 8.0,
     ).then((value) {
       if (value == 1) {
-        // push profile screen
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => ProfileScreen(
-        //       userId: userData[userIndex]['userId'],
-        //       isDirectedFromLeaderboard: true,
-        //     ),
-        //   ),
-        // );
         showModalBottomSheet<dynamic>(
           context: context,
           isScrollControlled: true,
           useSafeArea: true,
           // backgroundColor: Colors.transparent,
-          builder: (context) => Container(
-            height: MediaQuery.of(context).size.height * 0.6,
-            child: ProfileScreen(
-              userId: userData[userIndex]['userId'],
-              isDirectedFromLeaderboard: true,
+          builder: (context) => AnimatedContainer(
+            duration: Duration(milliseconds: 500),
+            height: MediaQuery.of(context).size.height * 0.8,
+            child: Stack(
+              children: [
+                SpectateProfile(
+                  userId: userData[userIndex]['userId'],
+                  isDirectedFromLeaderboard: true,
+                ),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(top: 10),
+                      height: 5,
+                      width: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         );
+        // showModalBottomSheet<dynamic>(
+        //   context: context,
+        //   isScrollControlled: true,
+        //   useSafeArea: true,
+        //   // backgroundColor: Colors.transparent,
+        //   builder: (context) => DraggableScrollableSheet(
+        //     snap: true,
+        //     expand: false,
+        //     builder: (context, scrollController) => Container(
+        //       height: MediaQuery.of(context).size.height * 0.6,
+        //       child: SpectateProfile(
+        //         userId: userData[userIndex]['userId'],
+        //         isDirectedFromLeaderboard: true,
+        //       ),
+        //     ),
+        //   ),
+        // );
+        // showSheet(userIndex);
       }
       if (value == 2) {
         //do your task here for menu 2
         addFriend(userData[userIndex]['userId']);
       }
     });
+  }
+
+  Future showSheet(int userIndex) => showSlidingBottomSheet(
+        context,
+        builder: (context) => SlidingSheetDialog(
+          snapSpec: SnapSpec(snappings: [0.6, 1]),
+          builder: (context, state) => buildSheet(context, state, userIndex),
+        ),
+      );
+
+  Widget buildSheet(BuildContext context, SheetState state, int userIndex) {
+    return Material(
+      // child: SpectateProfile(
+      //   userId: userData[userIndex]['userId'],
+      //   isDirectedFromLeaderboard: true,
+      // ),
+      child: Column(
+        children: [
+          Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+              "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
+              "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
+              "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. "
+              "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."),
+        ],
+      ),
+    );
   }
 
   Widget buildPlayerTitleCard(BuildContext context, int index) {

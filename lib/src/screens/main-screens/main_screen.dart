@@ -69,13 +69,16 @@ class _MainScreenState extends State<MainScreen> {
       context
           .read<UserProvider>()
           .setUserLanguage(response.data[0]['language'].toString());
-      context.read<UserProvider>().setUserFullName(
+      context.read<UserProvider>().setUserFirstName(
             response.data[0]['firstName'].toString(),
+          );
+      context.read<UserProvider>().setUserLastName(
             response.data[0]['lastName'].toString(),
           );
       context.read<UserProvider>().setProfileImage(
             response.data[0]['profileImage'].toString(),
           );
+      context.read<UserProvider>().setUserAge(response.data[0]['age']);
       if (response.data.toString().contains('userType')) {
         context
             .read<UserProvider>()
@@ -90,10 +93,7 @@ class _MainScreenState extends State<MainScreen> {
       if (screenIndex == 0) {
         appScreen = TabsScreen();
       } else if (screenIndex == 1) {
-        appScreen = ProfileScreen(
-          userId: context.read<UserProvider>().userId,
-          isDirectedFromLeaderboard: false,
-        );
+        appScreen = ProfileScreen();
       } else if (screenIndex == 2) {
         appScreen = SocialScreen();
       } else if (screenIndex == 3) {

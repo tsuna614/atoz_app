@@ -23,7 +23,8 @@ class _SocialScreenState extends State<SocialScreen> {
   @override
   Widget build(BuildContext context) {
     String profileImagePath = context.watch<UserProvider>().profileImagePath;
-    String userFullName = context.watch<UserProvider>().userFullName;
+    String userFullName =
+        '${context.watch<UserProvider>().userFirstName} ${context.watch<UserProvider>().userLastName}';
 
     return Scaffold(
       body: Stack(
