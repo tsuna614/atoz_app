@@ -4,7 +4,7 @@ import 'package:atoz_app/src/screens/app-screens/social-screens/social_screen.da
 import 'package:atoz_app/src/screens/authentication-screens/user_setup_screen.dart';
 import 'package:atoz_app/src/screens/main-screens/drawer_screen.dart';
 import 'package:atoz_app/src/screens/main-screens/loading_screen.dart';
-import 'package:atoz_app/src/screens/main-screens/tabs_screen.dart';
+import 'package:atoz_app/src/screens/main-screens/home_tabs_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:atoz_app/src/data/global_data.dart' as globals;
@@ -89,24 +89,23 @@ class _MainScreenState extends State<MainScreen> {
 
   void switchScreen(int screenIndex) {
     setState(() {
-      // switch to another screen
-      if (screenIndex == 0) {
-        appScreen = TabsScreen();
-      } else if (screenIndex == 1) {
-        appScreen = ProfileScreen();
-      } else if (screenIndex == 2) {
-        appScreen = SocialScreen();
-      } else if (screenIndex == 3) {
-        appScreen = TabsScreen();
-      }
+      xOffset = MediaQuery.of(context).size.width;
+    });
 
-      // // close the drawer
-      // if (isDrawerOpen) {
-      //   // wait 0.2s
-      //   Future.delayed(Duration(milliseconds: 250), () {
-      //     alternateDrawer();
-      //   });
-      // }
+    // wait 200 milliseconds
+    Future.delayed(Duration(milliseconds: 300), () {
+      setState(() {
+        if (screenIndex == 0) {
+          appScreen = TabsScreen();
+        } else if (screenIndex == 1) {
+          appScreen = ProfileScreen();
+        } else if (screenIndex == 2) {
+          appScreen = SocialScreen();
+        } else if (screenIndex == 3) {
+          appScreen = TabsScreen();
+        }
+        xOffset = 290;
+      });
     });
   }
 

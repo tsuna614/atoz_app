@@ -108,9 +108,15 @@ class _DrawerScreenState extends State<DrawerScreen> {
         left: _selectedIndex == itemIndex ? 20 : 0,
       ),
       height: _selectedIndex == itemIndex ? 60 : 50,
-      color: _selectedIndex == itemIndex
-          ? Colors.white.withOpacity(0.2)
-          : Colors.transparent,
+      decoration: BoxDecoration(
+        color: _selectedIndex == itemIndex
+            ? Colors.white.withOpacity(0.2)
+            : Colors.transparent,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          bottomLeft: Radius.circular(10),
+        ),
+      ),
       child: InkWell(
         onTap: () {
           setState(() {
@@ -129,6 +135,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                           ? FontAwesomeIcons.users
                           : FontAwesomeIcons.gear,
               color: Colors.white,
+              size: 16,
             ),
             SizedBox(
               width: 20,
@@ -143,7 +150,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                           : 'Settings',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 20,
+                fontSize: 16,
                 letterSpacing: 4,
               ),
             ),
