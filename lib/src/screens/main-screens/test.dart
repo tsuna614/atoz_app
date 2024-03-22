@@ -1134,28 +1134,41 @@
 
 import 'package:flutter/material.dart';
 
-class TestScreen extends StatelessWidget {
+class TestScreen extends StatefulWidget {
   const TestScreen({super.key});
 
   @override
+  State<TestScreen> createState() => _TestScreenState();
+}
+
+class _TestScreenState extends State<TestScreen> {
+  int itemNumber = 100;
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Container(
-          color: Colors.red,
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: () {
-                print('object');
-              },
-              child: Container(
-                height: 100,
-                width: 100,
-                // color: Colors.red,
+      body: SafeArea(
+        child: Column(
+          children: [
+            ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    itemNumber++;
+                  });
+                },
+                child: Text('Reset')),
+            Expanded(
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: itemNumber,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text('Item $index'),
+                  );
+                },
               ),
             ),
-          ),
+          ],
         ),
       ),
     );

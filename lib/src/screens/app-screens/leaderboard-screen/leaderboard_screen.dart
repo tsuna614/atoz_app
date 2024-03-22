@@ -39,50 +39,6 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
     });
   }
 
-  Future<bool> checkForExistingRequest(String friendId) async {
-    String userId = Provider.of<UserProvider>(context, listen: false).userId;
-    bool isExisting = false;
-    await FirebaseFirestore.instance
-        .collection('notifications')
-        .where('sender', isEqualTo: userId)
-        .where('receiver', isEqualTo: friendId)
-        .get()
-        .then((value) {
-      if (value.docs.isNotEmpty) {
-        isExisting = true;
-      }
-    });
-    return isExisting;
-  }
-
-  void cancelFriendRequest(String friendId) {
-    String userId = Provider.of<UserProvider>(context, listen: false).userId;
-
-    FirebaseFirestore.instance
-        .collection('notifications')
-        .where('sender', isEqualTo: userId)
-        .where('receiver', isEqualTo: friendId)
-        .get()
-        .then((value) {
-      value.docs.forEach((element) {
-        FirebaseFirestore.instance
-            .collection('notifications')
-            .doc(element.id)
-            .delete();
-      });
-    });
-  }
-
-  void addFriend(String friendId) {
-    String userId = Provider.of<UserProvider>(context, listen: false).userId;
-
-    FirebaseFirestore.instance.collection('notifications').add({
-      'sender': userId,
-      'receiver': friendId,
-      'timeCreated': DateTime.now(),
-    });
-  }
-
   @override
   void initState() {
     // TODO: implement initState
@@ -140,7 +96,8 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                     child: ListView.builder(
                       itemCount: userData == null ? 0 : userData.length,
                       itemBuilder: (context, index) {
-                        return buildPlayerTitleCard(context, index);
+                        return PlayerTitleCard(
+                            index: index, userData: userData);
                       },
                     ),
                   ),
@@ -439,6 +396,71 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
       ],
     );
   }
+}
+
+class PlayerTitleCard extends StatefulWidget {
+  const PlayerTitleCard(
+      {super.key, required this.index, required this.userData});
+
+  final int index;
+  final dynamic userData;
+
+  @override
+  State<PlayerTitleCard> createState() => _PlayerTitleCardState();
+}
+
+class _PlayerTitleCardState extends State<PlayerTitleCard> {
+  double paddingBottom = 10;
+
+  Future<bool> checkForExistingRequest(String friendId) async {
+    String userId = Provider.of<UserProvider>(context, listen: false).userId;
+    bool isExisting = false;
+    await FirebaseFirestore.instance
+        .collection('notifications')
+        .where('sender', isEqualTo: userId)
+        .where('receiver', isEqualTo: friendId)
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        isExisting = true;
+      }
+    });
+    return isExisting;
+  }
+
+  bool isUserAlreadyFriend(String userId) {
+    return Provider.of<UserProvider>(context, listen: false)
+        .userFriends
+        .contains(userId);
+  }
+
+  void cancelFriendRequest(String friendId) {
+    String userId = Provider.of<UserProvider>(context, listen: false).userId;
+
+    FirebaseFirestore.instance
+        .collection('notifications')
+        .where('sender', isEqualTo: userId)
+        .where('receiver', isEqualTo: friendId)
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        FirebaseFirestore.instance
+            .collection('notifications')
+            .doc(element.id)
+            .delete();
+      });
+    });
+  }
+
+  void addFriend(String friendId) {
+    String userId = Provider.of<UserProvider>(context, listen: false).userId;
+
+    FirebaseFirestore.instance.collection('notifications').add({
+      'sender': userId,
+      'receiver': friendId,
+      'timeCreated': DateTime.now(),
+    });
+  }
 
   Future<void> showPopUpMenu(
       BuildContext context, Offset globalPosition, int userIndex) async {
@@ -448,7 +470,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
         Provider.of<UserProvider>(context, listen: false).userId;
 
     bool isFriendRequestExisted =
-        await checkForExistingRequest(userData[userIndex]['userId']);
+        await checkForExistingRequest(widget.userData[userIndex]['userId']);
 
     if (context.mounted) {
       await showMenu(
@@ -476,14 +498,17 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
             ),
           ),
           PopupMenuItem(
-            enabled:
-                userData[userIndex]['userId'] == currentUserId ? false : true,
+            enabled: widget.userData[userIndex]['userId'] == currentUserId
+                ? false
+                : true,
             value: 2,
             child: Padding(
               padding: const EdgeInsets.only(left: 0, right: 40),
               child: Row(
                 children: [
-                  isFriendRequestExisted
+                  isFriendRequestExisted ||
+                          isUserAlreadyFriend(
+                              widget.userData[userIndex]['userId'])
                       ? Icon(Icons.person_remove_alt_1_outlined)
                       : Icon(Icons.person_add_alt_1_outlined),
                   SizedBox(
@@ -492,9 +517,13 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                   Text(
                     isFriendRequestExisted
                         ? "Cancel request"
-                        : "Send friend request",
+                        : isUserAlreadyFriend(
+                                widget.userData[userIndex]['userId'])
+                            ? "Unfriend"
+                            : "Send friend request",
                     style: TextStyle(
-                        color: userData[userIndex]['userId'] == currentUserId
+                        color: widget.userData[userIndex]['userId'] ==
+                                currentUserId
                             ? Colors.grey
                             : Colors.black),
                   ),
@@ -503,8 +532,9 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
             ),
           ),
           PopupMenuItem(
-            enabled:
-                userData[userIndex]['userId'] == currentUserId ? false : true,
+            enabled: widget.userData[userIndex]['userId'] == currentUserId
+                ? false
+                : true,
             value: 3,
             child: Padding(
               padding: const EdgeInsets.only(left: 0, right: 40),
@@ -517,7 +547,8 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                   Text(
                     "Message",
                     style: TextStyle(
-                        color: userData[userIndex]['userId'] == currentUserId
+                        color: widget.userData[userIndex]['userId'] ==
+                                currentUserId
                             ? Colors.grey
                             : Colors.black),
                   ),
@@ -541,7 +572,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
               child: Stack(
                 children: [
                   SpectateProfile(
-                    userId: userData[userIndex]['userId'],
+                    userId: widget.userData[userIndex]['userId'],
                     isDirectedFromLeaderboard: true,
                   ),
                   Align(
@@ -569,90 +600,115 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
         if (value == 2) {
           // SENDING FRIEND REQUEST / CANCELLING FRIEND REQUEST
           if (isFriendRequestExisted) {
-            cancelFriendRequest(userData[userIndex]['userId']);
+            cancelFriendRequest(widget.userData[userIndex]['userId']);
           } else
-            addFriend(userData[userIndex]['userId']);
+            addFriend(widget.userData[userIndex]['userId']);
         }
       });
     }
   }
 
-  Widget buildPlayerTitleCard(BuildContext context, int index) {
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(0),
       child: GestureDetector(
         onLongPressEnd: (LongPressEndDetails details) {
-          showPopUpMenu(context, details.globalPosition, index);
+          showPopUpMenu(context, details.globalPosition, widget.index);
+        },
+        onTapDown: (details) {
+          setState(() {
+            paddingBottom = 0;
+          });
+        },
+        onTapUp: (details) {
+          setState(() {
+            paddingBottom = 10;
+          });
+        },
+        onTapCancel: () {
+          setState(() {
+            paddingBottom = 10;
+          });
         },
         child: ListTile(
-          title: Container(
-            padding: EdgeInsets.symmetric(
-              vertical: 10,
-            ),
+          title: AnimatedContainer(
+            duration: Duration(milliseconds: 200),
+            padding: EdgeInsets.only(bottom: paddingBottom),
+            margin: EdgeInsets.only(top: 10 - paddingBottom),
             decoration: BoxDecoration(
-              color: Colors.grey.shade100,
+              color: Colors.grey.shade300,
               borderRadius: BorderRadius.circular(30),
             ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(
-                    (index + 1).toString(),
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  SizedBox(
-                    height: 50,
-                    width: 50,
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        CircleAvatar(
-                          backgroundImage: userData[index]
-                                  .toString()
-                                  .contains('profileImage')
-                              ? Image.asset(
-                                      'assets/images/avatar/${userData[index]['profileImage']}.jpeg')
-                                  .image
-                              : AssetImage(
-                                  "assets/images/profile.jpg",
-                                ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  Expanded(
-                    child: Text(
-                      userData[index]['firstName'] +
-                          ' ' +
-                          userData[index]['lastName'],
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                vertical: 10,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade100,
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      (widget.index + 1).toString(),
                       style: TextStyle(
-                        // fontSize: 16,
-                        color: userData[index]['userId'] ==
-                                context.watch<UserProvider>().userId
-                            ? Colors.black
-                            : Colors.grey.shade800,
-                        fontWeight: userData[index]['userId'] ==
-                                context.watch<UserProvider>().userId
-                            ? FontWeight.bold
-                            : FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    userData[index]['score'].toString(),
-                    style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blue),
-                  ),
-                ],
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                    SizedBox(
+                      height: 50,
+                      width: 50,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          CircleAvatar(
+                            backgroundImage: widget.userData[widget.index]
+                                    .toString()
+                                    .contains('profileImage')
+                                ? Image.asset(
+                                        'assets/images/avatar/${widget.userData[widget.index]['profileImage']}.jpeg')
+                                    .image
+                                : AssetImage(
+                                    "assets/images/profile.jpg",
+                                  ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                    Expanded(
+                      child: Text(
+                        widget.userData[widget.index]['firstName'] +
+                            ' ' +
+                            widget.userData[widget.index]['lastName'],
+                        style: TextStyle(
+                          // fontSize: 16,
+                          color: widget.userData[widget.index]['userId'] ==
+                                  context.watch<UserProvider>().userId
+                              ? Colors.black
+                              : Colors.grey.shade800,
+                          fontWeight: widget.userData[widget.index]['userId'] ==
+                                  context.watch<UserProvider>().userId
+                              ? FontWeight.bold
+                              : FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      widget.userData[widget.index]['score'].toString(),
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

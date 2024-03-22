@@ -1,13 +1,10 @@
 import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:atoz_app/src/screens/app-screens/chart/bar_chart.dart';
-import 'package:atoz_app/src/screens/app-screens/profile-screen/change_profile_screen.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:atoz_app/src/data/global_data.dart' as global;
 import 'package:dio/dio.dart';
-
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:provider/provider.dart';
 
@@ -329,43 +326,6 @@ class _SpectateProfileState extends State<SpectateProfile> {
                       // add shadow to icon
                     ),
                   ),
-                // THIS IS THE PENCIL ICON BUTTON ON THE TOP RIGHT
-                Positioned(
-                  top: 60,
-                  right: 10,
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ChangeProfileScreen(
-                            firstName: userData["firstName"],
-                            lastName: userData["lastName"],
-                            age: userData["age"],
-                            emailAddress: userData["email"],
-                            userImage: hasImage ? userData["profileImage"] : '',
-                          ),
-                        ),
-                      ).then((value) {
-                        Future.delayed(Duration(seconds: 1), () {
-                          request();
-                        });
-                      });
-                    },
-                    icon: Icon(
-                      FontAwesomeIcons.pencil,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 8.0,
-                          color: Colors.black.withOpacity(0.8),
-                          offset: Offset(0, 0),
-                        ),
-                      ],
-                    ),
-                    color: Colors.white,
-                    // add shadow to icon
-                  ),
-                ),
               ],
             ),
           );

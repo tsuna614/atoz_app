@@ -83,7 +83,9 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
     context.read<UserProvider>().setUserLastName(_lastNameTextField.text);
     context.read<UserProvider>().setUserAge(int.parse(_ageTextField.text));
     context.read<UserProvider>().setUserEmail(_emailTextField.text);
-    context.read<UserProvider>().setProfileImage(image);
+    context
+        .read<UserProvider>()
+        .setProfileImage(image.isEmpty ? widget.userImage : image);
 
     await dio.put(
       '${global.atozApi}/user/editUserById/${_firebase.currentUser!.uid}',

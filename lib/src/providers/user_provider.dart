@@ -17,8 +17,14 @@ class UserProvider extends ChangeNotifier {
 
   String userFirstName = '';
   String userLastName = '';
+
+  // profileImagePath: lion, tiger, penguin,...
   String profileImagePath = '';
 
+  // user state: Active, Busy, Away
+  String userState = '';
+
+  // list of user's friends' id
   List<String> userFriends = [];
 
   // create UserProvider constructor
@@ -86,11 +92,16 @@ class UserProvider extends ChangeNotifier {
   void setUserFriends(List<dynamic> friends) {
     userFriends.clear();
     for (int i = 0; i < friends.length; i++) {
-      // if that the friend's id is not in userFriends yet, then add
+      // if the friend's id is not in userFriends yet, then add it in
       if (!userFriends.contains(friends[i].toString())) {
         userFriends.add(friends[i].toString());
       }
     }
+    notifyListeners();
+  }
+
+  void setUserState(String state) {
+    userState = state;
     notifyListeners();
   }
 }

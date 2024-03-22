@@ -45,8 +45,9 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {
       if (response.data.toString().contains('language')) {
         // appScreen = TabsScreen();
-        // appScreen = SocialScreen();
-        appScreen = ProfileScreen();
+        // appScreen = LeaderboardScreen();
+        appScreen = SocialScreen();
+        // appScreen = ProfileScreen();
         // appScreen = SettingsScreen();
       } else {
         appScreen = UserSetupScreen(
@@ -86,6 +87,7 @@ class _MainScreenState extends State<MainScreen> {
       context
           .read<UserProvider>()
           .setUserFriends(response.data[0]['userFriends']);
+      context.read<UserProvider>().setUserState(response.data[0]['userState']);
       if (response.data.toString().contains('userType')) {
         context
             .read<UserProvider>()

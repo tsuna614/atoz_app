@@ -169,10 +169,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(
                   height: 10,
                 ),
-                Text(
-                  // '${userData['firstName']} ${userData['lastName']}',
-                  '${userData['firstName']} ${userData['lastName']}',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                FittedBox(
+                  child: Text(
+                    // '${userData['firstName']} ${userData['lastName']}',
+                    '${userData['firstName']} ${userData['lastName']}',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
                 ),
                 Text(
                   userData['email'],

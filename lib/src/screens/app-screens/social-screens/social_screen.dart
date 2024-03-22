@@ -25,7 +25,7 @@ class _SocialScreenState extends State<SocialScreen> {
 
   bool isNotificationOpen = false;
 
-  var userData;
+  List<dynamic> userFriendsData = [];
 
   Future<dynamic> getUserData(String userId) async {
     Dio dio = Dio();
@@ -34,7 +34,21 @@ class _SocialScreenState extends State<SocialScreen> {
     // setState(() {
     //   userData = response.data[0];
     // });
+    // print(response.data[0]);
     return response.data[0];
+  }
+
+  void getAllUserFriendsData() async {
+    for (int i = 0;
+        i <
+            Provider.of<UserProvider>(context, listen: false)
+                .userFriends
+                .length;
+        i++) {
+      userFriendsData.add(await getUserData(
+          Provider.of<UserProvider>(context, listen: false).userFriends[i]));
+    }
+    setState(() {});
   }
 
   void addFriend(String senderId, String receiverId) {
@@ -49,6 +63,35 @@ class _SocialScreenState extends State<SocialScreen> {
         .delete();
   }
 
+  void changeUserState(String userState) {
+    // Provider.of<UserProvider>(context, listen: false).setUserState(userState);
+
+    switch (userState) {
+      case "Active":
+        userStatus = UserStatus.active;
+        break;
+      case "Busy":
+        userStatus = UserStatus.doNotDisturb;
+        break;
+      case "Away":
+        userStatus = UserStatus.away;
+        break;
+      default:
+    }
+
+    Dio dio = Dio();
+    dio.put(
+        '${globals.atozApi}/user/editUserById/${Provider.of<UserProvider>(context, listen: false).userId}',
+        data: {'userState': userState});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getAllUserFriendsData();
+  }
+
   @override
   Widget build(BuildContext context) {
     String profileImagePath = context.watch<UserProvider>().profileImagePath;
@@ -60,9 +103,14 @@ class _SocialScreenState extends State<SocialScreen> {
         : MediaQuery.of(context).size.width;
     double yOffset = 50;
 
+    changeUserState(context.watch<UserProvider>().userState);
+
     return Scaffold(
       body: Stack(
         children: [
+          userFriendsData.isEmpty
+              ? Center(child: CircularProgressIndicator())
+              : buildFriendList(context, userFriendsData),
           ClipPath(
             clipper: CustomClipPath(context: context),
             child: Container(
@@ -351,11 +399,14 @@ class _SocialScreenState extends State<SocialScreen> {
     ).then((value) {
       setState(() {
         if (value == 1) {
-          userStatus = UserStatus.active;
+          context.read<UserProvider>().setUserState("Active");
+          changeUserState("Active");
         } else if (value == 2) {
-          userStatus = UserStatus.away;
+          context.read<UserProvider>().setUserState("Away");
+          changeUserState("Away");
         } else if (value == 3) {
-          userStatus = UserStatus.doNotDisturb;
+          context.read<UserProvider>().setUserState("Busy");
+          changeUserState("Busy");
         }
       });
     });
@@ -542,6 +593,41 @@ class _SocialScreenState extends State<SocialScreen> {
           thickness: 1,
           indent: 20,
           endIndent: 20,
+        ),
+      ],
+    );
+  }
+
+  Widget buildFriendList(BuildContext context, List<dynamic> userFriendsData) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 150,
+        ),
+        Expanded(
+          child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: userFriendsData.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: Image.asset(
+                          'assets/images/avatar/${userFriendsData[index]['profileImage']}.jpeg')
+                      .image,
+                ),
+                title: Text(
+                    '${userFriendsData[index]['firstName']} ${userFriendsData[index]['lastName']}'),
+                subtitle: Row(
+                  children: [
+                    Text("Hello there"),
+                    Expanded(child: Container()),
+                    Text("2 days ago")
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ],
     );
