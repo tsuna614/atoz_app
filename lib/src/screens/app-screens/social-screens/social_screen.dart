@@ -25,6 +25,8 @@ class _SocialScreenState extends State<SocialScreen> {
 
   bool isNotificationOpen = false;
 
+  bool hasNotification = false;
+
   List<dynamic> userFriendsData = [];
 
   Future<dynamic> getUserData(String userId) async {
@@ -130,49 +132,12 @@ class _SocialScreenState extends State<SocialScreen> {
           ),
           SafeArea(
             child: Column(
-              // crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               // mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Stack(
                   children: [
                     buildSearchBar(context),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Padding(
-                        padding: EdgeInsets.only(right: 15),
-                        child: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isNotificationOpen = !isNotificationOpen;
-                            });
-                            // Navigator.of(context).push(
-                            //   PageRouteBuilder(
-                            //     pageBuilder: (context, _, __) {
-                            //       return buildNotificationSideDrawer();
-                            //     },
-                            //     transitionsBuilder: (context, animation,
-                            //         secondaryAnimation, child) {
-                            //       return SlideTransition(
-                            //         position: Tween(
-                            //           begin: Offset(1.0, -1.0),
-                            //           end: Offset(0.0, 0.0),
-                            //         )
-                            //             .chain(CurveTween(curve: Curves.ease))
-                            //             .animate(animation),
-                            //         child: child,
-                            //       );
-                            //     },
-                            //   ),
-                            // );
-                          },
-                          icon: Icon(
-                            Icons.notifications,
-                            color: Colors.white,
-                            size: 26,
-                          ),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
                 SizedBox(
@@ -426,75 +391,119 @@ class _SocialScreenState extends State<SocialScreen> {
           );
         }
 
+        // if (snapshot.data!.docs.isNotEmpty) {
+        //   hasNotification = true;
+        // }
+
         return SafeArea(
-          child: AnimatedContainer(
-            transform: Matrix4.translationValues(xOffset, yOffset, 0)
-              ..scale(isNotificationOpen ? 1.00 : 1.00),
-            duration: Duration(milliseconds: 200),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(40),
-                bottomLeft: Radius.circular(40),
-              ),
-              // drop shadow to the right
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  spreadRadius: 0,
-                  blurRadius: 7,
-                  offset: Offset(0, 0), // changes position of shadow
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: EdgeInsets.only(right: 15),
+                  child: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        isNotificationOpen = !isNotificationOpen;
+                      });
+                    },
+                    icon: Stack(
+                      children: [
+                        Icon(
+                          Icons.notifications,
+                          color: Colors.white,
+                          size: 26,
+                        ),
+                        if (snapshot.data!.docs.isNotEmpty)
+                          Positioned(
+                            top: 0,
+                            right: 0,
+                            child: Icon(
+                              Icons.circle,
+                              color: Colors.red,
+                              size: 10,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
                 ),
-              ],
-            ),
-            width: MediaQuery.of(context).size.width * 0.8,
-            height: MediaQuery.of(context).size.height * 0.6,
-            child: Column(
-              children: [
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: Text(
-                      'Notifications',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+              ),
+              AnimatedContainer(
+                transform: Matrix4.translationValues(xOffset, yOffset, 0)
+                  ..scale(isNotificationOpen ? 1.00 : 1.00),
+                duration: Duration(milliseconds: 200),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    bottomLeft: Radius.circular(40),
+                  ),
+                  // drop shadow to the right
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      spreadRadius: 0,
+                      blurRadius: 7,
+                      offset: Offset(0, 0), // changes position of shadow
+                    ),
+                  ],
+                ),
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: MediaQuery.of(context).size.height * 0.6,
+                child: Column(
+                  children: [
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: Text(
+                          'Notifications',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                if (snapshot.data!.docs.isEmpty)
-                  Expanded(
-                    child: Center(
-                      child: Text('It\'s all quiet here...'),
+                    if (snapshot.data!.docs.isEmpty)
+                      Expanded(
+                        child: Center(
+                          child: Text('It\'s all quiet here...'),
+                        ),
+                      ),
+                    ListView(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      children:
+                          snapshot.data!.docs.map((DocumentSnapshot document) {
+                        Map<String, dynamic> data =
+                            document.data() as Map<String, dynamic>;
+
+                        // use FutureBuilder because ListView takes Widget, while we need to return Future<Widget>
+                        return FutureBuilder(
+                          future: getUserData(data['sender']),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+
+                            return buildListTile(
+                                context,
+                                document.id,
+                                data['sender'],
+                                data['receiver'],
+                                snapshot.data);
+                          },
+                        );
+                      }).toList(),
                     ),
-                  ),
-                ListView(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  children:
-                      snapshot.data!.docs.map((DocumentSnapshot document) {
-                    Map<String, dynamic> data =
-                        document.data() as Map<String, dynamic>;
-
-                    // use FutureBuilder because ListView takes Widget, while we need to return Future<Widget>
-                    return FutureBuilder(
-                      future: getUserData(data['sender']),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-
-                        return buildListTile(context, document.id,
-                            data['sender'], data['receiver'], snapshot.data);
-                      },
-                    );
-                  }).toList(),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },
@@ -552,6 +561,7 @@ class _SocialScreenState extends State<SocialScreen> {
                   onPressed: () {
                     addFriend(senderId, receiverId);
                     removeNotification(notificationId);
+                    setState(() {});
                   },
                   child: const Text(
                     'Accept',
