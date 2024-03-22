@@ -1,5 +1,5 @@
 import 'package:atoz_app/src/screens/app-screens/journey_screen.dart';
-import 'package:atoz_app/src/screens/app-screens/leaderboard-screen/leaderboard_screen.dart';
+// import 'package:atoz_app/src/screens/app-screens/leaderboard-screen/leaderboard_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/practice-screens/practice_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -18,7 +18,6 @@ class _TabsScreenState extends State<TabsScreen> {
   final List<Widget> _pages = [
     JourneyScreen(),
     PracticeScreen(),
-    LeaderboardScreen(),
   ];
 
   @override
@@ -99,10 +98,10 @@ class _TabsScreenState extends State<TabsScreen> {
                 title: Text('Practice'),
                 selectedColor: Colors.pink,
               ),
-              SalomonBottomBarItem(
-                  icon: Icon(FontAwesomeIcons.medal),
-                  title: Text('Leaderboard'),
-                  selectedColor: Colors.yellow.shade700),
+              // SalomonBottomBarItem(
+              //     icon: Icon(FontAwesomeIcons.medal),
+              //     title: Text('Leaderboard'),
+              //     selectedColor: Colors.yellow.shade700),
             ],
           ),
         ),

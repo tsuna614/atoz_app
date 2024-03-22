@@ -19,6 +19,8 @@ class UserProvider extends ChangeNotifier {
   String userLastName = '';
   String profileImagePath = '';
 
+  List<String> userFriends = [];
+
   // create UserProvider constructor
 
   void setUserId(String id) {
@@ -78,6 +80,17 @@ class UserProvider extends ChangeNotifier {
 
   void setUserAge(int age) {
     userAge = age;
+    notifyListeners();
+  }
+
+  void setUserFriends(List<dynamic> friends) {
+    userFriends.clear();
+    for (int i = 0; i < friends.length; i++) {
+      // if that the friend's id is not in userFriends yet, then add
+      if (!userFriends.contains(friends[i].toString())) {
+        userFriends.add(friends[i].toString());
+      }
+    }
     notifyListeners();
   }
 }

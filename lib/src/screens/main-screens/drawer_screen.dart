@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+final _firebase = FirebaseAuth.instance;
 
 class DrawerScreen extends StatefulWidget {
   const DrawerScreen({super.key, required this.switchScreen});
@@ -67,6 +70,10 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     height: 40,
                   ),
                   buildAnimatedButton(context, 3),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  buildAnimatedButton(context, 4),
                 ],
               ),
               Expanded(child: Container()),
@@ -133,7 +140,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       ? FontAwesomeIcons.userLarge
                       : itemIndex == 2
                           ? FontAwesomeIcons.users
-                          : FontAwesomeIcons.gear,
+                          : itemIndex == 3
+                              ? FontAwesomeIcons.medal
+                              : FontAwesomeIcons.gear,
               color: Colors.white,
               size: 16,
             ),
@@ -147,7 +156,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       ? 'Profile'
                       : itemIndex == 2
                           ? 'Social'
-                          : 'Settings',
+                          : itemIndex == 3
+                              ? 'Leaderboard'
+                              : 'Settings',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,
@@ -184,6 +195,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               child: const Text('Confirm'),
               onPressed: () {
                 Navigator.of(context).pop();
+                _firebase.signOut();
               },
             ),
           ],

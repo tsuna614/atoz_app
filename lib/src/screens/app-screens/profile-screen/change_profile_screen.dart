@@ -1,7 +1,9 @@
+import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:atoz_app/src/data/global_data.dart' as global;
+import 'package:provider/provider.dart';
 
 final dio = Dio();
 final _firebase = FirebaseAuth.instance;
@@ -76,6 +78,13 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
 
   void putUserData() async {
     // call put api to change user data
+
+    context.read<UserProvider>().setUserFirstName(_firstNameTextField.text);
+    context.read<UserProvider>().setUserLastName(_lastNameTextField.text);
+    context.read<UserProvider>().setUserAge(int.parse(_ageTextField.text));
+    context.read<UserProvider>().setUserEmail(_emailTextField.text);
+    context.read<UserProvider>().setProfileImage(image);
+
     await dio.put(
       '${global.atozApi}/user/editUserById/${_firebase.currentUser!.uid}',
       data: {

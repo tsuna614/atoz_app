@@ -1,11 +1,11 @@
 import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:atoz_app/src/screens/app-screens/chart/bar_chart.dart';
 import 'package:atoz_app/src/screens/app-screens/profile-screen/change_profile_screen.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import 'package:provider/provider.dart';
+import 'package:atoz_app/src/data/global_data.dart' as globals;
 
 class ProfileScreen extends StatefulWidget {
   ProfileScreen({super.key});
@@ -15,11 +15,21 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  int selectedTab = 0;
+  int selectedTab = 1;
 
   @override
   void initState() {
     super.initState();
+  }
+
+  Future<dynamic> getUserData(String userId) async {
+    Dio dio = Dio();
+    Response response =
+        await dio.get('${globals.atozApi}/user/getUserById/$userId');
+    // setState(() {
+    //   userData = response.data[0];
+    // });
+    return response.data[0];
   }
 
   @override
@@ -54,6 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ? 'Intermediate'
           : 'Novice',
       'ranking': context.watch<UserProvider>().userRanking,
+      'userFriends': context.watch<UserProvider>().userFriends,
     };
 
     return Scaffold(
@@ -64,57 +75,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: Stack(
         children: [
           // THIS IS THE INFO CARD BELOW THE PROFILE
-          if (selectedTab == 0)
-            Align(
-              alignment: Alignment(0, 0),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 350,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Card(
-                        color: Colors.white,
-                        child: Column(
-                          children: [
-                            Container(
-                              width: double.infinity,
-                            ),
-                            buildDetailCard(context, userData),
-                            Divider(
-                              height: 20,
-                              thickness: 2,
-                              indent: 20,
-                              endIndent: 20,
-                            ),
-                            StudyingInfo(),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 50,
-                    ),
-                    SizedBox(height: 400, child: MyBarChart()),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      'User\'s score chart',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 50,
-                    ),
-                  ],
-                ),
-              ),
-            ),
+          if (selectedTab == 0) buildStatPage(context, userData),
+          // THIS IS THE FRIEND TAB
+          if (selectedTab == 1)
+            buildFriendList(context, userData['userFriends']),
           // THIS IS THE BACKGROUND CONTAINER
           Positioned(
             top: 0,
@@ -328,6 +292,59 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  Widget buildStatPage(BuildContext context, dynamic userData) {
+    return Align(
+      alignment: Alignment(0, 0),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 350,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Card(
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                    ),
+                    buildDetailCard(context, userData),
+                    Divider(
+                      height: 20,
+                      thickness: 2,
+                      indent: 20,
+                      endIndent: 20,
+                    ),
+                    StudyingInfo(),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            SizedBox(height: 400, child: MyBarChart()),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              'User\'s score chart',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(
+              height: 50,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget buildDetailCard(BuildContext context, dynamic userData) {
     const rowSpacer = TableRow(children: [
       SizedBox(
@@ -404,6 +421,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Text(userData["language"])),
             ]),
           ]),
+    );
+  }
+
+  Widget buildFriendList(BuildContext context, List<String> userFriends) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 300,
+        ),
+        Expanded(
+          child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: userFriends.length,
+            itemBuilder: (context, index) {
+              return buildFriendTile(context, userFriends[index]);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildFriendTile(BuildContext context, String friendId) {
+    return FutureBuilder(
+      future: getUserData(friendId),
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        }
+        return ListTile(
+          leading: CircleAvatar(
+            backgroundImage: Image.asset(
+                    'assets/images/avatar/${snapshot.data['profileImage']}.jpeg')
+                .image,
+          ),
+          title: Text(
+              '${snapshot.data['firstName']} ${snapshot.data['lastName']}'),
+          subtitle: Text(snapshot.data['email']),
+          trailing: IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.more_vert),
+          ),
+        );
+      },
     );
   }
 }

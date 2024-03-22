@@ -3,10 +3,14 @@ import 'package:flutter/src/widgets/framework.dart';
 
 class AnimatedButton1 extends StatefulWidget {
   const AnimatedButton1(
-      {super.key, required this.buttonText, required this.voidFunction});
+      {super.key,
+      required this.buttonText,
+      required this.width,
+      required this.voidCallback});
 
   final String buttonText;
-  final void Function() voidFunction;
+  final double width;
+  final VoidCallback voidCallback;
 
   @override
   State<AnimatedButton1> createState() => _AnimatedButton1State();
@@ -19,7 +23,7 @@ class _AnimatedButton1State extends State<AnimatedButton1> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        widget.voidFunction;
+        widget.voidCallback;
       },
       onTapDown: (_) {
         setState(() {
@@ -47,7 +51,7 @@ class _AnimatedButton1State extends State<AnimatedButton1> {
         duration: Duration(milliseconds: 50),
         child: Container(
           width: double.infinity,
-          height: 50,
+          height: widget.width,
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(color: Colors.blue.shade800),

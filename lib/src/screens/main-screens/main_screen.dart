@@ -1,5 +1,7 @@
 import 'package:atoz_app/src/providers/user_provider.dart';
+import 'package:atoz_app/src/screens/app-screens/leaderboard-screen/leaderboard_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/profile-screen/profile_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/settings-screen/settings_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/social-screens/social_screen.dart';
 import 'package:atoz_app/src/screens/authentication-screens/user_setup_screen.dart';
 import 'package:atoz_app/src/screens/main-screens/drawer_screen.dart';
@@ -42,8 +44,10 @@ class _MainScreenState extends State<MainScreen> {
     // print(response.data[0]['userId']);
     setState(() {
       if (response.data.toString().contains('language')) {
-        appScreen = TabsScreen();
+        // appScreen = TabsScreen();
         // appScreen = SocialScreen();
+        appScreen = ProfileScreen();
+        // appScreen = SettingsScreen();
       } else {
         appScreen = UserSetupScreen(
           resetMainPage: initScreen,
@@ -79,6 +83,9 @@ class _MainScreenState extends State<MainScreen> {
             response.data[0]['profileImage'].toString(),
           );
       context.read<UserProvider>().setUserAge(response.data[0]['age']);
+      context
+          .read<UserProvider>()
+          .setUserFriends(response.data[0]['userFriends']);
       if (response.data.toString().contains('userType')) {
         context
             .read<UserProvider>()
@@ -89,7 +96,7 @@ class _MainScreenState extends State<MainScreen> {
 
   void switchScreen(int screenIndex) {
     setState(() {
-      xOffset = MediaQuery.of(context).size.width;
+      xOffset = MediaQuery.of(context).size.width + 100;
     });
 
     // wait 200 milliseconds
@@ -102,7 +109,10 @@ class _MainScreenState extends State<MainScreen> {
         } else if (screenIndex == 2) {
           appScreen = SocialScreen();
         } else if (screenIndex == 3) {
-          appScreen = TabsScreen();
+          appScreen = LeaderboardScreen();
+          // appScreen = SettingsScreen();
+        } else if (screenIndex == 4) {
+          appScreen = SettingsScreen();
         }
         xOffset = 290;
       });
@@ -168,22 +178,43 @@ class _MainScreenState extends State<MainScreen> {
                 body: Stack(
                   children: [
                     appScreen,
-                    SafeArea(
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: IconButton(
-                          onPressed: () => alternateDrawer(),
-                          icon: Icon(
-                            Icons.menu,
-                            color: Colors.white,
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
+            ),
+          ),
+        ),
+        // gesture detector for swiping to the right to open the drawer
+        Positioned(
+          left: 0,
+          child: GestureDetector(
+            onPanEnd: (details) {
+              // Swiping in right direction.
+              if (details.velocity.pixelsPerSecond.dx > 0 && !isDrawerOpen) {
+                alternateDrawer();
+              }
+            },
+            child: Container(
+              width: 20,
+              height: MediaQuery.of(context).size.height,
+              color: Colors.transparent,
+            ),
+          ),
+        ),
+        // gesture detector for swiping to the left to close the drawer
+        Positioned(
+          right: 0,
+          child: GestureDetector(
+            onPanEnd: (details) {
+              // Swiping in left direction.
+              if (details.velocity.pixelsPerSecond.dx < 0 && isDrawerOpen) {
+                alternateDrawer();
+              }
+            },
+            child: Container(
+              width: 20,
+              height: MediaQuery.of(context).size.height,
+              color: Colors.transparent,
             ),
           ),
         ),

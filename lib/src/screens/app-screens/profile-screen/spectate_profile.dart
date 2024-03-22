@@ -32,7 +32,7 @@ class SpectateProfile extends StatefulWidget {
 }
 
 class _SpectateProfileState extends State<SpectateProfile> {
-  var userData;
+  dynamic userData;
   bool hasImage = false;
   int selectedTab = 0;
 

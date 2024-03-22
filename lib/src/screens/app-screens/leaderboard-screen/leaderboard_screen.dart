@@ -1,5 +1,6 @@
 import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:atoz_app/src/screens/app-screens/profile-screen/spectate_profile.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -8,7 +9,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:dio/dio.dart';
 import 'package:atoz_app/src/data/global_data.dart' as globals;
 import 'package:provider/provider.dart';
-import 'package:wtf_sliding_sheet/wtf_sliding_sheet.dart';
 
 final dio = Dio();
 
@@ -39,9 +39,48 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
     });
   }
 
-  void addFriend(String userId) {
-    // add friend to the user
-    print('add friend to $userId');
+  Future<bool> checkForExistingRequest(String friendId) async {
+    String userId = Provider.of<UserProvider>(context, listen: false).userId;
+    bool isExisting = false;
+    await FirebaseFirestore.instance
+        .collection('notifications')
+        .where('sender', isEqualTo: userId)
+        .where('receiver', isEqualTo: friendId)
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        isExisting = true;
+      }
+    });
+    return isExisting;
+  }
+
+  void cancelFriendRequest(String friendId) {
+    String userId = Provider.of<UserProvider>(context, listen: false).userId;
+
+    FirebaseFirestore.instance
+        .collection('notifications')
+        .where('sender', isEqualTo: userId)
+        .where('receiver', isEqualTo: friendId)
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        FirebaseFirestore.instance
+            .collection('notifications')
+            .doc(element.id)
+            .delete();
+      });
+    });
+  }
+
+  void addFriend(String friendId) {
+    String userId = Provider.of<UserProvider>(context, listen: false).userId;
+
+    FirebaseFirestore.instance.collection('notifications').add({
+      'sender': userId,
+      'receiver': friendId,
+      'timeCreated': DateTime.now(),
+    });
   }
 
   @override
@@ -405,155 +444,137 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
       BuildContext context, Offset globalPosition, int userIndex) async {
     double left = globalPosition.dx;
     double top = globalPosition.dy;
-    await showMenu(
-      color: Colors.white,
-      //add your color
-      context: context,
-      position: RelativeRect.fromLTRB(left, top, 0, 0),
-      items: [
-        PopupMenuItem(
-          value: 1,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 0, right: 40),
-            child: Row(
-              children: const [
-                Icon(FontAwesomeIcons.circleUser),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  "View profile",
-                  style: TextStyle(color: Colors.black),
-                ),
-              ],
+    String currentUserId =
+        Provider.of<UserProvider>(context, listen: false).userId;
+
+    bool isFriendRequestExisted =
+        await checkForExistingRequest(userData[userIndex]['userId']);
+
+    if (context.mounted) {
+      await showMenu(
+        color: Colors.white,
+        //add your color
+        context: context,
+        position: RelativeRect.fromLTRB(left, top, 0, 0),
+        items: [
+          PopupMenuItem(
+            value: 1,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 0, right: 40),
+              child: Row(
+                children: const [
+                  Icon(FontAwesomeIcons.circleUser),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "View profile",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        PopupMenuItem(
-          value: 2,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 0, right: 40),
-            child: Row(
-              children: const [
-                Icon(Icons.person_add_alt_1_outlined),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  "Send friend request",
-                  style: TextStyle(color: Colors.black),
-                ),
-              ],
+          PopupMenuItem(
+            enabled:
+                userData[userIndex]['userId'] == currentUserId ? false : true,
+            value: 2,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 0, right: 40),
+              child: Row(
+                children: [
+                  isFriendRequestExisted
+                      ? Icon(Icons.person_remove_alt_1_outlined)
+                      : Icon(Icons.person_add_alt_1_outlined),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    isFriendRequestExisted
+                        ? "Cancel request"
+                        : "Send friend request",
+                    style: TextStyle(
+                        color: userData[userIndex]['userId'] == currentUserId
+                            ? Colors.grey
+                            : Colors.black),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        PopupMenuItem(
-          value: 3,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 0, right: 40),
-            child: Row(
-              children: const [
-                Icon(Icons.message),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  "Message",
-                  style: TextStyle(color: Colors.black),
-                ),
-              ],
+          PopupMenuItem(
+            enabled:
+                userData[userIndex]['userId'] == currentUserId ? false : true,
+            value: 3,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 0, right: 40),
+              child: Row(
+                children: [
+                  Icon(Icons.message),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "Message",
+                    style: TextStyle(
+                        color: userData[userIndex]['userId'] == currentUserId
+                            ? Colors.grey
+                            : Colors.black),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
-      elevation: 8.0,
-    ).then((value) {
-      if (value == 1) {
-        showModalBottomSheet<dynamic>(
-          context: context,
-          isScrollControlled: true,
-          useSafeArea: true,
-          // backgroundColor: Colors.transparent,
-          builder: (context) => AnimatedContainer(
-            duration: Duration(milliseconds: 500),
-            height: MediaQuery.of(context).size.height * 0.8,
-            child: Stack(
-              children: [
-                SpectateProfile(
-                  userId: userData[userIndex]['userId'],
-                  isDirectedFromLeaderboard: true,
-                ),
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(top: 10),
-                      height: 5,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade300,
-                        borderRadius: BorderRadius.circular(20),
+        ],
+        elevation: 8.0,
+      ).then((value) {
+        if (value == 1) {
+          // VIEWING PROFILE
+          showModalBottomSheet<dynamic>(
+            context: context,
+            isScrollControlled: true,
+            useSafeArea: true,
+            // backgroundColor: Colors.transparent,
+            builder: (context) => AnimatedContainer(
+              duration: Duration(milliseconds: 500),
+              height: MediaQuery.of(context).size.height * 1,
+              child: Stack(
+                children: [
+                  SpectateProfile(
+                    userId: userData[userIndex]['userId'],
+                    isDirectedFromLeaderboard: true,
+                  ),
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(top: 10),
+                        height: 5,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade300,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        );
-        // showModalBottomSheet<dynamic>(
-        //   context: context,
-        //   isScrollControlled: true,
-        //   useSafeArea: true,
-        //   // backgroundColor: Colors.transparent,
-        //   builder: (context) => DraggableScrollableSheet(
-        //     snap: true,
-        //     expand: false,
-        //     builder: (context, scrollController) => Container(
-        //       height: MediaQuery.of(context).size.height * 0.6,
-        //       child: SpectateProfile(
-        //         userId: userData[userIndex]['userId'],
-        //         isDirectedFromLeaderboard: true,
-        //       ),
-        //     ),
-        //   ),
-        // );
-        // showSheet(userIndex);
-      }
-      if (value == 2) {
-        //do your task here for menu 2
-        addFriend(userData[userIndex]['userId']);
-      }
-    });
-  }
-
-  Future showSheet(int userIndex) => showSlidingBottomSheet(
-        context,
-        builder: (context) => SlidingSheetDialog(
-          snapSpec: SnapSpec(snappings: [0.6, 1]),
-          builder: (context, state) => buildSheet(context, state, userIndex),
-        ),
-      );
-
-  Widget buildSheet(BuildContext context, SheetState state, int userIndex) {
-    return Material(
-      // child: SpectateProfile(
-      //   userId: userData[userIndex]['userId'],
-      //   isDirectedFromLeaderboard: true,
-      // ),
-      child: Column(
-        children: [
-          Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
-              "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
-              "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
-              "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. "
-              "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."),
-        ],
-      ),
-    );
+          );
+        }
+        if (value == 2) {
+          // SENDING FRIEND REQUEST / CANCELLING FRIEND REQUEST
+          if (isFriendRequestExisted) {
+            cancelFriendRequest(userData[userIndex]['userId']);
+          } else
+            addFriend(userData[userIndex]['userId']);
+        }
+      });
+    }
   }
 
   Widget buildPlayerTitleCard(BuildContext context, int index) {
@@ -635,13 +656,13 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
               ),
             ),
           ),
-          // trailing: Text(
-          //   '2190',
-          //   style: TextStyle(
-          //       fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
-          // ),
         ),
       ),
+      // trailing: Text(
+      //   '2190',
+      //   style: TextStyle(
+      //       fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
+      // ),
     );
   }
 }

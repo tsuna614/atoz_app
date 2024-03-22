@@ -95,6 +95,7 @@ flutter:
     - assets/images/boat.png
     - assets/images/plane.png
     - assets/images/stomachache.png
+    - assets/images/avatar/profile.jpeg
     - assets/images/avatar/cat.jpeg
     - assets/images/avatar/chicken.jpeg
     - assets/images/avatar/cow.jpeg

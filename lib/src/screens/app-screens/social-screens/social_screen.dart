@@ -1,7 +1,10 @@
 import 'package:atoz_app/src/providers/user_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:atoz_app/src/data/global_data.dart' as globals;
 
 enum UserStatus {
   active,
@@ -20,11 +23,42 @@ class _SocialScreenState extends State<SocialScreen> {
   bool isSearchBarExtended = false;
   UserStatus userStatus = UserStatus.active;
 
+  bool isNotificationOpen = false;
+
+  var userData;
+
+  Future<dynamic> getUserData(String userId) async {
+    Dio dio = Dio();
+    Response response =
+        await dio.get('${globals.atozApi}/user/getUserById/$userId');
+    // setState(() {
+    //   userData = response.data[0];
+    // });
+    return response.data[0];
+  }
+
+  void addFriend(String senderId, String receiverId) {
+    Dio dio = Dio();
+    dio.put('${globals.atozApi}/user/addFriend/$senderId/$receiverId');
+  }
+
+  void removeNotification(String notificationId) {
+    FirebaseFirestore.instance
+        .collection('notifications')
+        .doc(notificationId)
+        .delete();
+  }
+
   @override
   Widget build(BuildContext context) {
     String profileImagePath = context.watch<UserProvider>().profileImagePath;
     String userFullName =
         '${context.watch<UserProvider>().userFirstName} ${context.watch<UserProvider>().userLastName}';
+
+    double xOffset = isNotificationOpen
+        ? MediaQuery.of(context).size.width * 0.2
+        : MediaQuery.of(context).size.width;
+    double yOffset = 50;
 
     return Scaffold(
       body: Stack(
@@ -59,7 +93,30 @@ class _SocialScreenState extends State<SocialScreen> {
                       child: Padding(
                         padding: EdgeInsets.only(right: 15),
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              isNotificationOpen = !isNotificationOpen;
+                            });
+                            // Navigator.of(context).push(
+                            //   PageRouteBuilder(
+                            //     pageBuilder: (context, _, __) {
+                            //       return buildNotificationSideDrawer();
+                            //     },
+                            //     transitionsBuilder: (context, animation,
+                            //         secondaryAnimation, child) {
+                            //       return SlideTransition(
+                            //         position: Tween(
+                            //           begin: Offset(1.0, -1.0),
+                            //           end: Offset(0.0, 0.0),
+                            //         )
+                            //             .chain(CurveTween(curve: Curves.ease))
+                            //             .animate(animation),
+                            //         child: child,
+                            //       );
+                            //     },
+                            //   ),
+                            // );
+                          },
                           icon: Icon(
                             Icons.notifications,
                             color: Colors.white,
@@ -80,8 +137,10 @@ class _SocialScreenState extends State<SocialScreen> {
                     children: [
                       CircleAvatar(
                         radius: 25,
-                        backgroundImage: AssetImage(
-                            'assets/images/avatar/$profileImagePath.jpeg'),
+                        backgroundImage: profileImagePath.isEmpty
+                            ? AssetImage('assets/images/profile.jpg')
+                            : AssetImage(
+                                'assets/images/avatar/$profileImagePath.jpeg'),
                       ),
                       SizedBox(
                         width: 20,
@@ -151,6 +210,7 @@ class _SocialScreenState extends State<SocialScreen> {
               ],
             ),
           ),
+          buildNotificationSideDrawer(context, xOffset, yOffset),
         ],
       ),
     );
@@ -158,14 +218,14 @@ class _SocialScreenState extends State<SocialScreen> {
 
   Widget buildSearchBar(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 5, left: 80, right: 80),
+      padding: const EdgeInsets.only(top: 5, left: 20, right: 80),
       child: Stack(
         children: [
           AnimatedContainer(
             duration: Duration(milliseconds: 300),
             height: 40,
             width: isSearchBarExtended
-                ? MediaQuery.of(context).size.width * 0.8
+                ? MediaQuery.of(context).size.width * 1
                 : 40,
             decoration: BoxDecoration(
               color: Colors.white.withOpacity(0.4),
@@ -299,6 +359,192 @@ class _SocialScreenState extends State<SocialScreen> {
         }
       });
     });
+  }
+
+  Widget buildNotificationSideDrawer(
+      BuildContext context, double xOffset, double yOffset) {
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance
+          .collection('notifications')
+          .where('receiver', isEqualTo: context.watch<UserProvider>().userId)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        return SafeArea(
+          child: AnimatedContainer(
+            transform: Matrix4.translationValues(xOffset, yOffset, 0)
+              ..scale(isNotificationOpen ? 1.00 : 1.00),
+            duration: Duration(milliseconds: 200),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(40),
+                bottomLeft: Radius.circular(40),
+              ),
+              // drop shadow to the right
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  spreadRadius: 0,
+                  blurRadius: 7,
+                  offset: Offset(0, 0), // changes position of shadow
+                ),
+              ],
+            ),
+            width: MediaQuery.of(context).size.width * 0.8,
+            height: MediaQuery.of(context).size.height * 0.6,
+            child: Column(
+              children: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: Text(
+                      'Notifications',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                if (snapshot.data!.docs.isEmpty)
+                  Expanded(
+                    child: Center(
+                      child: Text('It\'s all quiet here...'),
+                    ),
+                  ),
+                ListView(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  children:
+                      snapshot.data!.docs.map((DocumentSnapshot document) {
+                    Map<String, dynamic> data =
+                        document.data() as Map<String, dynamic>;
+
+                    // use FutureBuilder because ListView takes Widget, while we need to return Future<Widget>
+                    return FutureBuilder(
+                      future: getUserData(data['sender']),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+
+                        return buildListTile(context, document.id,
+                            data['sender'], data['receiver'], snapshot.data);
+                      },
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  buildListTile(BuildContext context, String notificationId, String senderId,
+      String receiverId, dynamic userData) {
+    String userImage = "profile.jpg";
+    if (userData["profileImage"] != null) {
+      userImage = "avatar/${userData["profileImage"]}.jpeg";
+    }
+
+    return Column(
+      children: [
+        ListTile(
+          leading: CircleAvatar(
+            radius: 25,
+            backgroundImage: AssetImage('assets/images/$userImage'),
+          ),
+          title: RichText(
+              text: TextSpan(
+            style: const TextStyle(
+              fontSize: 16.0,
+              color: Colors.black,
+            ),
+            children: [
+              TextSpan(
+                text: userData['firstName'],
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextSpan(
+                text: ' has sent you a friend request',
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          )),
+        ),
+        Row(
+          children: [
+            Flexible(
+              child: Padding(
+                padding: EdgeInsets.only(left: 14.0, right: 7.0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    textStyle: const TextStyle(fontSize: 16),
+                    backgroundColor: Colors.green.shade400,
+                    minimumSize: Size.fromHeight(25),
+                  ),
+                  onPressed: () {
+                    addFriend(senderId, receiverId);
+                    removeNotification(notificationId);
+                  },
+                  child: const Text(
+                    'Accept',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 14.0, left: 7.0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    textStyle: const TextStyle(fontSize: 16),
+                    backgroundColor: Colors.red,
+                    minimumSize: Size.fromHeight(25),
+                  ),
+                  onPressed: () {
+                    removeNotification(notificationId);
+                  },
+                  child: const Text(
+                    'Decline',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        const Divider(
+          height: 10,
+          thickness: 1,
+          indent: 20,
+          endIndent: 20,
+        ),
+      ],
+    );
   }
 }
 
