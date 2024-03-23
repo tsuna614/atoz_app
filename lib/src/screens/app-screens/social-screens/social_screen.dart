@@ -110,118 +110,141 @@ class _SocialScreenState extends State<SocialScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          userFriendsData.isEmpty
-              ? Center(child: CircularProgressIndicator())
-              : buildFriendList(context, userFriendsData),
-          ClipPath(
-            clipper: CustomClipPath(context: context),
-            child: Container(
-              height: 200.0,
-              decoration: BoxDecoration(
-                // gradient
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.blueAccent.shade400,
-                    Colors.blueAccent.shade100
+          Stack(
+            children: [
+              userFriendsData.isEmpty
+                  ? Center(
+                      child:
+                          Text('No friends yet. Get out there and make some!'))
+                  : buildFriendList(context, userFriendsData),
+              ClipPath(
+                clipper: CustomClipPath(context: context),
+                child: Container(
+                  height: 200.0,
+                  decoration: BoxDecoration(
+                    // gradient
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.blueAccent.shade400,
+                        Colors.blueAccent.shade100
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SafeArea(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Stack(
+                      children: [
+                        buildSearchBar(context),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    // avatar
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 25,
+                            backgroundImage: profileImagePath.isEmpty
+                                ? AssetImage('assets/images/profile.jpg')
+                                : AssetImage(
+                                    'assets/images/avatar/$profileImagePath.jpeg'),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  userFullName,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    overflow: TextOverflow.ellipsis,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.circle,
+                                      color: userStatus == UserStatus.active
+                                          ? Colors.greenAccent
+                                          : userStatus == UserStatus.away
+                                              ? Colors.orange
+                                              : Colors.red,
+                                      size: 10,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      userStatus == UserStatus.active
+                                          ? 'Active now'
+                                          : userStatus == UserStatus.away
+                                              ? 'Away'
+                                              : 'Do not disturb',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    GestureDetector(
+                                      onTapDown: (TapDownDetails details) {
+                                        showPopUpMenu(
+                                            context, details.globalPosition);
+                                      },
+                                      child: Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: Colors.white,
+                                        size: 20,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(child: Container()),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
-            ),
+            ],
           ),
-          SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              // mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Stack(
-                  children: [
-                    buildSearchBar(context),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                // avatar
-                Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 25,
-                        backgroundImage: profileImagePath.isEmpty
-                            ? AssetImage('assets/images/profile.jpg')
-                            : AssetImage(
-                                'assets/images/avatar/$profileImagePath.jpeg'),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              userFullName,
-                              style: TextStyle(
-                                color: Colors.white,
-                                overflow: TextOverflow.ellipsis,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.circle,
-                                  color: userStatus == UserStatus.active
-                                      ? Colors.greenAccent
-                                      : userStatus == UserStatus.away
-                                          ? Colors.orange
-                                          : Colors.red,
-                                  size: 10,
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  userStatus == UserStatus.active
-                                      ? 'Active now'
-                                      : userStatus == UserStatus.away
-                                          ? 'Away'
-                                          : 'Do not disturb',
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                GestureDetector(
-                                  onTapDown: (TapDownDetails details) {
-                                    showPopUpMenu(
-                                        context, details.globalPosition);
-                                  },
-                                  child: Icon(
-                                    Icons.keyboard_arrow_down,
-                                    color: Colors.white,
-                                    size: 20,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(child: Container()),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+          GestureDetector(
+            // when clicked on the blurred background, close the notification side drawer
+            onTap: isNotificationOpen
+                ? () {
+                    setState(() {
+                      isNotificationOpen = false;
+                    });
+                  }
+                : null,
+
+            child: isNotificationOpen
+                ? Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.black.withOpacity(0.5))
+                : null,
           ),
           buildNotificationSideDrawer(context, xOffset, yOffset),
         ],
@@ -430,77 +453,89 @@ class _SocialScreenState extends State<SocialScreen> {
                   ),
                 ),
               ),
-              AnimatedContainer(
-                transform: Matrix4.translationValues(xOffset, yOffset, 0)
-                  ..scale(isNotificationOpen ? 1.00 : 1.00),
-                duration: Duration(milliseconds: 200),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    bottomLeft: Radius.circular(40),
-                  ),
-                  // drop shadow to the right
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      spreadRadius: 0,
-                      blurRadius: 7,
-                      offset: Offset(0, 0), // changes position of shadow
+              GestureDetector(
+                // on swipe right, close the notification side drawer
+                onPanEnd: isNotificationOpen
+                    ? (details) {
+                        if (details.velocity.pixelsPerSecond.dx > 0) {
+                          setState(() {
+                            isNotificationOpen = false;
+                          });
+                        }
+                      }
+                    : null,
+                child: AnimatedContainer(
+                  transform: Matrix4.translationValues(xOffset, yOffset, 0)
+                    ..scale(isNotificationOpen ? 1.00 : 1.00),
+                  duration: Duration(milliseconds: 200),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      bottomLeft: Radius.circular(40),
                     ),
-                  ],
-                ),
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: MediaQuery.of(context).size.height * 0.6,
-                child: Column(
-                  children: [
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: Text(
-                          'Notifications',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                    // drop shadow to the right
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        spreadRadius: 0,
+                        blurRadius: 7,
+                        offset: Offset(0, 0), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: MediaQuery.of(context).size.height * 0.6,
+                  child: Column(
+                    children: [
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: Text(
+                            'Notifications',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    if (snapshot.data!.docs.isEmpty)
-                      Expanded(
-                        child: Center(
-                          child: Text('It\'s all quiet here...'),
+                      if (snapshot.data!.docs.isEmpty)
+                        Expanded(
+                          child: Center(
+                            child: Text('It\'s all quiet here...'),
+                          ),
                         ),
+                      ListView(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        children: snapshot.data!.docs
+                            .map((DocumentSnapshot document) {
+                          Map<String, dynamic> data =
+                              document.data() as Map<String, dynamic>;
+
+                          // use FutureBuilder because ListView takes Widget, while we need to return Future<Widget>
+                          return FutureBuilder(
+                            future: getUserData(data['sender']),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+
+                              return buildListTile(
+                                  context,
+                                  document.id,
+                                  data['sender'],
+                                  data['receiver'],
+                                  snapshot.data);
+                            },
+                          );
+                        }).toList(),
                       ),
-                    ListView(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      children:
-                          snapshot.data!.docs.map((DocumentSnapshot document) {
-                        Map<String, dynamic> data =
-                            document.data() as Map<String, dynamic>;
-
-                        // use FutureBuilder because ListView takes Widget, while we need to return Future<Widget>
-                        return FutureBuilder(
-                          future: getUserData(data['sender']),
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-
-                            return buildListTile(
-                                context,
-                                document.id,
-                                data['sender'],
-                                data['receiver'],
-                                snapshot.data);
-                          },
-                        );
-                      }).toList(),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -620,20 +655,43 @@ class _SocialScreenState extends State<SocialScreen> {
             shrinkWrap: true,
             itemCount: userFriendsData.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: Image.asset(
-                          'assets/images/avatar/${userFriendsData[index]['profileImage']}.jpeg')
-                      .image,
-                ),
-                title: Text(
-                    '${userFriendsData[index]['firstName']} ${userFriendsData[index]['lastName']}'),
-                subtitle: Row(
-                  children: [
-                    Text("Hello there"),
-                    Expanded(child: Container()),
-                    Text("2 days ago")
-                  ],
+              return InkWell(
+                onTap: () {},
+                child: ListTile(
+                  leading: Stack(
+                    children: [
+                      CircleAvatar(
+                        radius: 25,
+                        backgroundImage: Image.asset(
+                                'assets/images/avatar/${userFriendsData[index]['profileImage']}.jpeg')
+                            .image,
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Icon(
+                          Icons.circle,
+                          color: userFriendsData[index]['userState'] == "Active"
+                              ? Colors.greenAccent
+                              : userFriendsData[index]['userState'] == "Away"
+                                  ? Colors.orange
+                                  : Colors.red,
+                          size: 15,
+                        ),
+                      ),
+                    ],
+                  ),
+                  title: Text(
+                    '${userFriendsData[index]['firstName']} ${userFriendsData[index]['lastName']}',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  subtitle: Row(
+                    children: [
+                      Text("Hello there"),
+                      Expanded(child: Container()),
+                      Text("2 days ago")
+                    ],
+                  ),
                 ),
               );
             },

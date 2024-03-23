@@ -1,6 +1,7 @@
 import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:atoz_app/src/screens/app-screens/chart/bar_chart.dart';
 import 'package:atoz_app/src/screens/app-screens/profile-screen/change_profile_screen.dart';
+import 'package:atoz_app/src/utils/social_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -15,7 +16,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  int selectedTab = 1;
+  int selectedTab = 0;
 
   @override
   void initState() {
@@ -447,6 +448,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget buildFriendTile(BuildContext context, String friendId) {
+    GlobalKey key = GlobalKey();
+
     return FutureBuilder(
       future: getUserData(friendId),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -466,7 +469,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
               '${snapshot.data['firstName']} ${snapshot.data['lastName']}'),
           subtitle: Text(snapshot.data['email']),
           trailing: IconButton(
-            onPressed: () {},
+            key: key,
+            onPressed: () {
+              // this is to find the position of the icon button to pass in showSocialPopUpMenu
+              RenderBox box =
+                  key.currentContext!.findRenderObject() as RenderBox;
+              Offset position = box.localToGlobal(Offset.zero);
+
+              showSocialPopUpMenu(context, position, snapshot.data);
+            },
             icon: Icon(Icons.more_vert),
           ),
         );
