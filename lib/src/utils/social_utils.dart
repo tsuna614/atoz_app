@@ -1,9 +1,11 @@
 import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:atoz_app/src/screens/app-screens/profile-screen/spectate_profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:atoz_app/src/data/global_data.dart' as globals;
 
 Future<bool> checkForExistingRequest(
     BuildContext context, String friendId) async {
@@ -46,7 +48,7 @@ void cancelFriendRequest(BuildContext context, String friendId) {
   });
 }
 
-void addFriend(BuildContext context, String friendId) {
+void sendFriendRequest(BuildContext context, String friendId) {
   String userId = Provider.of<UserProvider>(context, listen: false).userId;
 
   FirebaseFirestore.instance.collection('notifications').add({
@@ -54,6 +56,19 @@ void addFriend(BuildContext context, String friendId) {
     'receiver': friendId,
     'timeCreated': DateTime.now(),
   });
+}
+
+void unFriend(BuildContext context, String friendId) async {
+  String currentUserId =
+      Provider.of<UserProvider>(context, listen: false).userId;
+
+  Provider.of<UserProvider>(context, listen: false)
+      .userFriends
+      .removeWhere((element) => element == friendId);
+
+  Dio dio = Dio();
+  await dio
+      .put('${globals.atozApi}/user/removeFriend/$friendId/$currentUserId');
 }
 
 Future<void> showSocialPopUpMenu(
@@ -184,11 +199,15 @@ Future<void> showSocialPopUpMenu(
         );
       }
       if (value == 2) {
-        // SENDING FRIEND REQUEST / CANCELLING FRIEND REQUEST
         if (isFriendRequestExisted) {
+          // CANCEL FRIEND REQUEST
           cancelFriendRequest(context, userData['userId']);
+        } else if (isUserAlreadyFriend(context, userData['userId'])) {
+          // UNFRIEND
+          unFriend(context, userData['userId']);
         } else {
-          addFriend(context, userData['userId']);
+          // SEND FRIEND REQUEST
+          sendFriendRequest(context, userData['userId']);
         }
       }
     });

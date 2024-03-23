@@ -476,7 +476,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   key.currentContext!.findRenderObject() as RenderBox;
               Offset position = box.localToGlobal(Offset.zero);
 
-              showSocialPopUpMenu(context, position, snapshot.data);
+              showSocialPopUpMenu(context, position, snapshot.data)
+                  .then((value) {
+                setState(() {});
+              });
             },
             icon: Icon(Icons.more_vert),
           ),
