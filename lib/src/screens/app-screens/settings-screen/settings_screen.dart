@@ -1,4 +1,6 @@
+// import 'package:atoz_app/game/pixel_adventure.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -9,6 +11,11 @@ class SettingsScreen extends StatelessWidget {
       'username': 'user1',
       'email': 'abc',
     });
+  }
+
+  void setUp() async {
+    await Flame.device.fullScreen();
+    await Flame.device.setLandscape();
   }
 
   @override

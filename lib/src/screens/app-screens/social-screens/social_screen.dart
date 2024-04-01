@@ -1,4 +1,6 @@
 import 'package:atoz_app/src/providers/user_provider.dart';
+import 'package:atoz_app/src/screens/app-screens/social-screens/chat-screen/chat_screen.dart';
+import 'package:atoz_app/src/utils/custom_clip_path.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -118,7 +120,7 @@ class _SocialScreenState extends State<SocialScreen> {
                           Text('No friends yet. Get out there and make some!'))
                   : buildFriendList(context, userFriendsData),
               ClipPath(
-                clipper: CustomClipPath(context: context),
+                clipper: AppBarClipPath(context: context, height: 1),
                 child: Container(
                   height: 200.0,
                   decoration: BoxDecoration(
@@ -128,7 +130,7 @@ class _SocialScreenState extends State<SocialScreen> {
                       end: Alignment.bottomCenter,
                       colors: [
                         Colors.blueAccent.shade400,
-                        Colors.blueAccent.shade100
+                        Colors.blueAccent.shade100,
                       ],
                     ),
                   ),
@@ -656,7 +658,13 @@ class _SocialScreenState extends State<SocialScreen> {
             itemCount: userFriendsData.length,
             itemBuilder: (context, index) {
               return InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ChatScreen(
+                      targerUserData: userFriendsData[index],
+                    ),
+                  ));
+                },
                 child: ListTile(
                   leading: Stack(
                     children: [
@@ -699,43 +707,5 @@ class _SocialScreenState extends State<SocialScreen> {
         ),
       ],
     );
-  }
-}
-
-class CustomClipPath extends CustomClipper<Path> {
-  CustomClipPath({required this.context});
-
-  final BuildContext context;
-
-  @override
-  Path getClip(Size size) {
-    // print(size);
-    // double w = size.width;
-    // double h = size.height;
-
-    double w = MediaQuery.of(context).size.width;
-    double h = MediaQuery.of(context).size.height;
-
-    final path = Path();
-
-    // path.moveTo(0, 0);
-    // path.lineTo(w * 0.5, h * 0.0);
-    // path.lineTo(w * 0.85, h * 0.12);
-    // path.lineTo(w, h * 0.12);
-
-    path.moveTo(0, 0);
-    path.lineTo(0, h * 0.2);
-    path.lineTo(w, h * 0.2);
-    // path.quadraticBezierTo(w * 0.1, h * 0.12, w * 0.5, h * 0.08);
-    // path.quadraticBezierTo(w * 0.8, h * 0.05, w, h * 0.11);
-    path.lineTo(w, 0);
-    path.close();
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
-    return false;
   }
 }

@@ -1,0 +1,62 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "map01.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "/Users/khanhnguyenquoc/Desktop/Current Projects/pixel_adventure/assets/tiles/Pixel Adventure.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Atoz Game.tsx": {
+            "scaleInDock": 0.9628,
+            "scaleInEditor": 1
+        },
+        "TilesetNature.tsx": {
+            "scaleInDock": 1.2481,
+            "scaleInEditor": 1
+        },
+        "TilesetWater.tsx": {
+            "scaleInDock": 1.5528,
+            "scaleInEditor": 1
+        },
+        "map01.tmx": {
+            "scale": 0.95,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 356.3157894736842,
+                "y": 160.52631578947367
+            }
+        }
+    },
+    "last.imagePath": "/Users/khanhnguyenquoc/Desktop/Current Projects/AToz - Project 1/atoz_app/assets/images/Backgrounds/Tilesets",
+    "map.height": 60,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 60,
+    "openFiles": [
+        "Atoz Game.tsx",
+        "map01.tmx",
+        "TilesetNature.tsx",
+        "TilesetWater.tsx"
+    ],
+    "project": "Atoz Game.tiled-project",
+    "recentFiles": [
+        "Atoz Game.tsx",
+        "TilesetWater.tsx",
+        "TilesetNature.tsx",
+        "map01.tmx",
+        "/Users/khanhnguyenquoc/Desktop/Current Projects/pixel_adventure/assets/tiles/Pixel Adventure.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}

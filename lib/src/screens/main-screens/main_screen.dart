@@ -44,9 +44,9 @@ class _MainScreenState extends State<MainScreen> {
     // print(response.data[0]['userId']);
     setState(() {
       if (response.data.toString().contains('language')) {
-        // appScreen = TabsScreen();
+        appScreen = TabsScreen();
         // appScreen = LeaderboardScreen();
-        appScreen = SocialScreen();
+        // appScreen = SocialScreen();
         // appScreen = ProfileScreen();
         // appScreen = SettingsScreen();
       } else {

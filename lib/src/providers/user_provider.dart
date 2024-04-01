@@ -27,7 +27,7 @@ class UserProvider extends ChangeNotifier {
   // list of user's friends' id
   List<String> userFriends = [];
 
-  // create UserProvider constructor
+  bool isGameStart = false;
 
   void setUserId(String id) {
     userId = id;
@@ -102,6 +102,11 @@ class UserProvider extends ChangeNotifier {
 
   void setUserState(String state) {
     userState = state;
+    notifyListeners();
+  }
+
+  void setGameStart(bool start) {
+    isGameStart = start;
     notifyListeners();
   }
 }

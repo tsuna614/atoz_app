@@ -1,3 +1,4 @@
+import 'package:atoz_app/game/atoz_game.dart';
 import 'package:atoz_app/src/providers/question_provider.dart';
 import 'package:atoz_app/src/providers/user_provider.dart';
 // import 'package:atoz_app/src/screens/app-screens/profile-screen/profile_screen.dart';
@@ -6,8 +7,12 @@ import 'package:atoz_app/src/screens/main-screens/main_screen.dart';
 import 'package:atoz_app/src/screens/authentication-screens/login_screen.dart';
 // import 'package:atoz_app/src/screens/main-screens/test.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flame/flame.dart';
+import 'package:flame/game.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
@@ -53,21 +58,43 @@ final theme2 = ThemeData(
   ),
 );
 
+// GAME STATE VARIABLES
+bool isGameStart = true;
+
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-    // options: const FirebaseOptions(
-    //   apiKey: "AIzaSyAq2KBrxg0_ykhInRQ1ggQZqfvKkcG2cT0",
-    //   appId: "1:32004446817:android:52195759d806a23ac66820",
-    //   messagingSenderId: "32004446817",
-    //   projectId: "atoz-project-8f72f",
-    // ),
-    /* this block of code works when building web, but doesn't when building ios? */
-  );
-  runApp(
-    const MyApp(),
-  );
+  if (isGameStart) {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Flame.device.fullScreen();
+
+    //// set the orientation of the phone
+    // await Flame.device.setLandscape();
+    await Flame.device.setPortrait();
+
+    AtozGame game = AtozGame();
+    runApp(SafeArea(child: GameWidget(game: kDebugMode ? AtozGame() : game)));
+    // runApp(GameWidget(game: game));
+  } else {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+      // options: const FirebaseOptions(
+      //   apiKey: "AIzaSyAq2KBrxg0_ykhInRQ1ggQZqfvKkcG2cT0",
+      //   appId: "1:32004446817:android:52195759d806a23ac66820",
+      //   messagingSenderId: "32004446817",
+      //   projectId: "atoz-project-8f72f",
+      // ),
+      /* this block of code works when building web, but doesn't when building ios? */
+    );
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]).then((value) => runApp(MyApp()));
+
+    // runApp(
+    //   const MyApp(),
+    // );
+  }
 }
 
 class MyApp extends StatelessWidget {
