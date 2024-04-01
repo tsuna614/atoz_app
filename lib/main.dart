@@ -67,8 +67,8 @@ Future<void> main() async {
     await Flame.device.fullScreen();
 
     //// set the orientation of the phone
-    // await Flame.device.setLandscape();
-    await Flame.device.setPortrait();
+    await Flame.device.setLandscape();
+    // await Flame.device.setPortrait();
 
     AtozGame game = AtozGame();
     runApp(SafeArea(child: GameWidget(game: kDebugMode ? AtozGame() : game)));

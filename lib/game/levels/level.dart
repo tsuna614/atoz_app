@@ -1,21 +1,24 @@
 import 'dart:async';
 
 import 'package:atoz_app/game/atoz_game.dart';
+import 'package:atoz_app/game/objects/collision_block.dart';
 import 'package:atoz_app/game/objects/player.dart';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 
 class Level extends World with HasGameRef<AtozGame> {
+  final Player player;
+  final double tileSize;
+  final int scale;
   Level({
     required this.player,
+    this.tileSize = 16,
+    this.scale = 1,
   });
-
-  final Player player;
 
   late TiledComponent level;
 
-  double tileSize = 16.0;
-  int scale = 4;
+  List<CollisionBlock> collisionBlocks = [];
 
   @override
   FutureOr<void> onLoad() async {
@@ -26,7 +29,7 @@ class Level extends World with HasGameRef<AtozGame> {
 
     _spawningObjects();
 
-    // _addingCollisionBlocks();
+    _addingCollisionBlocks();
 
     return super.onLoad();
   }
@@ -47,6 +50,23 @@ class Level extends World with HasGameRef<AtozGame> {
           default:
         }
       }
+    }
+  }
+
+  void _addingCollisionBlocks() {
+    final collisionBlocksLayer =
+        level.tileMap.getLayer<ObjectGroup>('Collisions');
+
+    if (collisionBlocksLayer != null) {
+      for (final block in collisionBlocksLayer.objects) {
+        final collisionBlock = CollisionBlock(
+          position: Vector2(block.x * scale, block.y * scale),
+          size: Vector2(block.width * scale, block.height * scale),
+        );
+        add(collisionBlock);
+        collisionBlocks.add(collisionBlock);
+      }
+      player.collisionBlocks = collisionBlocks;
     }
   }
 }

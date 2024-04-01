@@ -1,10 +1,14 @@
 import 'dart:async';
 
 import 'package:atoz_app/game/atoz_game.dart';
+import 'package:atoz_app/game/objects/collision_block.dart';
+import 'package:atoz_app/game/utils/custom_hitbox.dart';
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/src/services/keyboard_key.g.dart';
 import 'package:flutter/src/services/raw_keyboard.dart';
+import 'package:atoz_app/game/utils/check_collisions.dart';
 
 enum PlayerState {
   idleLeft,
@@ -19,11 +23,14 @@ enum PlayerState {
 
 class Player extends SpriteAnimationGroupComponent
     with HasGameRef<AtozGame>, KeyboardHandler {
+  final int gameScale;
   Player({
-    super.position,
     super.size,
+    super.position,
+    required this.gameScale,
   });
 
+  // animations
   late final SpriteAnimation _idleLeftAnimation;
   late final SpriteAnimation _idleRightAnimation;
   late final SpriteAnimation _idleUpAnimation;
@@ -33,20 +40,36 @@ class Player extends SpriteAnimationGroupComponent
   late final SpriteAnimation _runningUpAnimation;
   late final SpriteAnimation _runningDownAnimation;
 
+  // player properties
   bool isLeftPressed = false;
   bool isRightPressed = false;
   bool isUpPressed = false;
   bool isDownPressed = false;
-
   Vector2 velocity = Vector2.zero();
   PlayerState currentState = PlayerState.idleDown;
-
   double moveSpeed = 200;
+  late CustomHitbox hitbox;
+
+  // others
+  List<CollisionBlock> collisionBlocks = [];
 
   @override
   FutureOr<void> onLoad() {
+    // hitbox = Rectangle(0, size.y - 4 * gameScale, size.x, 4 * gameScale);
+    hitbox = CustomHitbox(
+      x: 0,
+      y: size.y - 4 * gameScale,
+      width: size.x,
+      height: 4.0 * gameScale,
+    );
     _loadAllAnimations();
-    // debugMode = true;
+    debugMode = true;
+    add(
+      RectangleHitbox(
+        position: Vector2(hitbox.x, hitbox.y),
+        size: Vector2(hitbox.width, hitbox.height),
+      ),
+    );
     return super.onLoad();
   }
 
@@ -54,7 +77,10 @@ class Player extends SpriteAnimationGroupComponent
   void update(double dt) {
     _updatePlayerState();
     _checkPlayerInput();
-    _updatePlayerPosition(dt);
+    _updatePlayerHorizontalPosition(dt);
+    _checkHorizontalCollisions();
+    _updatePlayerVerticalPosition(dt);
+    _checkVerticalCollisions();
     super.update(dt);
   }
 
@@ -193,8 +219,37 @@ class Player extends SpriteAnimationGroupComponent
     return super.onKeyEvent(event, keysPressed);
   }
 
-  void _updatePlayerPosition(double dt) {
-    position += velocity * dt;
+  void _checkHorizontalCollisions() {
+    for (final block in collisionBlocks) {
+      if (checkCollision(this, block)) {
+        if (velocity.x > 0) {
+          position.x = block.x - hitbox.width;
+        } else if (velocity.x < 0) {
+          position.x = block.x + block.width;
+        }
+      }
+    }
+  }
+
+  void _checkVerticalCollisions() {
+    for (final block in collisionBlocks) {
+      if (checkCollision(this, block)) {
+        print("${position.y + size.y} ${block.y}");
+        if (velocity.y > 0) {
+          position.y = block.y - size.y;
+        } else if (velocity.y < 0) {
+          position.y = block.y + block.height - hitbox.y;
+        }
+      }
+    }
+  }
+
+  void _updatePlayerHorizontalPosition(double dt) {
+    position.x += velocity.x * dt;
+  }
+
+  void _updatePlayerVerticalPosition(double dt) {
+    position.y += velocity.y * dt;
   }
 
   void _checkPlayerInput() {

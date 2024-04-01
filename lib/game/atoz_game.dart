@@ -10,11 +10,16 @@ import 'package:flame/game.dart';
 class AtozGame extends FlameGame with HasKeyboardHandlerComponents {
   late final CameraComponent cam;
 
-  Player player = Player();
+  final double tileSize = 16;
+  final int scale = 4;
+
+  late Player player;
 
   @override
   FutureOr<void> onLoad() async {
     await images.loadAllImages();
+
+    player = Player(gameScale: scale);
 
     _loadLevel();
 
@@ -22,7 +27,11 @@ class AtozGame extends FlameGame with HasKeyboardHandlerComponents {
   }
 
   void _loadLevel() {
-    Level world = Level(player: player);
+    Level world = Level(
+      player: player,
+      tileSize: tileSize,
+      scale: scale,
+    );
     // size.x and y is the size of the entire screen within SafeArea (which is in the main)
     cam = CameraComponent.withFixedResolution(
       world: world,
@@ -30,7 +39,7 @@ class AtozGame extends FlameGame with HasKeyboardHandlerComponents {
       height: size.y,
     );
 
-    player.anchor = Anchor.center;
+    // player.anchor = Anchor.center;
     cam.follow(player);
 
     // cam.moveTo(Vector2(100, 100));
