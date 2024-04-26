@@ -6,20 +6,28 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
+import 'package:flutter/material.dart';
 
 class AtozGame extends FlameGame with HasKeyboardHandlerComponents {
   late final CameraComponent cam;
 
   final double tileSize = 16;
-  final int scale = 4;
+  final int scale = 2;
 
   late Player player;
+
+  @override
+  Color backgroundColor() {
+    // return const Color(0xFFadbc3a);
+    return const Color(0xFF000000);
+  }
 
   @override
   FutureOr<void> onLoad() async {
     await images.loadAllImages();
 
-    player = Player(gameScale: scale);
+    // player = Player(gameScale: scale);
+    player = Player(playerType: 'boat');
 
     _loadLevel();
 
@@ -47,19 +55,19 @@ class AtozGame extends FlameGame with HasKeyboardHandlerComponents {
     cam.viewfinder.anchor = Anchor.center;
     // cam.viewfinder.anchor = Anchor.topLeft;
 
-    late final worldWidth = world.level.width;
-    late final worldHeight = world.level.height;
+    // late final worldWidth = world.level.width;
+    // late final worldHeight = world.level.height;
 
-    Future.delayed(const Duration(seconds: 1), () {
-      cam.setBounds(
-        Rectangle.fromLTWH(
-          size.x / 2,
-          size.y / 2,
-          worldWidth - size.x,
-          worldHeight - size.y,
-        ),
-      );
-    });
+    // Future.delayed(const Duration(seconds: 1), () {
+    //   cam.setBounds(
+    //     Rectangle.fromLTWH(
+    //       size.x / 2,
+    //       size.y / 2,
+    //       worldWidth - size.x,
+    //       worldHeight - size.y,
+    //     ),
+    //   );
+    // });
 
     addAll([cam, world]);
   }

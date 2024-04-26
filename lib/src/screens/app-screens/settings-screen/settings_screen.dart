@@ -1,11 +1,19 @@
 // import 'package:atoz_app/game/pixel_adventure.dart';
+import 'package:atoz_app/game/atoz_game.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flame/flame.dart';
+import 'package:flame/game.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
   void test() {
     FirebaseFirestore.instance.collection('users').add({
       'username': 'user1',
@@ -15,25 +23,19 @@ class SettingsScreen extends StatelessWidget {
 
   void setUp() async {
     await Flame.device.fullScreen();
-    await Flame.device.setLandscape();
+    await Flame.device.setPortrait();
+  }
+
+  @override
+  void initState() {
+    setUp();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Settings'),
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: test,
-              child: const Text('Add user'),
-            ),
-            getUsers(context),
-          ],
-        ));
+    AtozGame game = AtozGame();
+    return Scaffold(body: GameWidget(game: kDebugMode ? AtozGame() : game));
   }
 
   Widget getUsers(BuildContext context) {

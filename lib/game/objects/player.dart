@@ -10,71 +10,102 @@ import 'package:flutter/src/services/keyboard_key.g.dart';
 import 'package:flutter/src/services/raw_keyboard.dart';
 import 'package:atoz_app/game/utils/check_collisions.dart';
 
-enum PlayerState {
-  idleLeft,
-  idleRight,
-  idleUp,
-  idleDown,
-  runningLeft,
-  runningRight,
-  runningUp,
-  runningDown,
+enum PlayerState { inMenu, moving, idle }
+
+enum Direction {
+  up,
+  down,
+  left,
+  right,
+}
+
+class PlayerAnimationKey {
+  final PlayerState state;
+  final Direction direction;
+
+  PlayerAnimationKey(this.state, this.direction);
+
+  // these two methods are needed to compare the keys
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PlayerAnimationKey &&
+          runtimeType == other.runtimeType &&
+          state == other.state &&
+          direction == other.direction;
+
+  @override
+  int get hashCode => state.hashCode ^ direction.hashCode;
 }
 
 class Player extends SpriteAnimationGroupComponent
     with HasGameRef<AtozGame>, KeyboardHandler {
-  final int gameScale;
+  final String playerType;
   Player({
     super.size,
     super.position,
-    required this.gameScale,
+    required this.playerType,
   });
 
   // animations
+  late final SpriteAnimation _menuIdleAnimation;
   late final SpriteAnimation _idleLeftAnimation;
   late final SpriteAnimation _idleRightAnimation;
   late final SpriteAnimation _idleUpAnimation;
   late final SpriteAnimation _idleDownAnimation;
-  late final SpriteAnimation _runningLeftAnimation;
-  late final SpriteAnimation _runningRightAnimation;
-  late final SpriteAnimation _runningUpAnimation;
-  late final SpriteAnimation _runningDownAnimation;
+  late final SpriteAnimation _movingLeftAnimation;
+  late final SpriteAnimation _movingRightAnimation;
+  late final SpriteAnimation _movingUpAnimation;
+  late final SpriteAnimation _movingDownAnimation;
 
   // player properties
   bool isLeftPressed = false;
   bool isRightPressed = false;
   bool isUpPressed = false;
   bool isDownPressed = false;
+  bool isJPressed = false;
+  bool isKPressed = false;
   Vector2 velocity = Vector2.zero();
-  PlayerState currentState = PlayerState.idleDown;
+  PlayerState currentState = PlayerState.idle;
+  Direction currentDirection = Direction.right;
   double moveSpeed = 200;
   late CustomHitbox hitbox;
+
+  // player boat properties
+  double hookLength = 0;
 
   // others
   List<CollisionBlock> collisionBlocks = [];
 
   @override
   FutureOr<void> onLoad() {
+    if (playerType == 'boat') {
+      size = Vector2(
+          game.tileSize * game.scale * 2, game.tileSize * game.scale * 2);
+      _loadAllBoatAnimations();
+    } else {
+      size = Vector2(game.tileSize * game.scale, game.tileSize * game.scale);
+      _loadAllAnimations();
+      hitbox = CustomHitbox(
+        x: 0,
+        y: size.y - 4 * game.scale,
+        width: size.x,
+        height: 4.0 * game.scale,
+      );
+      // add(
+      //   RectangleHitbox(
+      //     position: Vector2(hitbox.x, hitbox.y),
+      //     size: Vector2(hitbox.width, hitbox.height),
+      //   ),
+      // );
+    }
     // hitbox = Rectangle(0, size.y - 4 * gameScale, size.x, 4 * gameScale);
-    hitbox = CustomHitbox(
-      x: 0,
-      y: size.y - 4 * gameScale,
-      width: size.x,
-      height: 4.0 * gameScale,
-    );
-    _loadAllAnimations();
+
     debugMode = true;
-    add(
-      RectangleHitbox(
-        position: Vector2(hitbox.x, hitbox.y),
-        size: Vector2(hitbox.width, hitbox.height),
-      ),
-    );
     return super.onLoad();
   }
 
-  @override
-  void update(double dt) {
+  void updateObject(double dt) {
     _updatePlayerState();
     _checkPlayerInput();
     _updatePlayerHorizontalPosition(dt);
@@ -98,25 +129,31 @@ class Player extends SpriteAnimationGroupComponent
     );
 
     // getting the list of sprites from the sprite sheet
-    List<Sprite> runningDownSprites = [
+    List<Sprite> menuIdleSprites = [
       characterSheet.getSprite(0, 0),
       characterSheet.getSprite(1, 0),
       characterSheet.getSprite(2, 0),
       characterSheet.getSprite(3, 0),
     ];
-    List<Sprite> runningUpSprites = [
+    List<Sprite> movingDownSprites = [
+      characterSheet.getSprite(0, 0),
+      characterSheet.getSprite(1, 0),
+      characterSheet.getSprite(2, 0),
+      characterSheet.getSprite(3, 0),
+    ];
+    List<Sprite> movingUpSprites = [
       characterSheet.getSprite(0, 1),
       characterSheet.getSprite(1, 1),
       characterSheet.getSprite(2, 1),
       characterSheet.getSprite(3, 1),
     ];
-    List<Sprite> runningLeftSprites = [
+    List<Sprite> movingLeftSprites = [
       characterSheet.getSprite(0, 2),
       characterSheet.getSprite(1, 2),
       characterSheet.getSprite(2, 2),
       characterSheet.getSprite(3, 2),
     ];
-    List<Sprite> runningRightSprites = [
+    List<Sprite> movingRightSprites = [
       characterSheet.getSprite(0, 3),
       characterSheet.getSprite(1, 3),
       characterSheet.getSprite(2, 3),
@@ -136,6 +173,8 @@ class Player extends SpriteAnimationGroupComponent
     ];
 
     // creating the sprite animations from the sprite list above
+    _menuIdleAnimation =
+        SpriteAnimation.spriteList(menuIdleSprites, stepTime: 0.2);
     _idleDownAnimation =
         SpriteAnimation.spriteList(idleDownSprites, stepTime: 0.2);
     _idleUpAnimation = SpriteAnimation.spriteList(idleUpSprites, stepTime: 0.2);
@@ -144,65 +183,118 @@ class Player extends SpriteAnimationGroupComponent
     _idleRightAnimation =
         SpriteAnimation.spriteList(idleRightSprites, stepTime: 0.2);
 
-    _runningDownAnimation =
-        SpriteAnimation.spriteList(runningDownSprites, stepTime: 0.2);
-    _runningUpAnimation =
-        SpriteAnimation.spriteList(runningUpSprites, stepTime: 0.2);
-    _runningLeftAnimation =
-        SpriteAnimation.spriteList(runningLeftSprites, stepTime: 0.2);
-    _runningRightAnimation =
-        SpriteAnimation.spriteList(runningRightSprites, stepTime: 0.2);
+    _movingDownAnimation =
+        SpriteAnimation.spriteList(movingDownSprites, stepTime: 0.2);
+    _movingUpAnimation =
+        SpriteAnimation.spriteList(movingUpSprites, stepTime: 0.2);
+    _movingLeftAnimation =
+        SpriteAnimation.spriteList(movingLeftSprites, stepTime: 0.2);
+    _movingRightAnimation =
+        SpriteAnimation.spriteList(movingRightSprites, stepTime: 0.2);
 
     // adding the animations to the animations map
     animations = {
-      PlayerState.idleDown: _idleDownAnimation,
-      PlayerState.idleUp: _idleUpAnimation,
-      PlayerState.idleLeft: _idleLeftAnimation,
-      PlayerState.idleRight: _idleRightAnimation,
-      PlayerState.runningDown: _runningDownAnimation,
-      PlayerState.runningUp: _runningUpAnimation,
-      PlayerState.runningLeft: _runningLeftAnimation,
-      PlayerState.runningRight: _runningRightAnimation,
+      // {PlayerState.idle, Direction.left}: _idleLeftAnimation,
+      // {PlayerState.idle, Direction.right}: _idleRightAnimation,
+      // {PlayerState.idle, Direction.up}: _idleUpAnimation,
+      // {PlayerState.idle, Direction.down}: _idleDownAnimation,
+      // {PlayerState.moving, Direction.left}: _movingLeftAnimation,
+      // {PlayerState.moving, Direction.right}: _movingRightAnimation,
+      // {PlayerState.moving, Direction.up}: _movingUpAnimation,
+      // {PlayerState.moving, Direction.down}: _movingDownAnimation,
+
+      //// Above is my attempt to do it, below is ChatGPT's answer
+      PlayerAnimationKey(PlayerState.idle, Direction.left): _idleLeftAnimation,
+      PlayerAnimationKey(PlayerState.idle, Direction.right):
+          _idleRightAnimation,
+      PlayerAnimationKey(PlayerState.idle, Direction.up): _idleUpAnimation,
+      PlayerAnimationKey(PlayerState.idle, Direction.down): _idleDownAnimation,
+      PlayerAnimationKey(PlayerState.moving, Direction.left):
+          _movingLeftAnimation,
+      PlayerAnimationKey(PlayerState.moving, Direction.right):
+          _movingRightAnimation,
+      PlayerAnimationKey(PlayerState.moving, Direction.up): _movingUpAnimation,
+      PlayerAnimationKey(PlayerState.moving, Direction.down):
+          _movingDownAnimation,
     };
 
-    current = PlayerState.idleDown;
+    // current = {PlayerState.idle, Direction.down};
+    current = 2;
+  }
+
+  void _loadAllBoatAnimations() async {
+    List<Sprite> movingLeftSprites = [
+      // characterSheet.getSprite(1, 5),
+      await Sprite.load(
+        'Actor/Characters/Boy/player.png',
+        srcPosition: Vector2(64, 0),
+        srcSize: Vector2(32, 32),
+      ),
+    ];
+    List<Sprite> movingRightSprites = [
+      // characterSheet.getSprite(3, 5),
+      await Sprite.load(
+        'Actor/Characters/Boy/player.png',
+        srcPosition: Vector2(64, 32),
+        srcSize: Vector2(32, 32),
+      ),
+    ];
+
+    _movingLeftAnimation =
+        SpriteAnimation.spriteList(movingLeftSprites, stepTime: 0.2);
+    _movingRightAnimation =
+        SpriteAnimation.spriteList(movingRightSprites, stepTime: 0.2);
+
+    animations = {
+      PlayerAnimationKey(PlayerState.idle, Direction.left):
+          _movingLeftAnimation,
+      PlayerAnimationKey(PlayerState.idle, Direction.right):
+          _movingRightAnimation,
+      PlayerAnimationKey(PlayerState.moving, Direction.left):
+          _movingLeftAnimation,
+      PlayerAnimationKey(PlayerState.moving, Direction.right):
+          _movingRightAnimation,
+    };
+
+    current = PlayerAnimationKey(PlayerState.idle, Direction.right);
   }
 
   void _updatePlayerState() {
     if (velocity.x == 0 && velocity.y == 0) {
-      switch (currentState) {
-        case PlayerState.runningDown:
-          currentState = PlayerState.idleDown;
-          break;
-        case PlayerState.runningUp:
-          currentState = PlayerState.idleUp;
-          break;
-        case PlayerState.runningLeft:
-          currentState = PlayerState.idleLeft;
-          break;
-        case PlayerState.runningRight:
-          currentState = PlayerState.idleRight;
-          break;
-        default:
-      }
+      currentState = PlayerState.idle;
+      // switch (currentState) {
+      //   case PlayerState.movingDown:
+      //     currentState = PlayerState.idleDown;
+      //     break;
+      //   case PlayerState.movingUp:
+      //     currentState = PlayerState.idleUp;
+      //     break;
+      //   case PlayerState.movingLeft:
+      //     currentState = PlayerState.idleLeft;
+      //     break;
+      //   case PlayerState.movingRight:
+      //     currentState = PlayerState.idleRight;
+      //     break;
+      //   default:
+      // }
     } else {
+      currentState = PlayerState.moving;
       if (velocity.y < 0) {
-        currentState = PlayerState.runningUp;
+        currentDirection = Direction.up;
       }
       if (velocity.y > 0) {
-        currentState = PlayerState.runningDown;
+        currentDirection = Direction.down;
       }
       if (velocity.x < 0) {
-        currentState = PlayerState.runningLeft;
+        currentDirection = Direction.left;
       }
       if (velocity.x > 0) {
-        currentState = PlayerState.runningRight;
+        currentDirection = Direction.right;
       }
     }
-
-    current = currentState;
-
-    // current = PlayerState.idleDown;
+    // print(currentState);
+    current = PlayerAnimationKey(currentState, currentDirection);
+    // current = 6;
   }
 
   @override
@@ -211,6 +303,14 @@ class Player extends SpriteAnimationGroupComponent
         keysPressed.contains(LogicalKeyboardKey.keyA);
     isRightPressed = keysPressed.contains(LogicalKeyboardKey.arrowRight) ||
         keysPressed.contains(LogicalKeyboardKey.keyD);
+
+    // prevent the player's movement of up and down when the player is a boat
+    if (playerType == 'boat') {
+      isJPressed = keysPressed.contains(LogicalKeyboardKey.keyJ);
+      isKPressed = keysPressed.contains(LogicalKeyboardKey.keyK);
+      return super.onKeyEvent(event, keysPressed);
+    }
+
     isUpPressed = keysPressed.contains(LogicalKeyboardKey.arrowUp) ||
         keysPressed.contains(LogicalKeyboardKey.keyW);
     isDownPressed = keysPressed.contains(LogicalKeyboardKey.arrowDown) ||
@@ -266,6 +366,13 @@ class Player extends SpriteAnimationGroupComponent
     }
     if (isDownPressed) {
       velocity.y += moveSpeed;
+    }
+
+    if (isJPressed) {
+      hookLength += 2;
+    }
+    if (isKPressed && hookLength > 0) {
+      hookLength -= 2;
     }
   }
 }

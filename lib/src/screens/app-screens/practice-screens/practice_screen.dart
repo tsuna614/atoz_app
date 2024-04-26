@@ -295,7 +295,7 @@ class CardItem extends StatelessWidget {
                       Expanded(
                         child: SizedBox(
                           height: 200,
-                          child: Image.asset('assets/images/reading.png'),
+                          child: Image.asset('assets/images/app/reading.png'),
                         ),
                       ),
                     ],
@@ -306,7 +306,7 @@ class CardItem extends StatelessWidget {
                       Expanded(
                         child: SizedBox(
                           height: 200,
-                          child: Image.asset('assets/images/writing.png'),
+                          child: Image.asset('assets/images/app/writing.png'),
                         ),
                       ),
                     ],
@@ -317,7 +317,7 @@ class CardItem extends StatelessWidget {
                       Expanded(
                         child: SizedBox(
                           height: 200,
-                          child: Image.asset('assets/images/listening.png'),
+                          child: Image.asset('assets/images/app/listening.png'),
                         ),
                       ),
                     ],
@@ -328,7 +328,7 @@ class CardItem extends StatelessWidget {
                       Expanded(
                         child: SizedBox(
                           height: 200,
-                          child: Image.asset('assets/images/speaking.png'),
+                          child: Image.asset('assets/images/app/speaking.png'),
                         ),
                       ),
                     ],

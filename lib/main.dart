@@ -1,6 +1,7 @@
 import 'package:atoz_app/game/atoz_game.dart';
 import 'package:atoz_app/src/providers/question_provider.dart';
 import 'package:atoz_app/src/providers/user_provider.dart';
+// import 'package:atoz_app/src/screens/app-screens/game_screens/game_screen.dart';
 // import 'package:atoz_app/src/screens/app-screens/profile-screen/profile_screen.dart';
 import 'package:atoz_app/src/screens/main-screens/loading_screen.dart';
 import 'package:atoz_app/src/screens/main-screens/main_screen.dart';
@@ -62,8 +63,8 @@ final theme2 = ThemeData(
 bool isGameStart = true;
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   if (isGameStart) {
-    WidgetsFlutterBinding.ensureInitialized();
     await Flame.device.fullScreen();
 
     //// set the orientation of the phone
@@ -71,10 +72,9 @@ Future<void> main() async {
     // await Flame.device.setPortrait();
 
     AtozGame game = AtozGame();
-    runApp(SafeArea(child: GameWidget(game: kDebugMode ? AtozGame() : game)));
+    runApp(GameWidget(game: kDebugMode ? AtozGame() : game));
     // runApp(GameWidget(game: game));
   } else {
-    WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
       // options: const FirebaseOptions(
@@ -127,6 +127,7 @@ class MyApp extends StatelessWidget {
             return const LoginScreen();
           },
         ),
+        // home: GameScreen(),
         // home: TestScreen(),
         // home: ProfileScreen(
         //   userId: FirebaseAuth.instance.currentUser!.uid,

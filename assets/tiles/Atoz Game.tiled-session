@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "map01.tmx",
+    "activeFile": "map02.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -14,7 +14,11 @@
             "scaleInEditor": 1
         },
         "Atoz Game.tsx": {
-            "scaleInDock": 0.9628,
+            "scaleInDock": 1.7399,
+            "scaleInEditor": 1
+        },
+        "TilesetHouse.tsx": {
+            "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "TilesetNature.tsx": {
@@ -26,32 +30,47 @@
             "scaleInEditor": 1
         },
         "map01.tmx": {
-            "scale": 0.95,
-            "selectedLayer": 2,
+            "expandedGroupLayers": [
+                7
+            ],
+            "scale": 0.449,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 356.3157894736842,
-                "y": 160.52631578947367
+                "x": 562.3608017817372,
+                "y": 337.41648106904233
+            }
+        },
+        "map02.tmx": {
+            "scale": 1.7408,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 148.49494485294116,
+                "y": 178.36626838235296
             }
         }
     },
-    "last.imagePath": "/Users/khanhnguyenquoc/Desktop/Current Projects/AToz - Project 1/atoz_app/assets/images/Backgrounds/Tilesets",
-    "map.height": 60,
+    "last.imagePath": "/Users/khanhnguyenquoc/Desktop/Current-Projects/AToz - Project 1/atoz_app/assets/images/Backgrounds/Tilesets",
+    "map.height": 100,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,
     "map.tileWidth": 16,
-    "map.width": 60,
+    "map.width": 10,
     "openFiles": [
         "Atoz Game.tsx",
         "map01.tmx",
         "TilesetNature.tsx",
-        "TilesetWater.tsx"
+        "TilesetWater.tsx",
+        "map02.tmx",
+        "TilesetHouse.tsx"
     ],
     "project": "Atoz Game.tiled-project",
     "recentFiles": [
         "Atoz Game.tsx",
-        "TilesetWater.tsx",
-        "TilesetNature.tsx",
         "map01.tmx",
+        "TilesetNature.tsx",
+        "TilesetWater.tsx",
+        "TilesetHouse.tsx",
+        "map02.tmx",
         "/Users/khanhnguyenquoc/Desktop/Current Projects/pixel_adventure/assets/tiles/Pixel Adventure.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
