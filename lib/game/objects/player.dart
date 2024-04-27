@@ -4,11 +4,17 @@ import 'package:atoz_app/game/atoz_game.dart';
 import 'package:atoz_app/game/objects/collision_block.dart';
 import 'package:atoz_app/game/utils/custom_hitbox.dart';
 import 'package:flame/collisions.dart';
+// import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/src/services/keyboard_key.g.dart';
 import 'package:flutter/src/services/raw_keyboard.dart';
 import 'package:atoz_app/game/utils/check_collisions.dart';
+
+enum PlayerType {
+  walk,
+  boat,
+}
 
 enum PlayerState { inMenu, moving, idle }
 
@@ -40,7 +46,7 @@ class PlayerAnimationKey {
 
 class Player extends SpriteAnimationGroupComponent
     with HasGameRef<AtozGame>, KeyboardHandler {
-  final String playerType;
+  final PlayerType playerType;
   Player({
     super.size,
     super.position,
@@ -79,10 +85,22 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   FutureOr<void> onLoad() {
-    if (playerType == 'boat') {
+    if (playerType == PlayerType.boat) {
       size = Vector2(
           game.tileSize * game.scale * 2, game.tileSize * game.scale * 2);
       _loadAllBoatAnimations();
+      hitbox = CustomHitbox(
+        x: 0,
+        y: size.y - 4 * game.scale,
+        width: size.x,
+        height: 4.0 * game.scale,
+      );
+      add(
+        RectangleHitbox(
+          position: Vector2(hitbox.x, hitbox.y),
+          size: Vector2(hitbox.width, hitbox.height),
+        ),
+      );
     } else {
       size = Vector2(game.tileSize * game.scale, game.tileSize * game.scale);
       _loadAllAnimations();
@@ -92,16 +110,15 @@ class Player extends SpriteAnimationGroupComponent
         width: size.x,
         height: 4.0 * game.scale,
       );
-      // add(
-      //   RectangleHitbox(
-      //     position: Vector2(hitbox.x, hitbox.y),
-      //     size: Vector2(hitbox.width, hitbox.height),
-      //   ),
-      // );
+      add(
+        RectangleHitbox(
+          position: Vector2(hitbox.x, hitbox.y),
+          size: Vector2(hitbox.width, hitbox.height),
+        ),
+      );
     }
-    // hitbox = Rectangle(0, size.y - 4 * gameScale, size.x, 4 * gameScale);
 
-    debugMode = true;
+    // debugMode = true;
     return super.onLoad();
   }
 
@@ -204,6 +221,7 @@ class Player extends SpriteAnimationGroupComponent
       // {PlayerState.moving, Direction.down}: _movingDownAnimation,
 
       //// Above is my attempt to do it, below is ChatGPT's answer
+      PlayerState.inMenu: _menuIdleAnimation,
       PlayerAnimationKey(PlayerState.idle, Direction.left): _idleLeftAnimation,
       PlayerAnimationKey(PlayerState.idle, Direction.right):
           _idleRightAnimation,
@@ -305,7 +323,7 @@ class Player extends SpriteAnimationGroupComponent
         keysPressed.contains(LogicalKeyboardKey.keyD);
 
     // prevent the player's movement of up and down when the player is a boat
-    if (playerType == 'boat') {
+    if (playerType == PlayerType.boat) {
       isJPressed = keysPressed.contains(LogicalKeyboardKey.keyJ);
       isKPressed = keysPressed.contains(LogicalKeyboardKey.keyK);
       return super.onKeyEvent(event, keysPressed);
@@ -345,6 +363,8 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _updatePlayerHorizontalPosition(double dt) {
+    // prevent the player from moving if the hook is under the water
+    if (playerType == PlayerType.boat && hookLength > 50) return;
     position.x += velocity.x * dt;
   }
 

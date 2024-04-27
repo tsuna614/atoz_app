@@ -22,7 +22,7 @@ class Hook extends SpriteAnimationGroupComponent
   @override
   FutureOr<void> onLoad() {
     _loadSprite();
-    debugMode = true;
+    // debugMode = true;
     return super.onLoad();
   }
 
@@ -57,10 +57,11 @@ class Hook extends SpriteAnimationGroupComponent
 
   void _updatePosition() {
     if (game.player.currentDirection == Direction.left) {
-      position = Vector2(game.player.position.x - width / 2,
+      position = Vector2(game.player.position.x - width / 2 + 2,
           game.player.position.y + 15 + game.player.hookLength);
     } else {
-      position = Vector2(game.player.position.x + game.player.width - width / 2,
+      position = Vector2(
+          game.player.position.x + game.player.width - width / 2 - 2,
           game.player.position.y + 15 + game.player.hookLength);
     }
   }

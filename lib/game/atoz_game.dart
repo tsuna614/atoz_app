@@ -27,7 +27,7 @@ class AtozGame extends FlameGame with HasKeyboardHandlerComponents {
     await images.loadAllImages();
 
     // player = Player(gameScale: scale);
-    player = Player(playerType: 'boat');
+    player = Player(playerType: PlayerType.boat);
 
     _loadLevel();
 
@@ -55,8 +55,8 @@ class AtozGame extends FlameGame with HasKeyboardHandlerComponents {
     cam.viewfinder.anchor = Anchor.center;
     // cam.viewfinder.anchor = Anchor.topLeft;
 
-    // late final worldWidth = world.level.width;
-    // late final worldHeight = world.level.height;
+    // worldWidth = world.level.width;
+    // worldHeight = world.level.height;
 
     // Future.delayed(const Duration(seconds: 1), () {
     //   cam.setBounds(
