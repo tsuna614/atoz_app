@@ -14,7 +14,6 @@ class GameScreen extends StatelessWidget {
     AtozGame game = AtozGame();
 
     double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
         body: SafeArea(

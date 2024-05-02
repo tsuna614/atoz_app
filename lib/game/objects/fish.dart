@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:atoz_app/game/atoz_game.dart';
+import 'package:atoz_app/game/objects/player.dart';
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 
@@ -12,9 +14,8 @@ enum FishState {
   moving,
 }
 
-enum Direction {
-  left,
-  right,
+bool oneOutOfTen() {
+  return Random().nextInt(10) == 0;
 }
 
 class FishAnimationKey {
@@ -38,15 +39,18 @@ class FishAnimationKey {
 
 String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 
-class Fish extends SpriteAnimationGroupComponent with HasGameRef<AtozGame> {
+class Fish extends SpriteAnimationGroupComponent
+    with HasGameRef<AtozGame>, CollisionCallbacks {
   final FishType fishType;
+  final double worldWidth;
   Fish({
     super.position,
     super.size,
     required this.fishType,
+    required this.worldWidth,
   });
 
-  final double speed = 100;
+  final double speed = 50;
 
   late final SpriteAnimation _idleLeftAnimation;
   late final SpriteAnimation _idleRightAnimation;
@@ -62,12 +66,26 @@ class Fish extends SpriteAnimationGroupComponent with HasGameRef<AtozGame> {
 
   @override
   FutureOr<void> onLoad() {
+    if (game.enableHitboxes) {
+      debugMode = true;
+    }
     _loadSprite();
+
+    add(
+      RectangleHitbox(
+        position: Vector2.zero(),
+        size: size,
+        // collisionType: CollisionType.passive,
+      ),
+    );
+
+    priority = 50;
+
     return super.onLoad();
   }
 
   void _loadSprite() {
-    String fishName = capitalize(fishType.toString());
+    String fishName = capitalize(fishType.toString().split('.').last);
     String spriteSrc = 'Actor/Animals/Fish/SpriteSheet$fishName.png';
 
     final fishSpriteSheet = SpriteSheet(
@@ -108,10 +126,17 @@ class Fish extends SpriteAnimationGroupComponent with HasGameRef<AtozGame> {
     current = FishAnimationKey(currentState, currentDirection);
   }
 
+  // @override
+  // void update(double dt) {
+  //   updateObject(dt);
+  //   super.update(dt);
+  // }
+
   void updateObject(double dt) {
     _updatePosition(dt);
     _changeDirection();
     _updateAnimation();
+    _fishWorldBound();
   }
 
   void _updatePosition(double dt) {
@@ -123,17 +148,45 @@ class Fish extends SpriteAnimationGroupComponent with HasGameRef<AtozGame> {
           position.x += speed * dt;
         }
       }
-    } else {}
+    } else {
+      // if the fish is hooked, it should follow the hook
+
+      position.y = game.hook.position.y - 2;
+
+      if (game.player.currentDirection == Direction.left) {
+        // adjust the x position so that the mouth of the fish look like its attached to the hook
+        position.x = game.hook.position.x + game.hook.width / 2 - 5;
+        currentDirection = Direction.left;
+        // rotate fish 30 degree
+        angle = pi / 6;
+        position.rotate(angle, center: Vector2(x + width / 2, y + height / 2));
+      } else {
+        // adjust the x position so that the mouth of the fish look like its attached to the hook
+        position.x = game.hook.position.x - width + game.hook.width / 2 + 5;
+        currentDirection = Direction.right;
+        // rotate fish -30 degree
+        angle = -pi / 6;
+        position.rotate(angle, center: Vector2(x + width / 2, y + height / 2));
+      }
+    }
   }
 
   void _changeDirection() {
-    if (directionChangeCounter >= 100) {
+    if (isHooked) return;
+
+    // basically, we want to change the direction of the fish every now and then, but not too often
+    // the fish must stay in one state (moving left, moving right, idle) for at least 100 frames
+    // after that, there is a random 1/10 chance every tick that the fish will change direction
+
+    if (directionChangeCounter >= 200) {
+      if (!oneOutOfTen()) return; // this should make the movement more natural
+
       directionChangeCounter = 0;
-      int random = Random().nextInt(3);
-      if (random == 0) {
+      int random = Random().nextInt(100);
+      if (random >= 0 && random < 40) {
         currentState = FishState.moving;
         currentDirection = Direction.left;
-      } else if (random == 1) {
+      } else if (random >= 40 && random < 80) {
         currentState = FishState.moving;
         currentDirection = Direction.right;
       } else {
@@ -146,5 +199,20 @@ class Fish extends SpriteAnimationGroupComponent with HasGameRef<AtozGame> {
 
   void _updateAnimation() {
     current = FishAnimationKey(currentState, currentDirection);
+  }
+
+  void _fishWorldBound() {
+    if (position.x < 0) {
+      position.x = 0;
+      currentDirection = Direction.right;
+    }
+    if (position.x > worldWidth - size.x) {
+      position.x = worldWidth - size.x;
+      currentDirection = Direction.left;
+    }
+  }
+
+  void deleteFish() {
+    removeFromParent();
   }
 }

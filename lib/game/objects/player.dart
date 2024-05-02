@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:atoz_app/game/atoz_game.dart';
 import 'package:atoz_app/game/objects/collision_block.dart';
+import 'package:atoz_app/game/objects/fish.dart';
 import 'package:atoz_app/game/utils/custom_hitbox.dart';
 import 'package:flame/collisions.dart';
 // import 'package:flame/collisions.dart';
@@ -45,7 +46,7 @@ class PlayerAnimationKey {
 }
 
 class Player extends SpriteAnimationGroupComponent
-    with HasGameRef<AtozGame>, KeyboardHandler {
+    with HasGameRef<AtozGame>, KeyboardHandler, CollisionCallbacks {
   final PlayerType playerType;
   Player({
     super.size,
@@ -91,9 +92,9 @@ class Player extends SpriteAnimationGroupComponent
       _loadAllBoatAnimations();
       hitbox = CustomHitbox(
         x: 0,
-        y: size.y - 4 * game.scale,
+        y: 0,
         width: size.x,
-        height: 4.0 * game.scale,
+        height: 8.0 * game.scale,
       );
       add(
         RectangleHitbox(
@@ -117,9 +118,19 @@ class Player extends SpriteAnimationGroupComponent
         ),
       );
     }
-
-    // debugMode = true;
+    if (game.enableHitboxes) {
+      debugMode = true;
+    }
     return super.onLoad();
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (other is Fish) {
+      game.hook.resetHook();
+      other.deleteFish();
+    }
+    super.onCollision(intersectionPoints, other);
   }
 
   void updateObject(double dt) {
@@ -303,10 +314,10 @@ class Player extends SpriteAnimationGroupComponent
       if (velocity.y > 0) {
         currentDirection = Direction.down;
       }
-      if (velocity.x < 0) {
+      if (velocity.x < 0 && hookLength <= 50) {
         currentDirection = Direction.left;
       }
-      if (velocity.x > 0) {
+      if (velocity.x > 0 && hookLength <= 50) {
         currentDirection = Direction.right;
       }
     }
@@ -352,7 +363,7 @@ class Player extends SpriteAnimationGroupComponent
   void _checkVerticalCollisions() {
     for (final block in collisionBlocks) {
       if (checkCollision(this, block)) {
-        print("${position.y + size.y} ${block.y}");
+        // print("${position.y + size.y} ${block.y}");
         if (velocity.y > 0) {
           position.y = block.y - size.y;
         } else if (velocity.y < 0) {
@@ -363,8 +374,6 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _updatePlayerHorizontalPosition(double dt) {
-    // prevent the player from moving if the hook is under the water
-    if (playerType == PlayerType.boat && hookLength > 50) return;
     position.x += velocity.x * dt;
   }
 
@@ -375,19 +384,29 @@ class Player extends SpriteAnimationGroupComponent
   void _checkPlayerInput() {
     velocity = Vector2.zero();
 
+    // prevent the player's movement of left and right when player is a boat and the hook is underwater
     if (isLeftPressed) {
-      velocity.x += -moveSpeed;
+      if (playerType != PlayerType.boat || hookLength <= 50) {
+        velocity.x += -moveSpeed;
+      } else {
+        velocity.x += -moveSpeed / 10;
+      }
     }
     if (isRightPressed) {
-      velocity.x += moveSpeed;
+      if (playerType != PlayerType.boat || hookLength <= 50) {
+        velocity.x += moveSpeed;
+      } else {
+        velocity.x += moveSpeed / 10;
+      }
     }
+    // up and down
     if (isUpPressed) {
       velocity.y += -moveSpeed;
     }
     if (isDownPressed) {
       velocity.y += moveSpeed;
     }
-
+    // j and p
     if (isJPressed) {
       hookLength += 2;
     }

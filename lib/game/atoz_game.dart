@@ -1,20 +1,28 @@
 import 'dart:async';
 
 import 'package:atoz_app/game/levels/level.dart';
+import 'package:atoz_app/game/objects/hook.dart';
 import 'package:atoz_app/game/objects/player.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
-import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
-class AtozGame extends FlameGame with HasKeyboardHandlerComponents {
+class AtozGame extends FlameGame
+    with HasKeyboardHandlerComponents, HasCollisionDetection {
   late final CameraComponent cam;
 
   final double tileSize = 16;
   final int scale = 2;
 
   late Player player;
+
+  bool enableHitboxes = false;
+
+  Hook hook = Hook(
+    size: Vector2(16, 16),
+    position: Vector2(0, 0),
+  );
 
   @override
   Color backgroundColor() {
@@ -37,6 +45,7 @@ class AtozGame extends FlameGame with HasKeyboardHandlerComponents {
   void _loadLevel() {
     Level world = Level(
       player: player,
+      hook: hook,
       tileSize: tileSize,
       scale: scale,
     );
