@@ -1,15 +1,13 @@
 import 'dart:async';
-
-import 'package:atoz_app/game/atoz_game.dart';
 import 'package:atoz_app/game/objects/collision_block.dart';
 import 'package:atoz_app/game/objects/fish.dart';
+import 'package:atoz_app/game/objects/game_object.dart';
 import 'package:atoz_app/game/utils/custom_hitbox.dart';
+import 'package:atoz_app/game/utils/keyboard_handler.dart';
 import 'package:flame/collisions.dart';
 // import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
-import 'package:flutter/src/services/keyboard_key.g.dart';
-import 'package:flutter/src/services/raw_keyboard.dart';
 import 'package:atoz_app/game/utils/check_collisions.dart';
 
 enum PlayerType {
@@ -45,8 +43,7 @@ class PlayerAnimationKey {
   int get hashCode => state.hashCode ^ direction.hashCode;
 }
 
-class Player extends SpriteAnimationGroupComponent
-    with HasGameRef<AtozGame>, KeyboardHandler, CollisionCallbacks {
+class Player extends GameObject with KeyboardHandler {
   final PlayerType playerType;
   Player({
     super.size,
@@ -66,12 +63,6 @@ class Player extends SpriteAnimationGroupComponent
   late final SpriteAnimation _movingDownAnimation;
 
   // player properties
-  bool isLeftPressed = false;
-  bool isRightPressed = false;
-  bool isUpPressed = false;
-  bool isDownPressed = false;
-  bool isJPressed = false;
-  bool isKPressed = false;
   Vector2 velocity = Vector2.zero();
   PlayerState currentState = PlayerState.idle;
   Direction currentDirection = Direction.right;
@@ -83,6 +74,9 @@ class Player extends SpriteAnimationGroupComponent
 
   // others
   List<CollisionBlock> collisionBlocks = [];
+
+  // keyboard handler
+  late KeyHandler keyHandler;
 
   @override
   FutureOr<void> onLoad() {
@@ -118,6 +112,7 @@ class Player extends SpriteAnimationGroupComponent
         ),
       );
     }
+    keyHandler = game.keyHandler;
     if (game.enableHitboxes) {
       debugMode = true;
     }
@@ -326,28 +321,6 @@ class Player extends SpriteAnimationGroupComponent
     // current = 6;
   }
 
-  @override
-  bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
-    isLeftPressed = keysPressed.contains(LogicalKeyboardKey.arrowLeft) ||
-        keysPressed.contains(LogicalKeyboardKey.keyA);
-    isRightPressed = keysPressed.contains(LogicalKeyboardKey.arrowRight) ||
-        keysPressed.contains(LogicalKeyboardKey.keyD);
-
-    // prevent the player's movement of up and down when the player is a boat
-    if (playerType == PlayerType.boat) {
-      isJPressed = keysPressed.contains(LogicalKeyboardKey.keyJ);
-      isKPressed = keysPressed.contains(LogicalKeyboardKey.keyK);
-      return super.onKeyEvent(event, keysPressed);
-    }
-
-    isUpPressed = keysPressed.contains(LogicalKeyboardKey.arrowUp) ||
-        keysPressed.contains(LogicalKeyboardKey.keyW);
-    isDownPressed = keysPressed.contains(LogicalKeyboardKey.arrowDown) ||
-        keysPressed.contains(LogicalKeyboardKey.keyS);
-
-    return super.onKeyEvent(event, keysPressed);
-  }
-
   void _checkHorizontalCollisions() {
     for (final block in collisionBlocks) {
       if (checkCollision(this, block)) {
@@ -385,14 +358,14 @@ class Player extends SpriteAnimationGroupComponent
     velocity = Vector2.zero();
 
     // prevent the player's movement of left and right when player is a boat and the hook is underwater
-    if (isLeftPressed) {
+    if (keyHandler.isLeftPressed) {
       if (playerType != PlayerType.boat || hookLength <= 50) {
         velocity.x += -moveSpeed;
       } else {
         velocity.x += -moveSpeed / 10;
       }
     }
-    if (isRightPressed) {
+    if (keyHandler.isRightPressed) {
       if (playerType != PlayerType.boat || hookLength <= 50) {
         velocity.x += moveSpeed;
       } else {
@@ -400,18 +373,22 @@ class Player extends SpriteAnimationGroupComponent
       }
     }
     // up and down
-    if (isUpPressed) {
+    if (keyHandler.isUpPressed && playerType != PlayerType.boat) {
       velocity.y += -moveSpeed;
     }
-    if (isDownPressed) {
+    if (keyHandler.isDownPressed && playerType != PlayerType.boat) {
       velocity.y += moveSpeed;
     }
     // j and p
-    if (isJPressed) {
+    if (keyHandler.isJPressed) {
       hookLength += 2;
     }
-    if (isKPressed && hookLength > 0) {
+    if (keyHandler.isKPressed && hookLength > 0) {
       hookLength -= 2;
+    }
+
+    if (keyHandler.isSpacePressed) {
+      game.toggleGameState();
     }
   }
 }

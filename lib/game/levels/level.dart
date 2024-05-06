@@ -6,7 +6,9 @@ import 'package:atoz_app/game/objects/background.dart';
 import 'package:atoz_app/game/objects/collision_block.dart';
 import 'package:atoz_app/game/objects/fish.dart';
 import 'package:atoz_app/game/objects/front_water_block.dart';
+import 'package:atoz_app/game/objects/game_object.dart';
 import 'package:atoz_app/game/objects/hook.dart';
+import 'package:atoz_app/game/objects/oldman.dart';
 import 'package:atoz_app/game/objects/player.dart';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
@@ -31,7 +33,7 @@ class Level extends World with HasGameRef<AtozGame> {
   // the water blocks (the water surface that is below the boat) that are in front of the player and most objects
   List<FrontWaterBlock> frontWaterBlocks = [];
 
-  List<Fish> fishes = [];
+  List<GameObject> gameObjects = [];
 
   // terraria background
   late Background background;
@@ -64,7 +66,7 @@ class Level extends World with HasGameRef<AtozGame> {
                 Vector2(spawnPoint.x * scale, spawnPoint.y * scale);
             player.priority = 10;
             // player.size = Vector2(tileSize * scale, tileSize * scale);
-            player.size = Vector2(64, 64);
+            player.size = Vector2(32.0 * scale, 32.0 * scale);
             add(player);
             break;
           case 'Fish':
@@ -75,7 +77,15 @@ class Level extends World with HasGameRef<AtozGame> {
               worldWidth: level.width,
             );
             add(fish);
-            fishes.add(fish);
+            gameObjects.add(fish);
+            break;
+          case 'Oldman':
+            final oldman = OldMan(
+              position: Vector2(spawnPoint.x * scale, spawnPoint.y * scale),
+              size: Vector2(tileSize * scale, tileSize * scale),
+            );
+            add(oldman);
+            gameObjects.add(oldman);
             break;
           default:
         }
@@ -108,8 +118,10 @@ class Level extends World with HasGameRef<AtozGame> {
 
     hook.updateHook(dt);
 
-    for (final fish in fishes) {
-      fish.updateObject(dt);
+    for (final object in gameObjects) {
+      if (object is Fish) {
+        object.updateObject(dt);
+      }
     }
 
     _followHook();

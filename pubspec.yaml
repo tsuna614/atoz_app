@@ -85,9 +85,11 @@ flutter:
     - assets/images/Backgrounds/Tilesets/
     - assets/images/Actor/Characters/Boy/SpriteSheet.png
     - assets/images/Actor/Characters/Boy/player.png
+    - assets/images/Actor/Characters/OldMan/SpriteSheet.png
     - assets/images/Actor/Characters/RedNinja/SpriteSheet.png
     - assets/images/Actor/Animals/Fish/
     - assets/images/Backgrounds/background.png
+    - assets/images/HUD/Dialog/DialogInfo.png
     # app assets
     - assets/images/app/logo2.png
     - assets/images/app/profile.jpg

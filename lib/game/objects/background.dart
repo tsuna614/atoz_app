@@ -55,7 +55,7 @@ class Background extends SpriteComponent with HasGameRef<AtozGame> {
 
   @override
   void render(Canvas canvas) {
-    return;
     // super.render(canvas);
+    return;
   }
 }

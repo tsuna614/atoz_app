@@ -38,7 +38,7 @@
             "scaleInEditor": 1
         },
         "TilesetWater3.tsx": {
-            "scaleInDock": 1,
+            "scaleInDock": 1.3977,
             "scaleInEditor": 1
         },
         "map01.tmx": {
@@ -56,11 +56,11 @@
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 1.1279,
-            "selectedLayer": 4,
+            "scale": 1.1384,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": -131.6606082099477,
-                "y": 238.93962230694214
+                "x": 210.38299367533378,
+                "y": 217.4104005621925
             }
         }
     },

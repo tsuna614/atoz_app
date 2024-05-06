@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
-
-import 'package:atoz_app/game/atoz_game.dart';
+import 'package:atoz_app/game/objects/game_object.dart';
 import 'package:atoz_app/game/objects/player.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
@@ -39,8 +38,7 @@ class FishAnimationKey {
 
 String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 
-class Fish extends SpriteAnimationGroupComponent
-    with HasGameRef<AtozGame>, CollisionCallbacks {
+class Fish extends GameObject {
   final FishType fishType;
   final double worldWidth;
   Fish({
@@ -69,7 +67,7 @@ class Fish extends SpriteAnimationGroupComponent
     if (game.enableHitboxes) {
       debugMode = true;
     }
-    _loadSprite();
+    _loadSprite(Random().nextInt(3));
 
     add(
       RectangleHitbox(
@@ -84,8 +82,21 @@ class Fish extends SpriteAnimationGroupComponent
     return super.onLoad();
   }
 
-  void _loadSprite() {
-    String fishName = capitalize(fishType.toString().split('.').last);
+  void _loadSprite(int fishTypeInt) {
+    // String fishName = capitalize(fishType.toString().split('.').last);
+    late String fishName;
+    switch (fishTypeInt) {
+      case 0:
+        fishName = 'Red';
+        break;
+      case 1:
+        fishName = 'White';
+        break;
+      case 2:
+        fishName = 'Yellow';
+        break;
+      default:
+    }
     String spriteSrc = 'Actor/Animals/Fish/SpriteSheet$fishName.png';
 
     final fishSpriteSheet = SpriteSheet(
