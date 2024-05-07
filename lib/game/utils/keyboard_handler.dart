@@ -68,6 +68,23 @@ class KeyHandler extends Component with HasGameRef<AtozGame>, KeyboardHandler {
     isJPressed = keysPressed.contains(LogicalKeyboardKey.keyJ);
     isKPressed = keysPressed.contains(LogicalKeyboardKey.keyK);
 
+    if (event is RawKeyDownEvent) {
+      if (keysPressed.contains(LogicalKeyboardKey.keyP)) {
+        game.toggleGameState();
+      }
+      if (keysPressed.contains(LogicalKeyboardKey.keyT)) {
+        game.toggleDebugMode();
+      }
+      if (keysPressed.contains(LogicalKeyboardKey.space)) {
+        if (game.gameState == GameState.playing) {
+          game.oldMan.handleInteraction();
+        } else if (game.gameState == GameState.inDialogue) {
+          // game.toggleGameDialogue();
+          game.gameState = GameState.playing;
+        }
+      }
+    }
+
     return super.onKeyEvent(event, keysPressed);
   }
 }

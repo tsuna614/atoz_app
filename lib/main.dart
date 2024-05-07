@@ -71,8 +71,8 @@ Future<void> main() async {
     await Flame.device.setLandscape();
     // await Flame.device.setPortrait();
 
-    AtozGame game = AtozGame();
-    runApp(GameWidget(game: kDebugMode ? AtozGame() : game));
+    AtozGame game = AtozGame(question: "Hello adventurer");
+    runApp(GameWidget(game: game));
     // runApp(GameWidget(game: game));
   } else {
     await Firebase.initializeApp(

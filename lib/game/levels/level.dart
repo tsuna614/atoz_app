@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:atoz_app/game/atoz_game.dart';
+import 'package:atoz_app/game/hud/HUD.dart';
 import 'package:atoz_app/game/objects/background.dart';
 import 'package:atoz_app/game/objects/collision_block.dart';
 import 'package:atoz_app/game/objects/fish.dart';
@@ -38,6 +39,9 @@ class Level extends World with HasGameRef<AtozGame> {
   // terraria background
   late Background background;
 
+  // hud
+  late HUD hud;
+
   @override
   FutureOr<void> onLoad() async {
     level =
@@ -45,6 +49,9 @@ class Level extends World with HasGameRef<AtozGame> {
 
     background = Background(worldHeight: level.height);
     add(background);
+
+    hud = HUD();
+    add(hud);
 
     _spawningObjects();
 
@@ -80,12 +87,13 @@ class Level extends World with HasGameRef<AtozGame> {
             gameObjects.add(fish);
             break;
           case 'Oldman':
-            final oldman = OldMan(
+            game.oldMan = OldMan(
+              keyHandler: game.keyHandler,
               position: Vector2(spawnPoint.x * scale, spawnPoint.y * scale),
               size: Vector2(tileSize * scale, tileSize * scale),
             );
-            add(oldman);
-            gameObjects.add(oldman);
+            add(game.oldMan);
+            gameObjects.add(game.oldMan);
             break;
           default:
         }
@@ -114,6 +122,10 @@ class Level extends World with HasGameRef<AtozGame> {
 
   @override
   void update(double dt) {
+    if (game.gameState == GameState.paused ||
+        game.gameState == GameState.inDialogue) {
+      return;
+    }
     player.updateObject(dt);
 
     hook.updateHook(dt);

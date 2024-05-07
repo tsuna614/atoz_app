@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:atoz_app/game/levels/level.dart';
 import 'package:atoz_app/game/objects/hook.dart';
+import 'package:atoz_app/game/objects/oldman.dart';
 import 'package:atoz_app/game/objects/player.dart';
 import 'package:atoz_app/game/utils/keyboard_handler.dart';
 import 'package:flame/components.dart';
@@ -10,18 +11,16 @@ import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
 import 'package:flutter/material.dart';
 
-enum GameState {
-  playing,
-  paused,
-}
+enum GameState { playing, paused, inDialogue }
 
 class AtozGame extends FlameGame
     with HasKeyboardHandlerComponents, HasCollisionDetection {
-  // final String question;
-  // AtozGame({
-  //   required this.question,
-  // });
+  final String question;
+  AtozGame({
+    required this.question,
+  });
 
+  // INITIALIZING GAME
   late final CameraComponent cam;
 
   final double tileSize = 16;
@@ -29,15 +28,13 @@ class AtozGame extends FlameGame
 
   late JoystickComponent joystickLeft, joystickRight;
 
-  late Player player;
-
   bool enableHitboxes = false;
-  bool showJoysticks = false;
 
   GameState gameState = GameState.playing;
 
-  JoystickDirection lastDirection = JoystickDirection.idle;
-
+  // INITIALIZING GAME OBJECTS
+  late Player player;
+  late OldMan oldMan;
   Hook hook = Hook(
     size: Vector2(16, 16),
     position: Vector2(0, 0),
@@ -45,7 +42,10 @@ class AtozGame extends FlameGame
 
   int hookSpeed = 5;
 
+  // INITIALIZING INPUTS
   KeyHandler keyHandler = KeyHandler();
+  bool showJoysticks = false;
+  JoystickDirection lastDirection = JoystickDirection.idle;
 
   @override
   Color backgroundColor() {
@@ -80,6 +80,7 @@ class AtozGame extends FlameGame
       tileSize: tileSize,
       scale: scale,
     );
+
     // size.x and y is the size of the entire screen within SafeArea (which is in the main)
     cam = CameraComponent.withFixedResolution(
       world: world,
@@ -87,27 +88,9 @@ class AtozGame extends FlameGame
       height: size.y,
     );
 
-    // player.anchor = Anchor.center;
     cam.follow(player);
 
-    // cam.moveTo(Vector2(100, 100));
-
     cam.viewfinder.anchor = Anchor.center;
-    // cam.viewfinder.anchor = Anchor.topLeft;
-
-    // worldWidth = world.level.width;
-    // worldHeight = world.level.height;
-
-    // Future.delayed(const Duration(seconds: 1), () {
-    //   cam.setBounds(
-    //     Rectangle.fromLTWH(
-    //       size.x / 2,
-    //       size.y / 2,
-    //       worldWidth - size.x,
-    //       worldHeight - size.y,
-    //     ),
-    //   );
-    // });
 
     addAll([cam, world]);
 
@@ -117,7 +100,11 @@ class AtozGame extends FlameGame
 
   @override
   void update(double dt) {
-    if (gameState == GameState.paused) return;
+    // if (gameState == GameState.inDialogue) {
+    //   if (keyHandler.isSpaceDown) {
+    //     gameState = GameState.playing;
+    //   }
+    // }
     if (showJoysticks) {
       _updateJoystickValues();
     }
@@ -237,11 +224,14 @@ class AtozGame extends FlameGame
   }
 
   void toggleGameState() {
-    print("object");
     if (gameState == GameState.playing) {
       gameState = GameState.paused;
-    } else {
+    } else if (gameState == GameState.paused) {
       gameState = GameState.playing;
     }
+  }
+
+  void toggleDebugMode() {
+    enableHitboxes = !enableHitboxes;
   }
 }

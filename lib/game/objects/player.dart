@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:atoz_app/game/hud/text_popup.dart';
 import 'package:atoz_app/game/objects/collision_block.dart';
 import 'package:atoz_app/game/objects/fish.dart';
 import 'package:atoz_app/game/objects/game_object.dart';
@@ -68,6 +69,8 @@ class Player extends GameObject with KeyboardHandler {
   Direction currentDirection = Direction.right;
   double moveSpeed = 200;
   late CustomHitbox hitbox;
+  int currentLife = 6;
+  int fishCount = 0;
 
   // player boat properties
   double hookLength = 0;
@@ -122,8 +125,15 @@ class Player extends GameObject with KeyboardHandler {
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is Fish) {
+      fishCount++;
       game.hook.resetHook();
       other.deleteFish();
+      TextPopup textPopup = TextPopup(
+        content: '+1 fish',
+        // position: Vector2(position.x, position.y - 20),
+        position: Vector2(0, -20),
+      );
+      add(textPopup);
     }
     super.onCollision(intersectionPoints, other);
   }
@@ -385,10 +395,6 @@ class Player extends GameObject with KeyboardHandler {
     }
     if (keyHandler.isKPressed && hookLength > 0) {
       hookLength -= 2;
-    }
-
-    if (keyHandler.isSpacePressed) {
-      game.toggleGameState();
     }
   }
 }

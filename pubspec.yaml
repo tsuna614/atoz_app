@@ -89,6 +89,7 @@ flutter:
     - assets/images/Actor/Characters/RedNinja/SpriteSheet.png
     - assets/images/Actor/Animals/Fish/
     - assets/images/Backgrounds/background.png
+    - assets/images/HUD/
     - assets/images/HUD/Dialog/DialogInfo.png
     # app assets
     - assets/images/app/logo2.png

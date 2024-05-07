@@ -3,7 +3,6 @@ import 'package:atoz_app/game/atoz_game.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -34,8 +33,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AtozGame game = AtozGame();
-    return Scaffold(body: GameWidget(game: kDebugMode ? AtozGame() : game));
+    AtozGame game = AtozGame(question: "Hello adventurer");
+    return Scaffold(body: GameWidget(game: game));
   }
 
   Widget getUsers(BuildContext context) {

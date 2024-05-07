@@ -1,14 +1,17 @@
 import 'dart:async';
-
+import 'package:atoz_app/game/atoz_game.dart';
 import 'package:atoz_app/game/hud/dialogue_bubble.dart';
 import 'package:atoz_app/game/objects/game_object.dart';
 import 'package:atoz_app/game/objects/player.dart';
+import 'package:atoz_app/game/utils/keyboard_handler.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 
 class OldMan extends GameObject {
+  final KeyHandler keyHandler;
   OldMan({
+    required this.keyHandler,
     super.size,
     super.position,
   });
@@ -84,5 +87,11 @@ class OldMan extends GameObject {
     }
     isCollidingWithPlayer = false;
     super.update(dt);
+  }
+
+  void handleInteraction() {
+    if (isCollidingWithPlayer) {
+      game.gameState = GameState.inDialogue;
+    }
   }
 }
