@@ -22,7 +22,6 @@ class TextPopup extends GameObject {
 
   @override
   void render(Canvas canvas) {
-    print("object");
     TextSpan span = TextSpan(
       text: content,
       style: TextStyle(

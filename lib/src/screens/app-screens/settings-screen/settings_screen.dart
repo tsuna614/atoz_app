@@ -33,7 +33,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AtozGame game = AtozGame(question: "Hello adventurer");
+    AtozGame game = AtozGame(
+      question: "Hello adventurer",
+      totalTime: 90,
+      switchScreen: (int score) {},
+    );
     return Scaffold(body: GameWidget(game: game));
   }
 

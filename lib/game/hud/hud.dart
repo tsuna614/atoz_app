@@ -41,6 +41,7 @@ class HUD extends GameObject {
     }
     _renderHeart(canvas);
     _renderFishCount(canvas);
+    _renderTimer(canvas);
     super.render(canvas);
   }
 
@@ -194,6 +195,55 @@ class HUD extends GameObject {
       Offset(
         camPositionX + 80, // Adjust X position as needed
         camPositionY + 60, // Adjust Y position as needed
+      ),
+    );
+  }
+
+  void _renderTimer(Canvas canvas) {
+    // render game.timeLeft in the top center of the screen
+    double camPositionX = game.cam.viewfinder.position.x - game.size.x / 2;
+    double camPositionY = game.cam.viewfinder.position.y - game.size.y / 2;
+
+    TextSpan textSpan = TextSpan(
+      text: "Time Left:",
+      style: TextStyle(
+        color: Colors.black,
+        fontSize: 16,
+        fontWeight: FontWeight.normal,
+      ),
+    );
+    TextSpan timeTextSpan = TextSpan(
+      text: game.timeLeft.toString(),
+      style: TextStyle(
+        color: Colors.black,
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+
+    TextPainter textPainter = TextPainter(
+      text: textSpan,
+      textDirection: TextDirection.ltr,
+    );
+    textPainter.layout();
+    textPainter.paint(
+      canvas,
+      Offset(
+        camPositionX + game.size.x / 2 - 20, // Adjust X position as needed
+        camPositionY + 20, // Adjust Y position as needed
+      ),
+    );
+
+    textPainter = TextPainter(
+      text: timeTextSpan,
+      textDirection: TextDirection.ltr,
+    );
+    textPainter.layout();
+    textPainter.paint(
+      canvas,
+      Offset(
+        camPositionX + game.size.x / 2, // Adjust X position as needed
+        camPositionY + 40, // Adjust Y position as needed
       ),
     );
   }

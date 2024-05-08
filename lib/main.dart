@@ -71,7 +71,11 @@ Future<void> main() async {
     await Flame.device.setLandscape();
     // await Flame.device.setPortrait();
 
-    AtozGame game = AtozGame(question: "Hello adventurer");
+    AtozGame game = AtozGame(
+      question: "Hello adventurer",
+      totalTime: 90,
+      switchScreen: (int score) {},
+    );
     runApp(GameWidget(game: game));
     // runApp(GameWidget(game: game));
   } else {
@@ -127,8 +131,8 @@ class MyApp extends StatelessWidget {
             return const LoginScreen();
           },
         ),
-        // home: GameScreen(),
         // home: TestScreen(),
+        // home: GameScreen(),
         // home: ProfileScreen(
         //   userId: FirebaseAuth.instance.currentUser!.uid,
         //   isDirectedFromLeaderboard: false,

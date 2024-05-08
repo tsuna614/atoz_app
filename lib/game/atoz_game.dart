@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:async' as timer;
 import 'package:atoz_app/game/levels/level.dart';
 import 'package:atoz_app/game/objects/hook.dart';
 import 'package:atoz_app/game/objects/oldman.dart';
@@ -16,8 +16,12 @@ enum GameState { playing, paused, inDialogue }
 class AtozGame extends FlameGame
     with HasKeyboardHandlerComponents, HasCollisionDetection {
   final String question;
+  final int totalTime;
+  final Function(int score) switchScreen;
   AtozGame({
     required this.question,
+    required this.totalTime,
+    required this.switchScreen,
   });
 
   // INITIALIZING GAME
@@ -31,6 +35,8 @@ class AtozGame extends FlameGame
   bool enableHitboxes = false;
 
   GameState gameState = GameState.playing;
+
+  late int timeLeft;
 
   // INITIALIZING GAME OBJECTS
   late Player player;
@@ -65,6 +71,9 @@ class AtozGame extends FlameGame
     player = Player(playerType: PlayerType.boat);
 
     _loadLevel();
+
+    timeLeft = totalTime;
+    _startTimer();
 
     if (showJoysticks) {
       _addJoysticks();
@@ -233,5 +242,16 @@ class AtozGame extends FlameGame
 
   void toggleDebugMode() {
     enableHitboxes = !enableHitboxes;
+  }
+
+  void _startTimer() {
+    timer.Timer.periodic(Duration(seconds: 1), (timer) {
+      if (timeLeft == 0) {
+        timer.cancel();
+        switchScreen(0);
+      } else {
+        timeLeft--;
+      }
+    });
   }
 }
