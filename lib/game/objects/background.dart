@@ -53,7 +53,10 @@ class Background extends SpriteComponent with HasGameRef<AtozGame> {
     }
   }
 
+  // note to self: this COULD be the reason why awaiting images.loadAllImages() return a bug when building android
+
   @override
+  // ignore: must_call_super
   void render(Canvas canvas) {
     // super.render(canvas);
     return;

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:atoz_app/game/hud/text_popup.dart';
+import 'package:atoz_app/game/levels/level.dart';
 import 'package:atoz_app/game/objects/collision_block.dart';
 import 'package:atoz_app/game/objects/fish.dart';
 import 'package:atoz_app/game/objects/game_object.dart';
@@ -125,15 +126,35 @@ class Player extends GameObject with KeyboardHandler {
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is Fish) {
-      fishCount++;
       game.hook.resetHook();
+      game.level.gameObjects.removeWhere((element) => element == other);
       other.deleteFish();
-      TextPopup textPopup = TextPopup(
-        content: '+1 fish',
-        // position: Vector2(position.x, position.y - 20),
-        position: Vector2(0, -20),
-      );
-      add(textPopup);
+      if (other.fishNameTag ==
+          game.question.correctAnswers[game.questionIndex]) {
+        // correct answer
+        fishCount++;
+        add(
+          TextPopup(
+            content: '+1 score',
+            // position: Vector2(position.x, position.y - 20),
+            position: Vector2(0, -20),
+          ),
+        );
+        game.questionIndex++;
+        game.score++;
+        // reset the fishes
+        game.level.spawningNewFishes();
+      } else {
+        // wrong answer
+        add(
+          TextPopup(
+            content: '-1 life',
+            // position: Vector2(position.x, position.y - 20),
+            position: Vector2(0, -20),
+          ),
+        );
+        currentLife--;
+      }
     }
     super.onCollision(intersectionPoints, other);
   }

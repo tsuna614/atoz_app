@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:atoz_app/game/hud/name_tag.dart';
 import 'package:atoz_app/game/objects/game_object.dart';
 import 'package:atoz_app/game/objects/player.dart';
 import 'package:flame/collisions.dart';
@@ -41,11 +42,13 @@ String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 class Fish extends GameObject {
   final FishType fishType;
   final double worldWidth;
+  final String fishNameTag;
   Fish({
     super.position,
     super.size,
     required this.fishType,
     required this.worldWidth,
+    required this.fishNameTag,
   });
 
   final double speed = 50;
@@ -76,6 +79,8 @@ class Fish extends GameObject {
         // collisionType: CollisionType.passive,
       ),
     );
+
+    add(NameTag(content: fishNameTag));
 
     priority = 50;
 
@@ -213,12 +218,12 @@ class Fish extends GameObject {
   }
 
   void _fishWorldBound() {
-    if (position.x < 0) {
-      position.x = 0;
+    if (position.x < 130 * game.scale) {
+      // position.x = 0;
       currentDirection = Direction.right;
     }
-    if (position.x > worldWidth - size.x) {
-      position.x = worldWidth - size.x;
+    if (position.x > 650 * game.scale) {
+      // position.x = worldWidth - size.x;
       currentDirection = Direction.left;
     }
   }

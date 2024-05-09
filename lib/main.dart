@@ -1,4 +1,5 @@
 import 'package:atoz_app/game/atoz_game.dart';
+import 'package:atoz_app/src/models/quiz_question.dart';
 import 'package:atoz_app/src/providers/question_provider.dart';
 import 'package:atoz_app/src/providers/user_provider.dart';
 // import 'package:atoz_app/src/screens/app-screens/game_screens/game_screen.dart';
@@ -62,17 +63,41 @@ final theme2 = ThemeData(
 // GAME STATE VARIABLES
 bool isGameStart = true;
 
+//
+FishingQuestion question = FishingQuestion(questions: [
+  "1 + 1 = ?",
+  "2 + 3 = ?",
+  "2 x 3 = ?",
+  "3 ^ 3 = ?"
+], correctAnswers: [
+  "2",
+  "5",
+  "6",
+  "9"
+], answers: [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10",
+]);
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (isGameStart) {
     await Flame.device.fullScreen();
 
     //// set the orientation of the phone
-    await Flame.device.setLandscape();
-    // await Flame.device.setPortrait();
+    // await Flame.device.setLandscape();
+    await Flame.device.setPortrait();
 
     AtozGame game = AtozGame(
-      question: "Hello adventurer",
+      question: question,
       totalTime: 90,
       switchScreen: (int score) {},
     );

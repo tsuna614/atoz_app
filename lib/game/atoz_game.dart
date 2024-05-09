@@ -5,6 +5,7 @@ import 'package:atoz_app/game/objects/hook.dart';
 import 'package:atoz_app/game/objects/oldman.dart';
 import 'package:atoz_app/game/objects/player.dart';
 import 'package:atoz_app/game/utils/keyboard_handler.dart';
+import 'package:atoz_app/src/models/quiz_question.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
@@ -15,7 +16,7 @@ enum GameState { playing, paused, inDialogue }
 
 class AtozGame extends FlameGame
     with HasKeyboardHandlerComponents, HasCollisionDetection {
-  final String question;
+  final FishingQuestion question;
   final int totalTime;
   final Function(int score) switchScreen;
   AtozGame({
@@ -38,6 +39,9 @@ class AtozGame extends FlameGame
 
   late int timeLeft;
 
+  int score = 0;
+  int questionIndex = 0;
+
   // INITIALIZING GAME OBJECTS
   late Player player;
   late OldMan oldMan;
@@ -47,6 +51,8 @@ class AtozGame extends FlameGame
   );
 
   int hookSpeed = 5;
+
+  late Level level;
 
   // INITIALIZING INPUTS
   KeyHandler keyHandler = KeyHandler();
@@ -83,7 +89,7 @@ class AtozGame extends FlameGame
   }
 
   void _loadLevel() {
-    Level world = Level(
+    level = Level(
       player: player,
       hook: hook,
       tileSize: tileSize,
@@ -92,7 +98,7 @@ class AtozGame extends FlameGame
 
     // size.x and y is the size of the entire screen within SafeArea (which is in the main)
     cam = CameraComponent.withFixedResolution(
-      world: world,
+      world: level,
       width: size.x,
       height: size.y,
     );
@@ -101,7 +107,7 @@ class AtozGame extends FlameGame
 
     cam.viewfinder.anchor = Anchor.center;
 
-    addAll([cam, world]);
+    addAll([cam, level]);
 
     cam.priority =
         0; // set cam priority = 0 so the joystick is in front of the whole screen

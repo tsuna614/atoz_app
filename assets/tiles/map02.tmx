@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="35" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="39">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="35" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="43">
  <tileset firstgid="1" source="Atoz Game.tsx"/>
  <tileset firstgid="573" source="TilesetNature.tsx"/>
  <tileset firstgid="1077" source="TilesetHouse.tsx"/>
@@ -132,10 +132,14 @@
   <object id="9" type="Fish" x="352" y="336" width="16" height="16"/>
   <object id="10" type="Fish" x="240" y="416" width="16" height="16"/>
   <object id="38" type="Oldman" x="211.447" y="215.208" width="16" height="16"/>
+  <object id="39" type="Fish" x="416" y="384" width="16" height="16"/>
+  <object id="40" type="Fish" x="512" y="464" width="16" height="16"/>
+  <object id="41" type="Fish" x="512" y="320" width="16" height="16"/>
+  <object id="42" type="Fish" x="560" y="448" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="5" name="Collisions">
   <object id="2" x="16" y="0" width="16" height="560"/>
-  <object id="4" x="752" y="0" width="16" height="560"/>
+  <object id="4" x="656" y="0" width="16" height="560"/>
   <object id="37" x="112" y="0" width="16" height="560"/>
  </objectgroup>
  <objectgroup id="8" name="Front-waterblocks">

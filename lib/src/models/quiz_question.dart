@@ -166,3 +166,17 @@ class ReadingMultipleChoiceQuestion {
     return shuffledList;
   }
 }
+
+/////////////////////////  Fishing question class  /////////////////////////
+/// This class is used for the fishing minigame.
+class FishingQuestion extends QuizQuestion {
+  FishingQuestion({
+    required this.questions,
+    required this.correctAnswers,
+    required this.answers,
+  });
+
+  final List<String> questions;
+  final List<String> correctAnswers;
+  final List<String> answers;
+}

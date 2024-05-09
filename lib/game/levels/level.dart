@@ -55,6 +55,8 @@ class Level extends World with HasGameRef<AtozGame> {
 
     _spawningObjects();
 
+    spawningNewFishes();
+
     _addingCollisionBlocks();
 
     _addingFrontWaterBlocks();
@@ -75,16 +77,6 @@ class Level extends World with HasGameRef<AtozGame> {
             // player.size = Vector2(tileSize * scale, tileSize * scale);
             player.size = Vector2(32.0 * scale, 32.0 * scale);
             add(player);
-            break;
-          case 'Fish':
-            final fish = Fish(
-              fishType: FishType.red,
-              position: Vector2(spawnPoint.x * scale, spawnPoint.y * scale),
-              size: Vector2(tileSize * scale, tileSize * scale),
-              worldWidth: level.width,
-            );
-            add(fish);
-            gameObjects.add(fish);
             break;
           case 'Oldman':
             game.oldMan = OldMan(
@@ -183,6 +175,42 @@ class Level extends World with HasGameRef<AtozGame> {
         );
         add(frontWaterBlock);
         this.frontWaterBlocks.add(frontWaterBlock);
+      }
+    }
+  }
+
+  void spawningNewFishes() {
+    // remove all old fishes from the game
+    for (final object in gameObjects) {
+      if (object is Fish) {
+        remove(object);
+      }
+    }
+    // clear the list of old fishes
+    gameObjects.removeWhere((element) => element is Fish);
+
+    final spawnPointsLayer = level.tileMap.getLayer<ObjectGroup>('Spawnpoints');
+
+    int dummyFishIndex = 0;
+
+    if (spawnPointsLayer != null) {
+      for (final spawnPoint in spawnPointsLayer.objects) {
+        // only generate until run out of dummy answers for that question
+        if (spawnPoint.class_ == 'Fish') {
+          if (dummyFishIndex == game.question.answers.length - 1) {
+            break;
+          }
+          final fish = Fish(
+            fishType: FishType.red,
+            fishNameTag: game.question.answers[dummyFishIndex],
+            position: Vector2(spawnPoint.x * scale, spawnPoint.y * scale),
+            size: Vector2(tileSize * scale, tileSize * scale),
+            worldWidth: level.width,
+          );
+          add(fish);
+          gameObjects.add(fish);
+          dummyFishIndex++;
+        }
       }
     }
   }
