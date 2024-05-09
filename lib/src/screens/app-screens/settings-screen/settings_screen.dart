@@ -1,8 +1,8 @@
 // import 'package:atoz_app/game/pixel_adventure.dart';
 // import 'package:atoz_app/game/atoz_game.dart';
 // import 'package:flame/game.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flame/flame.dart';
+import 'package:atoz_app/src/screens/app-screens/game_screens/game_over_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/game_screens/game_screen.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -13,22 +13,13 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  void test() {
-    FirebaseFirestore.instance.collection('users').add({
-      'username': 'user1',
-      'email': 'abc',
-    });
-  }
-
-  void setUp() async {
-    await Flame.device.fullScreen();
-    await Flame.device.setPortrait();
-  }
-
-  @override
-  void initState() {
-    setUp();
-    super.initState();
+  void _switchScreen(int score) {
+    Navigator.of(context).pop();
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => GameOverScreen(score: score),
+      ),
+    );
   }
 
   @override
@@ -41,7 +32,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
     // return Scaffold(body: GameWidget(game: game));
     return Scaffold(
       body: Center(
-        child: Text("Settings Screen"),
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => GameScreen(
+                  switchScreen: _switchScreen,
+                ),
+              ),
+            );
+          },
+          child: const Text('Test'),
+        ),
       ),
     );
   }

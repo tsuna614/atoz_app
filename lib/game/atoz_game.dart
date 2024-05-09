@@ -94,7 +94,7 @@ class AtozGame extends FlameGame
     FlameAudio.bgm.stop();
 
     // play music
-    // FlameAudio.bgm.play('BlueBoyAdventure.wav', volume: volume);
+    // FlameAudio.bgm.play('BlueBoyAdventure.wav', volume: volume );
     // FlameAudio.play('BlueBoyAdventure.wav', volume: volume);
 
     return super.onLoad();
@@ -271,5 +271,13 @@ class AtozGame extends FlameGame
         timeLeft--;
       }
     });
+  }
+
+  void triggerGameOver(bool isGameLost) {
+    if (isGameLost) {
+      switchScreen(0);
+    } else {
+      switchScreen(score);
+    }
   }
 }

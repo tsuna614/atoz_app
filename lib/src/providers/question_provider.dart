@@ -506,4 +506,45 @@ class QuestionProvider extends ChangeNotifier {
     [],
     [],
   ];
+
+  List<FishingQuestion> fishingQuests = [
+    FishingQuestion(
+      questions: [
+        "What word is wrong in the following sentence: Have I not gone to Tokyo, I would have helped you with your assignment.",
+        "What is the past participle of the verb 'go'?",
+        "What is the past participle of the verb 'eat'?",
+      ],
+      correctAnswers: [
+        "Have",
+        "gone",
+        "eaten",
+      ],
+      answers: [
+        [
+          "Have",
+          "gone",
+          "Tokyo",
+          "would",
+          "helped",
+          "assignment",
+        ],
+        [
+          "go",
+          "went",
+          "gone",
+          "going",
+          "is going",
+          "will go",
+        ],
+        [
+          "eat",
+          "ate",
+          "eaten",
+          "eating",
+          "is eating",
+          "will eat",
+        ],
+      ],
+    ),
+  ];
 }

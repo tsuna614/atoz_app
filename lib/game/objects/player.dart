@@ -142,7 +142,7 @@ class Player extends GameObject with KeyboardHandler {
           ),
         );
         game.questionIndex++;
-        game.score++;
+        game.score += 100;
         // reset the fishes
         game.level.spawningNewFishes();
         // play audio

@@ -64,18 +64,24 @@ final theme2 = ThemeData(
 bool isGameStart = false;
 
 //
-FishingQuestion question = FishingQuestion(questions: [
-  "What word is wrong in the following sentence: Have I not gone to Tokyo, I would have helped you with your assignment.",
-], correctAnswers: [
-  "Have"
-], answers: [
-  "Have",
-  "gone",
-  "Tokyo",
-  "would",
-  "helped",
-  "assignment",
-]);
+FishingQuestion question = FishingQuestion(
+  questions: [
+    "What word is wrong in the following sentence: Have I not gone to Tokyo, I would have helped you with your assignment.",
+  ],
+  correctAnswers: [
+    "Have",
+  ],
+  answers: [
+    [
+      "Have",
+      "gone",
+      "Tokyo",
+      "would",
+      "helped",
+      "assignment",
+    ],
+  ],
+);
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -83,8 +89,8 @@ Future<void> main() async {
     await Flame.device.fullScreen();
 
     //// set the orientation of the phone
-    // await Flame.device.setLandscape();
-    await Flame.device.setPortrait();
+    await Flame.device.setLandscape();
+    // await Flame.device.setPortrait();
 
     AtozGame game = AtozGame(
       question: question,

@@ -193,16 +193,23 @@ class Level extends World with HasGameRef<AtozGame> {
 
     int dummyFishIndex = 0;
 
+    // only generate fishes until run out of dummy answers for that question
     if (spawnPointsLayer != null) {
       for (final spawnPoint in spawnPointsLayer.objects) {
-        // only generate until run out of dummy answers for that question
+        // if all questions are answered, break the loop and trigger game end
+        if (game.questionIndex == game.question.answers.length) {
+          game.triggerGameOver(false);
+          break;
+        }
         if (spawnPoint.class_ == 'Fish') {
-          if (dummyFishIndex == game.question.answers.length - 1) {
+          if (dummyFishIndex ==
+              game.question.answers[game.questionIndex].length - 1) {
             break;
           }
           final fish = Fish(
             fishType: FishType.red,
-            fishNameTag: game.question.answers[dummyFishIndex],
+            fishNameTag: game.question.answers[game.questionIndex]
+                [dummyFishIndex],
             position: Vector2(spawnPoint.x * scale, spawnPoint.y * scale),
             size: Vector2(tileSize * scale, tileSize * scale),
             worldWidth: level.width,

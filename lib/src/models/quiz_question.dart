@@ -178,5 +178,5 @@ class FishingQuestion extends QuizQuestion {
 
   final List<String> questions;
   final List<String> correctAnswers;
-  final List<String> answers;
+  final List<List<String>> answers;
 }

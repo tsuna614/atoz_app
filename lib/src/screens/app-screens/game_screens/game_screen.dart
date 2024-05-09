@@ -1,30 +1,41 @@
-// import 'package:atoz_app/game/atoz_game.dart';
-// import 'package:flame/flame.dart';
-// import 'package:flame/game.dart';
-// import 'package:flutter/material.dart';
+import 'package:atoz_app/game/atoz_game.dart';
+import 'package:atoz_app/src/models/quiz_question.dart';
+import 'package:atoz_app/src/providers/question_provider.dart';
+import 'package:flame/flame.dart';
+import 'package:flame/game.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-// class GameScreen extends StatelessWidget {
-//   const GameScreen({super.key});
+class GameScreen extends StatelessWidget {
+  final void Function(int score) switchScreen;
+  const GameScreen({
+    super.key,
+    required this.switchScreen,
+  });
 
-//   @override
-//   Widget build(BuildContext context) {
-//     Flame.device.fullScreen();
-//     Flame.device.setPortrait();
-//     AtozGame game = AtozGame(question: "Hello adventurer");
+  void _switchScreen(int score) {
+    switchScreen(score);
+  }
 
-//     double screenHeight = MediaQuery.of(context).size.height;
+  @override
+  Widget build(BuildContext context) {
+    Flame.device.fullScreen();
+    Flame.device.setLandscape();
 
-//     return Scaffold(
-//         body: SafeArea(
-//       child: Column(
-//         children: [
-//           Expanded(child: GameWidget(game: game)),
-//           Container(
-//             height: screenHeight * 0.4,
-//             color: Colors.black,
-//           )
-//         ],
-//       ),
-//     ));
-//   }
-// }
+    List<FishingQuestion> fishingQuests =
+        context.read<QuestionProvider>().fishingQuests;
+
+    AtozGame game = AtozGame(
+      question: fishingQuests[0],
+      totalTime: 90,
+      switchScreen: _switchScreen,
+    );
+
+    // double screenHeight = MediaQuery.of(context).size.height;
+
+    // return GameWidget(game: game);
+    return Scaffold(
+      body: GameWidget(game: game),
+    );
+  }
+}
