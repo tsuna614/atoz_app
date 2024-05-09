@@ -61,30 +61,20 @@ final theme2 = ThemeData(
 );
 
 // GAME STATE VARIABLES
-bool isGameStart = true;
+bool isGameStart = false;
 
 //
 FishingQuestion question = FishingQuestion(questions: [
-  "1 + 1 = ?",
-  "2 + 3 = ?",
-  "2 x 3 = ?",
-  "3 ^ 3 = ?"
+  "What word is wrong in the following sentence: Have I not gone to Tokyo, I would have helped you with your assignment.",
 ], correctAnswers: [
-  "2",
-  "5",
-  "6",
-  "9"
+  "Have"
 ], answers: [
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "10",
+  "Have",
+  "gone",
+  "Tokyo",
+  "would",
+  "helped",
+  "assignment",
 ]);
 
 Future<void> main() async {

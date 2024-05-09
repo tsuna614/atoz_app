@@ -11,6 +11,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:atoz_app/game/utils/check_collisions.dart';
+import 'package:flame_audio/flame_audio.dart';
 
 enum PlayerType {
   walk,
@@ -144,6 +145,10 @@ class Player extends GameObject with KeyboardHandler {
         game.score++;
         // reset the fishes
         game.level.spawningNewFishes();
+        // play audio
+        if (!game.isAudioMuted) {
+          FlameAudio.play('pickupCoin.wav', volume: game.volume);
+        }
       } else {
         // wrong answer
         add(
@@ -154,6 +159,10 @@ class Player extends GameObject with KeyboardHandler {
           ),
         );
         currentLife--;
+        // play audio
+        if (!game.isAudioMuted) {
+          FlameAudio.play('synth.wav', volume: game.volume);
+        }
       }
     }
     super.onCollision(intersectionPoints, other);

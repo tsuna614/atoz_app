@@ -10,6 +10,7 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 
 enum GameState { playing, paused, inDialogue }
@@ -65,6 +66,10 @@ class AtozGame extends FlameGame
     return const Color(0xFF000000);
   }
 
+  // AUDIO PROPERTIES
+  bool isAudioMuted = false;
+  double volume = 0.8;
+
   @override
   FutureOr<void> onLoad() async {
     // await return error when building android
@@ -84,6 +89,13 @@ class AtozGame extends FlameGame
     if (showJoysticks) {
       _addJoysticks();
     }
+
+    // clear all audio
+    FlameAudio.bgm.stop();
+
+    // play music
+    // FlameAudio.bgm.play('BlueBoyAdventure.wav', volume: volume);
+    // FlameAudio.play('BlueBoyAdventure.wav', volume: volume);
 
     return super.onLoad();
   }

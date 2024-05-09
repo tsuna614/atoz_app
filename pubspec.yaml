@@ -81,6 +81,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     # game assets
+    - assets/audio/
     - assets/tiles/
     - assets/images/Backgrounds/Tilesets/
     - assets/images/Actor/Characters/Boy/SpriteSheet.png
