@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:atoz_app/game/atoz_game.dart';
 import 'package:atoz_app/game/hud/HUD.dart';
 import 'package:atoz_app/game/objects/background.dart';
+import 'package:atoz_app/game/objects/bubble.dart';
 import 'package:atoz_app/game/objects/collision_block.dart';
 import 'package:atoz_app/game/objects/fish.dart';
 import 'package:atoz_app/game/objects/front_water_block.dart';
@@ -87,6 +88,15 @@ class Level extends World with HasGameRef<AtozGame> {
             add(game.oldMan);
             gameObjects.add(game.oldMan);
             break;
+          case 'Bubble':
+            final bubble = Bubble(
+              bubbleType: BubbleType.addTime,
+              position: Vector2(spawnPoint.x * scale, spawnPoint.y * scale),
+              size: Vector2(tileSize * scale / 2, tileSize * scale / 2),
+            );
+            add(bubble);
+            gameObjects.add(bubble);
+            break;
           default:
         }
       }
@@ -136,6 +146,7 @@ class Level extends World with HasGameRef<AtozGame> {
   void render(Canvas canvas) async {
     background.renderBackground(canvas);
     level.render(canvas);
+    background.renderOcean(canvas);
 
     final p1 = Offset(
         player.currentDirection == Direction.left

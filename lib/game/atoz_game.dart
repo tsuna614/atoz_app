@@ -55,6 +55,9 @@ class AtozGame extends FlameGame
 
   late Level level;
 
+  double worldHeight = 100000;
+  double worldWidth = 0;
+
   // INITIALIZING INPUTS
   KeyHandler keyHandler = KeyHandler();
   bool showJoysticks = false;
@@ -107,6 +110,11 @@ class AtozGame extends FlameGame
       tileSize: tileSize,
       scale: scale,
     );
+
+    Future.delayed(Duration(milliseconds: 500), () {
+      worldWidth = level.level.width;
+      worldHeight = level.level.height;
+    });
 
     // size.x and y is the size of the entire screen within SafeArea (which is in the main)
     cam = CameraComponent.withFixedResolution(

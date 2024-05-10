@@ -1,12 +1,14 @@
 import 'package:atoz_app/src/providers/user_provider.dart';
 
 import 'package:atoz_app/src/screens/app-screens/quiz-screens/quiz_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/stage_select_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/src/widgets/framework.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:dio/dio.dart';
 import 'package:provider/provider.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 final _firebase = FirebaseAuth.instance;
 final dio = Dio();
@@ -82,25 +84,12 @@ class _JourneyScreenState extends State<JourneyScreen> {
                         color: Theme.of(context).primaryColor,
                         thickness: 2,
                       ),
-                      GridView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: 10,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 5,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 20,
-                        ),
-                        itemBuilder: (context, index) {
-                          return GameNodeButton(
-                            index: index + 1,
-                            userProgress: currentUserProgress,
-                          );
-                        },
-                      ),
+                      // _buildStageSelectionGrid(context, 1, currentUserProgress)
+                      _buildChapterCard(context, "Greetings",
+                          "https://www.candacesmithetiquette.com/images/Friends_meeting_in_the_street.jpg"),
                     ],
                   ),
-                  SizedBox(height: 100),
+                  SizedBox(height: 50),
                   Column(
                     children: [
                       Align(
@@ -118,31 +107,18 @@ class _JourneyScreenState extends State<JourneyScreen> {
                         color: Theme.of(context).primaryColor,
                         thickness: 2,
                       ),
-                      GridView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: 10,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 5,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 20,
-                        ),
-                        itemBuilder: (context, index) {
-                          return GameNodeButton(
-                            index: index + 11,
-                            userProgress: currentUserProgress,
-                          );
-                        },
-                      ),
+                      // _buildStageSelectionGrid(context, 11, currentUserProgress)
+                      _buildChapterCard(context, "Travel",
+                          "https://www.westernunion.com/blog/wp-content/uploads/2016/06/Travel_Abroad_01.jpg"),
                     ],
                   ),
-                  SizedBox(height: 100),
+                  SizedBox(height: 50),
                   Column(
                     children: [
                       Align(
                         alignment: Alignment(-0.9, 0),
                         child: Text(
-                          'Chapter 3   -   SCHOOL',
+                          'Chapter 3   -   FOOD',
                           style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
@@ -154,25 +130,12 @@ class _JourneyScreenState extends State<JourneyScreen> {
                         color: Theme.of(context).primaryColor,
                         thickness: 2,
                       ),
-                      GridView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: 10,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 5,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 20,
-                        ),
-                        itemBuilder: (context, index) {
-                          return GameNodeButton(
-                            index: index + 21,
-                            userProgress: currentUserProgress,
-                          );
-                        },
-                      ),
+                      // _buildStageSelectionGrid(context, 21, currentUserProgress)
+                      _buildChapterCard(context, "Food",
+                          "https://images.unsplash.com/photo-1592861956120-e524fc739696?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cGVvcGxlJTIwZWF0aW5nfGVufDB8fDB8fHww")
                     ],
                   ),
-                  SizedBox(height: 100),
+                  SizedBox(height: 50),
                 ],
               ),
             ),
@@ -194,6 +157,53 @@ class _JourneyScreenState extends State<JourneyScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildStageSelectionGrid(
+      BuildContext context, int startingStage, int currentUserProgress) {
+    return GridView.builder(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: 10,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 5,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 20,
+      ),
+      itemBuilder: (context, index) {
+        return GameNodeButton(
+          index: index + startingStage,
+          userProgress: currentUserProgress,
+        );
+      },
+    );
+  }
+
+  Widget _buildChapterCard(
+      BuildContext context, String chapterName, String imageUrl) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      clipBehavior: Clip.hardEdge,
+      elevation: 2,
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => StageSelectScreen(chapterName: chapterName),
+            ),
+          );
+        },
+        child: FadeInImage(
+          height: 250,
+          width: double.infinity,
+          placeholder: MemoryImage(kTransparentImage),
+          image: NetworkImage(imageUrl),
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }
@@ -286,6 +296,9 @@ class GameNodeButton extends StatefulWidget {
 class _GameNodeButtonState extends State<GameNodeButton> {
   double _padding = 6;
 
+  double width = 80;
+  double height = 70;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -326,12 +339,12 @@ class _GameNodeButtonState extends State<GameNodeButton> {
                   ? Colors.blue
                   : Colors.grey,
           // color: Colors.blue,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.all(Radius.elliptical(width, height)),
         ),
         duration: Duration(milliseconds: 50),
         child: Container(
-          width: 70,
-          height: 70,
+          width: width,
+          height: height,
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(
@@ -342,7 +355,7 @@ class _GameNodeButtonState extends State<GameNodeButton> {
                       : Colors.grey,
               // color: Colors.blue,
             ),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.all(Radius.elliptical(width, height)),
           ),
           child: Center(
             child: FittedBox(

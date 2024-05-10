@@ -61,7 +61,7 @@ final theme2 = ThemeData(
 );
 
 // GAME STATE VARIABLES
-bool isGameStart = false;
+bool isGameStart = true;
 
 //
 FishingQuestion question = FishingQuestion(

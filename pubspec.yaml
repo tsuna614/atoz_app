@@ -56,6 +56,7 @@ dependencies:
   flame: ^1.15.0
   flame_audio: ^2.1.8
   flame_tiled: ^1.18.4
+  transparent_image: ^2.0.1
 
 dev_dependencies:
   flutter_test:
@@ -89,9 +90,10 @@ flutter:
     - assets/images/Actor/Characters/OldMan/SpriteSheet.png
     - assets/images/Actor/Characters/RedNinja/SpriteSheet.png
     - assets/images/Actor/Animals/Fish/
-    - assets/images/Backgrounds/background.png
+    - assets/images/Backgrounds/
     - assets/images/HUD/
     - assets/images/HUD/Dialog/DialogInfo.png
+    - assets/images/Items/
     # app assets
     - assets/images/app/logo2.png
     - assets/images/app/profile.jpg

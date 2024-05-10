@@ -26,7 +26,7 @@ class GameScreen extends StatelessWidget {
         context.read<QuestionProvider>().fishingQuests;
 
     AtozGame game = AtozGame(
-      question: fishingQuests[0],
+      question: fishingQuests[1],
       totalTime: 90,
       switchScreen: _switchScreen,
     );

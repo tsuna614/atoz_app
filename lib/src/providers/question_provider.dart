@@ -546,5 +546,157 @@ class QuestionProvider extends ChangeNotifier {
         ],
       ],
     ),
+    FishingQuestion(
+      questions: [
+        "What is another word for 'suitcase'?",
+        "What is the opposite of 'depart'?",
+        "What is the term for a one-way journey?",
+      ],
+      correctAnswers: [
+        "Luggage",
+        "Arrive",
+        "One-way",
+      ],
+      answers: [
+        [
+          "Luggage",
+          "Baggage",
+          "Backpack",
+          "Briefcase",
+          "Trunk",
+          "Carrier",
+        ],
+        [
+          "Arrive",
+          "Arrival",
+          "Reach",
+          "Come",
+          "Stay",
+          "Stop",
+        ],
+        [
+          "One-way",
+          "Round-trip",
+          "Single",
+          "Return",
+          "Direct",
+          "Non-stop",
+        ],
+      ],
+    ),
+    FishingQuestion(
+      questions: [
+        "What is the term for the process of entering a country?",
+        "What do you call a small bag used for carrying personal belongings?",
+        "What is the opposite of 'take off'?",
+      ],
+      correctAnswers: [
+        "Immigration",
+        "Purse",
+        "Land",
+      ],
+      answers: [
+        [
+          "Immigration",
+          "Emigration",
+          "Customs",
+          "Entry",
+          "Border control",
+          "Passport control",
+        ],
+        [
+          "Purse",
+          "Wallet",
+          "Satchel",
+          "Clutch",
+          "Handbag",
+          "Tote",
+        ],
+        [
+          "Land",
+          "Take off",
+          "Depart",
+          "Fly",
+          "Ascend",
+          "Launch",
+        ],
+      ],
+    ),
+    FishingQuestion(
+      questions: [
+        "What do you call a person who travels to different countries for pleasure?",
+        "What is the term for the area in an airport where passengers wait before boarding their flight?",
+        "What is the opposite of 'land'?",
+      ],
+      correctAnswers: [
+        "Tourist",
+        "Terminal",
+        "Take off",
+      ],
+      answers: [
+        [
+          "Tourist",
+          "Traveler",
+          "Explorer",
+          "Vacationer",
+          "Globetrotter",
+          "Backpacker",
+        ],
+        [
+          "Terminal",
+          "Gate",
+          "Concourse",
+          "Lounge",
+          "Terminal building",
+          "Waiting area",
+        ],
+        [
+          "Take off",
+          "Land",
+          "Arrive",
+          "Touch down",
+          "Descend",
+          "Arrival",
+        ],
+      ],
+    ),
+    FishingQuestion(
+      questions: [
+        "What is the term for a document that allows a person to enter or leave a country?",
+        "What do you call the condition of having no money while traveling?",
+        "What is the opposite of 'departure'?",
+      ],
+      correctAnswers: [
+        "Visa",
+        "Broke",
+        "Arrival",
+      ],
+      answers: [
+        [
+          "Visa",
+          "Passport",
+          "ID card",
+          "Entry permit",
+          "Immigration document",
+          "Travel visa",
+        ],
+        [
+          "Broke",
+          "Bankrupt",
+          "Penniless",
+          "Financially challenged",
+          "Out of funds",
+          "Depleted",
+        ],
+        [
+          "Arrival",
+          "Departure",
+          "Leaving",
+          "Going",
+          "Taking off",
+          "Embarkation",
+        ],
+      ],
+    ),
   ];
 }
