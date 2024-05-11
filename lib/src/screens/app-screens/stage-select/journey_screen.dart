@@ -1,7 +1,7 @@
 import 'package:atoz_app/src/providers/user_provider.dart';
 
-import 'package:atoz_app/src/screens/app-screens/quiz-screens/quiz_screen.dart';
-import 'package:atoz_app/src/screens/app-screens/stage_select_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/quiz/quiz_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/stage-select/stage_select_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/src/widgets/framework.dart';
@@ -30,6 +30,34 @@ class _JourneyScreenState extends State<JourneyScreen> {
   //   });
   // }
 
+  void _pushToStageSelectScreen(String chapterName) {
+    // Navigator.of(context).push(
+    //   MaterialPageRoute(
+    //     builder: (context) => StageSelectScreen(chapterName: chapterName),
+    //   ),
+    // );
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return StageSelectScreen(chapterName: chapterName);
+        },
+        transitionDuration: Duration(milliseconds: 500),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          var begin = Offset(1.0, 0.0);
+          var end = Offset.zero;
+          var curve = Curves.easeInOut;
+          var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          var offsetAnimation = animation.drive(tween);
+          return SlideTransition(
+            position: offsetAnimation,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -39,7 +67,9 @@ class _JourneyScreenState extends State<JourneyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int currentUserProgress = context.watch<UserProvider>().currentUserProgress;
+    // int currentUserProgress = context.watch<UserProvider>().currentUserProgress;
+
+    // double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
       // extendBodyBehindAppBar: true,
@@ -190,19 +220,74 @@ class _JourneyScreenState extends State<JourneyScreen> {
       clipBehavior: Clip.hardEdge,
       elevation: 2,
       child: InkWell(
-        onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => StageSelectScreen(chapterName: chapterName),
+        onTap: () => _pushToStageSelectScreen(chapterName),
+        child: Stack(
+          children: [
+            FadeInImage(
+              height: 250,
+              width: double.infinity,
+              placeholder: MemoryImage(kTransparentImage),
+              image: NetworkImage(imageUrl),
+              fit: BoxFit.cover,
             ),
-          );
-        },
-        child: FadeInImage(
-          height: 250,
-          width: double.infinity,
-          placeholder: MemoryImage(kTransparentImage),
-          image: NetworkImage(imageUrl),
-          fit: BoxFit.cover,
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.black.withOpacity(0.5),
+                      Colors.black.withOpacity(0.5),
+                    ],
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: const [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.star,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          "14/30",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Stage: ",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                        ),
+                        Text(
+                          "12",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

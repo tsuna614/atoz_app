@@ -1,8 +1,8 @@
 // import 'package:atoz_app/game/pixel_adventure.dart';
 // import 'package:atoz_app/game/atoz_game.dart';
 // import 'package:flame/game.dart';
-import 'package:atoz_app/src/screens/app-screens/game_screens/game_over_screen.dart';
-import 'package:atoz_app/src/screens/app-screens/game_screens/game_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/game/game_over_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/game/game_screen.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatefulWidget {

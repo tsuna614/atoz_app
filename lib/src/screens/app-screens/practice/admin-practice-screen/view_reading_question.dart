@@ -1,4 +1,4 @@
-import 'package:atoz_app/src/screens/app-screens/practice-screens/admin-practice-screen/add_reading_question_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/practice/admin-practice-screen/add_reading_question_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';

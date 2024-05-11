@@ -1,5 +1,5 @@
 import 'package:atoz_app/src/providers/user_provider.dart';
-import 'package:atoz_app/src/screens/app-screens/profile-screen/spectate_profile.dart';
+import 'package:atoz_app/src/screens/app-screens/profile/spectate_profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';

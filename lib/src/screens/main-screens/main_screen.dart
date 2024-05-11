@@ -1,8 +1,8 @@
 import 'package:atoz_app/src/providers/user_provider.dart';
-import 'package:atoz_app/src/screens/app-screens/leaderboard-screen/leaderboard_screen.dart';
-import 'package:atoz_app/src/screens/app-screens/profile-screen/profile_screen.dart';
-import 'package:atoz_app/src/screens/app-screens/settings-screen/settings_screen.dart';
-import 'package:atoz_app/src/screens/app-screens/social-screens/social_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/leaderboard/leaderboard_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/profile/profile_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/settings/settings_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/social/social_screen.dart';
 import 'package:atoz_app/src/screens/authentication-screens/user_setup_screen.dart';
 import 'package:atoz_app/src/screens/main-screens/drawer_screen.dart';
 import 'package:atoz_app/src/screens/main-screens/loading_screen.dart';

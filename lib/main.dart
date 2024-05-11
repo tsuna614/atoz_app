@@ -2,6 +2,7 @@ import 'package:atoz_app/game/atoz_game.dart';
 import 'package:atoz_app/src/models/quiz_question.dart';
 import 'package:atoz_app/src/providers/question_provider.dart';
 import 'package:atoz_app/src/providers/user_provider.dart';
+import 'package:atoz_app/src/screens/main-screens/home_tabs_screen.dart';
 // import 'package:atoz_app/src/screens/app-screens/game_screens/game_screen.dart';
 // import 'package:atoz_app/src/screens/app-screens/profile-screen/profile_screen.dart';
 import 'package:atoz_app/src/screens/main-screens/loading_screen.dart';
@@ -61,12 +62,12 @@ final theme2 = ThemeData(
 );
 
 // GAME STATE VARIABLES
-bool isGameStart = true;
+bool isGameStart = false;
 
 //
 FishingQuestion question = FishingQuestion(
   questions: [
-    "What word is wrong in the following sentence: Have I not gone to Tokyo, I would have helped you with your assignment.",
+    "What word is wrong in the following sentence? \n \"Have I not gone to Tokyo, I would have helped you with your assignment.\"",
   ],
   correctAnswers: [
     "Have",
@@ -140,19 +141,19 @@ class MyApp extends StatelessWidget {
         // ),
         // theme: ThemeData(useMaterial3: true),
         theme: theme,
-        home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const LoadingScreen();
-            }
-            if (snapshot.hasData) {
-              return const MainScreen();
-            }
-            return const LoginScreen();
-          },
-        ),
-        // home: TestScreen(),
+        // home: StreamBuilder(
+        //   stream: FirebaseAuth.instance.authStateChanges(),
+        //   builder: (context, snapshot) {
+        //     if (snapshot.connectionState == ConnectionState.waiting) {
+        //       return const LoadingScreen();
+        //     }
+        //     if (snapshot.hasData) {
+        //       return const MainScreen();
+        //     }
+        //     return const LoginScreen();
+        //   },
+        // ),
+        home: TabsScreen(),
         // home: GameScreen(),
         // home: ProfileScreen(
         //   userId: FirebaseAuth.instance.currentUser!.uid,

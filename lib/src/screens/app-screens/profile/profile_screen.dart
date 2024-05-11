@@ -1,6 +1,6 @@
 import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:atoz_app/src/screens/app-screens/chart/bar_chart.dart';
-import 'package:atoz_app/src/screens/app-screens/profile-screen/change_profile_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/profile/change_profile_screen.dart';
 import 'package:atoz_app/src/utils/social_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';

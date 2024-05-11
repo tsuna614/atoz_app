@@ -1,6 +1,6 @@
-import 'package:atoz_app/src/screens/app-screens/journey_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/stage-select/journey_screen.dart';
 // import 'package:atoz_app/src/screens/app-screens/leaderboard-screen/leaderboard_screen.dart';
-import 'package:atoz_app/src/screens/app-screens/practice-screens/practice_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/practice/practice_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';

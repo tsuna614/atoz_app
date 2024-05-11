@@ -1,5 +1,5 @@
 import 'package:atoz_app/src/providers/user_provider.dart';
-import 'package:atoz_app/src/screens/app-screens/social-screens/chat-screen/message_bubble.dart';
+import 'package:atoz_app/src/screens/app-screens/social/chat-screen/message_bubble.dart';
 import 'package:atoz_app/src/utils/custom_clip_path.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
