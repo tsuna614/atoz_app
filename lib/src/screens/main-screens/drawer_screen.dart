@@ -34,77 +34,81 @@ class _DrawerScreenState extends State<DrawerScreen> {
         ),
         child: Padding(
           padding: EdgeInsets.only(top: 50, left: 40, bottom: 70),
-          child: Column(
-            // mainAxisAlignment: MainAxisAlignment.spaceAround,
-            // mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: _buildTabsColumn(context),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTabsColumn(BuildContext context) {
+    return Column(
+      // mainAxisAlignment: MainAxisAlignment.spaceAround,
+      // mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(
+          height: 20,
+        ),
+        Text(
+          'AToz',
+          style: TextStyle(
+            fontFamily: 'Poppins',
+            color: Colors.white,
+            fontSize: 40,
+            letterSpacing: 10,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(
+          height: 100,
+        ),
+        Column(
+          children: [
+            buildAnimatedButton(context, 0),
+            SizedBox(
+              height: 40,
+            ),
+            buildAnimatedButton(context, 1),
+            SizedBox(
+              height: 40,
+            ),
+            buildAnimatedButton(context, 2),
+            SizedBox(
+              height: 40,
+            ),
+            buildAnimatedButton(context, 3),
+            SizedBox(
+              height: 40,
+            ),
+            buildAnimatedButton(context, 4),
+          ],
+        ),
+        Expanded(child: Container()),
+        GestureDetector(
+          onTap: () {
+            _dialogBuilder(context);
+          },
+          child: Row(
             children: <Widget>[
+              Icon(
+                Icons.logout,
+                color: Colors.white.withOpacity(0.8),
+              ),
               SizedBox(
-                height: 20,
+                width: 10,
               ),
               Text(
-                'AToz',
+                'Log out',
                 style: TextStyle(
-                  fontFamily: 'Poppins',
-                  color: Colors.white,
-                  fontSize: 40,
-                  letterSpacing: 10,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(
-                height: 100,
-              ),
-              Column(
-                children: [
-                  buildAnimatedButton(context, 0),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  buildAnimatedButton(context, 1),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  buildAnimatedButton(context, 2),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  buildAnimatedButton(context, 3),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  buildAnimatedButton(context, 4),
-                ],
-              ),
-              Expanded(child: Container()),
-              GestureDetector(
-                onTap: () {
-                  _dialogBuilder(context);
-                },
-                child: Row(
-                  children: <Widget>[
-                    Icon(
-                      Icons.logout,
-                      color: Colors.white.withOpacity(0.8),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      'Log out',
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.8),
-                        fontSize: 20,
-                        letterSpacing: 4,
-                      ),
-                    )
-                  ],
+                  color: Colors.white.withOpacity(0.8),
+                  fontSize: 20,
+                  letterSpacing: 4,
                 ),
               )
             ],
           ),
-        ),
-      ),
+        )
+      ],
     );
   }
 

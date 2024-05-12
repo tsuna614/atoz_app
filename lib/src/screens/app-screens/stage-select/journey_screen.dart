@@ -30,7 +30,7 @@ class _JourneyScreenState extends State<JourneyScreen> {
   //   });
   // }
 
-  void _pushToStageSelectScreen(String chapterName) {
+  void _pushToStageSelectScreen(int index, String chapterName) {
     // Navigator.of(context).push(
     //   MaterialPageRoute(
     //     builder: (context) => StageSelectScreen(chapterName: chapterName),
@@ -39,7 +39,8 @@ class _JourneyScreenState extends State<JourneyScreen> {
     Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) {
-          return StageSelectScreen(chapterName: chapterName);
+          return StageSelectScreen(
+              chapterIndex: index, chapterName: chapterName);
         },
         transitionDuration: Duration(milliseconds: 500),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -115,7 +116,7 @@ class _JourneyScreenState extends State<JourneyScreen> {
                         thickness: 2,
                       ),
                       // _buildStageSelectionGrid(context, 1, currentUserProgress)
-                      _buildChapterCard(context, "Greetings",
+                      _buildChapterCard(context, 0, "Greetings",
                           "https://www.candacesmithetiquette.com/images/Friends_meeting_in_the_street.jpg"),
                     ],
                   ),
@@ -138,7 +139,7 @@ class _JourneyScreenState extends State<JourneyScreen> {
                         thickness: 2,
                       ),
                       // _buildStageSelectionGrid(context, 11, currentUserProgress)
-                      _buildChapterCard(context, "Travel",
+                      _buildChapterCard(context, 1, "Travel",
                           "https://www.westernunion.com/blog/wp-content/uploads/2016/06/Travel_Abroad_01.jpg"),
                     ],
                   ),
@@ -161,7 +162,7 @@ class _JourneyScreenState extends State<JourneyScreen> {
                         thickness: 2,
                       ),
                       // _buildStageSelectionGrid(context, 21, currentUserProgress)
-                      _buildChapterCard(context, "Food",
+                      _buildChapterCard(context, 2, "Food",
                           "https://images.unsplash.com/photo-1592861956120-e524fc739696?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cGVvcGxlJTIwZWF0aW5nfGVufDB8fDB8fHww")
                     ],
                   ),
@@ -212,7 +213,7 @@ class _JourneyScreenState extends State<JourneyScreen> {
   }
 
   Widget _buildChapterCard(
-      BuildContext context, String chapterName, String imageUrl) {
+      BuildContext context, int index, String chapterName, String imageUrl) {
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
@@ -220,7 +221,7 @@ class _JourneyScreenState extends State<JourneyScreen> {
       clipBehavior: Clip.hardEdge,
       elevation: 2,
       child: InkWell(
-        onTap: () => _pushToStageSelectScreen(chapterName),
+        onTap: () => _pushToStageSelectScreen(index, chapterName),
         child: Stack(
           children: [
             FadeInImage(

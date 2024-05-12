@@ -1,5 +1,6 @@
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class GameOverScreen extends StatefulWidget {
   final int score;
@@ -25,7 +26,7 @@ class _GameOverScreenState extends State<GameOverScreen> {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                Flame.device.setPortrait();
+                // Flame.device.setPortrait();
               },
               child: const Text('Back to Main Screen'),
             ),

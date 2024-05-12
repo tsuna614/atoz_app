@@ -8,6 +8,7 @@ import 'package:atoz_app/game/utils/keyboard_handler.dart';
 import 'package:atoz_app/src/models/quiz_question.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
+import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
 import 'package:flame_audio/flame_audio.dart';
@@ -75,6 +76,8 @@ class AtozGame extends FlameGame
 
   @override
   FutureOr<void> onLoad() async {
+    Flame.device.fullScreen();
+    Flame.device.setLandscape();
     // await return error when building android
     // maybe because of naming folder 'Current-Projects' ?
     await images.loadAllImages();
@@ -274,14 +277,20 @@ class AtozGame extends FlameGame
     timer.Timer.periodic(Duration(seconds: 1), (timer) {
       if (timeLeft == 0) {
         timer.cancel();
-        switchScreen(0);
+        triggerGameOver(true);
       } else {
-        timeLeft--;
+        // This is a BAD way to handle pausing timer because player can exploit it by skipping a second
+        // but it will do for now
+        if (gameState != GameState.inDialogue &&
+            gameState != GameState.paused) {
+          timeLeft--;
+        }
       }
     });
   }
 
   void triggerGameOver(bool isGameLost) {
+    Flame.device.setPortrait();
     if (isGameLost) {
       switchScreen(0);
     } else {

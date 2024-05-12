@@ -14,20 +14,23 @@ class GameScreen extends StatelessWidget {
   });
 
   void _switchScreen(int score) {
+    // // set portrait when returns to other screens
+    // Flame.device.setPortrait();
     switchScreen(score);
   }
 
   @override
   Widget build(BuildContext context) {
-    Flame.device.fullScreen();
-    Flame.device.setLandscape();
+    // // // set landscape when entering game screen
+    // Flame.device.fullScreen();
+    // Flame.device.setLandscape();
 
     List<FishingQuestion> fishingQuests =
         context.read<QuestionProvider>().fishingQuests;
 
     AtozGame game = AtozGame(
       question: fishingQuests[1],
-      totalTime: 90,
+      totalTime: 5,
       switchScreen: _switchScreen,
     );
 
