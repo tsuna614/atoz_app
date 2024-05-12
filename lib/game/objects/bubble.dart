@@ -26,8 +26,7 @@ class Bubble extends GameObject {
   double maxVy = 50; // maximum vertical velocity before changing direction
   String currentDirection = "up"; // vertical direction ("up" or "down")
 
-  @override
-  void update(double dt) {
+  void updateBubble(double dt) {
     _applyVerticalDirectionChange();
     _updatePosition(dt);
     _resetPosition();

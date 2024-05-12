@@ -1,6 +1,4 @@
-import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class GameOverScreen extends StatefulWidget {
   final int score;

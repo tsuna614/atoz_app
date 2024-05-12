@@ -1,5 +1,3 @@
-import 'package:atoz_app/src/providers/user_provider.dart';
-
 import 'package:atoz_app/src/screens/app-screens/quiz/quiz_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/stage-select/stage_select_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,7 +5,6 @@ import 'package:flutter/material.dart';
 // import 'package:flutter/src/widgets/framework.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:dio/dio.dart';
-import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 final _firebase = FirebaseAuth.instance;

@@ -2,7 +2,6 @@ import 'package:atoz_app/game/atoz_game.dart';
 import 'package:atoz_app/src/models/quiz_question.dart';
 import 'package:atoz_app/src/providers/question_provider.dart';
 import 'package:atoz_app/src/providers/user_provider.dart';
-import 'package:atoz_app/src/screens/main-screens/home_tabs_screen.dart';
 // import 'package:atoz_app/src/screens/app-screens/game_screens/game_screen.dart';
 // import 'package:atoz_app/src/screens/app-screens/profile-screen/profile_screen.dart';
 import 'package:atoz_app/src/screens/main-screens/loading_screen.dart';
@@ -87,9 +86,8 @@ FishingQuestion question = FishingQuestion(
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (isGameStart) {
-    await Flame.device.fullScreen();
-
     //// set the orientation of the phone
+    await Flame.device.fullScreen();
     await Flame.device.setLandscape();
     // await Flame.device.setPortrait();
 
@@ -97,6 +95,7 @@ Future<void> main() async {
       question: question,
       totalTime: 90,
       switchScreen: (int score) {},
+      setPauseGame: () {},
     );
     runApp(GameWidget(game: game));
     // runApp(GameWidget(game: game));

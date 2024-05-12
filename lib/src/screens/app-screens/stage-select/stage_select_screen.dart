@@ -30,7 +30,7 @@ class _StageSelectScreenState extends State<StageSelectScreen>
     // Initialize the AnimationController
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 500),
+      duration: Duration(milliseconds: 100),
     );
 
     // Define the Animation
@@ -121,8 +121,9 @@ class _StageSelectScreenState extends State<StageSelectScreen>
                   return Positioned(
                     left: _overlayChildPositionX - 125,
                     top: _overlayChildPositionY + 20,
-                    child: FadeTransition(
-                      opacity: _animation as Animation<double>,
+                    child: ScaleTransition(
+                      scale: _animation as Animation<double>,
+                      // opacity: _animation as Animation<double>,
                       child: Card(
                         child: Container(
                           width: 250,

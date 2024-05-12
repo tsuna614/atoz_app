@@ -70,7 +70,7 @@ class KeyHandler extends Component with HasGameRef<AtozGame>, KeyboardHandler {
 
     if (event is RawKeyDownEvent) {
       if (keysPressed.contains(LogicalKeyboardKey.keyP)) {
-        game.toggleGameState();
+        game.pauseGame();
       }
       if (keysPressed.contains(LogicalKeyboardKey.keyT)) {
         game.toggleDebugMode();

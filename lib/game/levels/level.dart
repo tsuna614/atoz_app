@@ -135,6 +135,8 @@ class Level extends World with HasGameRef<AtozGame> {
     for (final object in gameObjects) {
       if (object is Fish) {
         object.updateObject(dt);
+      } else if (object is Bubble) {
+        object.updateBubble(dt);
       }
     }
 
@@ -148,13 +150,13 @@ class Level extends World with HasGameRef<AtozGame> {
     level.render(canvas);
     background.renderOcean(canvas);
 
+    // rendering the fishing line
     final p1 = Offset(
         player.currentDirection == Direction.left
             ? player.position.x + 2
             : player.position.x + player.width - 2,
         player.position.y + 8);
     final p2 = Offset(hook.position.x + hook.width / 2, hook.position.y);
-
     canvas.drawLine(
       p1,
       p2,
@@ -162,6 +164,11 @@ class Level extends World with HasGameRef<AtozGame> {
         ..color = Colors.white // Set line color to white
         ..strokeWidth = 1.0,
     );
+
+    // // drawing pause screen
+    // if (game.gameState == GameState.paused) {
+    //   _renderPausedScreen(canvas);
+    // }
 
     super.render(canvas);
   }

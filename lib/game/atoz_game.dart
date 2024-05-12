@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:async' as timer;
+import 'package:atoz_app/game/hud/pause_button.dart';
 import 'package:atoz_app/game/levels/level.dart';
 import 'package:atoz_app/game/objects/hook.dart';
 import 'package:atoz_app/game/objects/oldman.dart';
@@ -13,6 +14,7 @@ import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 enum GameState { playing, paused, inDialogue }
 
@@ -21,10 +23,12 @@ class AtozGame extends FlameGame
   final FishingQuestion question;
   final int totalTime;
   final Function(int score) switchScreen;
+  final Function setPauseGame;
   AtozGame({
     required this.question,
     required this.totalTime,
     required this.switchScreen,
+    required this.setPauseGame,
   });
 
   // INITIALIZING GAME
@@ -61,7 +65,7 @@ class AtozGame extends FlameGame
 
   // INITIALIZING INPUTS
   KeyHandler keyHandler = KeyHandler();
-  bool showJoysticks = false;
+  bool showJoysticks = true;
   JoystickDirection lastDirection = JoystickDirection.idle;
 
   @override
@@ -76,8 +80,10 @@ class AtozGame extends FlameGame
 
   @override
   FutureOr<void> onLoad() async {
-    Flame.device.fullScreen();
-    Flame.device.setLandscape();
+    await Flame.device.fullScreen();
+    await Flame.device.setLandscape();
+    // await Flame.device.setPortrait();
+
     // await return error when building android
     // maybe because of naming folder 'Current-Projects' ?
     await images.loadAllImages();
@@ -134,6 +140,11 @@ class AtozGame extends FlameGame
 
     cam.priority =
         0; // set cam priority = 0 so the joystick is in front of the whole screen
+
+    add(PauseButton(
+      position: Vector2(size.x - 50 - 30, 15),
+      size: Vector2(50, 50),
+    ));
   }
 
   @override
@@ -159,7 +170,7 @@ class AtozGame extends FlameGame
     );
     joystickRight = JoystickComponent(
       priority: 1000,
-      knob: CircleComponent(radius: 50, paint: BasicPalette.white.paint()),
+      knob: CircleComponent(radius: 30, paint: BasicPalette.white.paint()),
       background: CircleComponent(
           radius: 60, paint: BasicPalette.black.withAlpha(100).paint()),
       margin: const EdgeInsets.only(bottom: 40, right: 60),
@@ -191,79 +202,92 @@ class AtozGame extends FlameGame
 
     // check for joystick right clockwise and counter-clockwise movement
     switch (joystickRight.direction) {
-      case JoystickDirection.up:
-        if (lastDirection == JoystickDirection.upRight) {
-          player.hookLength += hookSpeed;
-        } else if (lastDirection == JoystickDirection.upLeft) {
-          if (player.hookLength > 0) player.hookLength -= hookSpeed;
-        }
-        lastDirection = JoystickDirection.up;
-        break;
-      case JoystickDirection.upRight:
-        if (lastDirection == JoystickDirection.right) {
-          player.hookLength += hookSpeed;
-        } else if (lastDirection == JoystickDirection.up) {
-          if (player.hookLength > 0) player.hookLength -= hookSpeed;
-        }
-        lastDirection = JoystickDirection.upRight;
-        break;
-      case JoystickDirection.upLeft:
-        if (lastDirection == JoystickDirection.up) {
-          player.hookLength += hookSpeed;
-        } else if (lastDirection == JoystickDirection.left) {
-          if (player.hookLength > 0) player.hookLength -= hookSpeed;
-        }
-        lastDirection = JoystickDirection.upLeft;
-        break;
-      case JoystickDirection.left:
-        if (lastDirection == JoystickDirection.upLeft) {
-          player.hookLength += hookSpeed;
-        } else if (lastDirection == JoystickDirection.downLeft) {
-          if (player.hookLength > 0) player.hookLength -= hookSpeed;
-        }
-        lastDirection = JoystickDirection.left;
-        break;
-      case JoystickDirection.right:
-        if (lastDirection == JoystickDirection.downRight) {
-          player.hookLength += hookSpeed;
-        } else if (lastDirection == JoystickDirection.upRight) {
-          if (player.hookLength > 0) player.hookLength -= hookSpeed;
-        }
-        lastDirection = JoystickDirection.right;
-        break;
+      // case JoystickDirection.up:
+      //   if (lastDirection == JoystickDirection.upRight) {
+      //     player.hookLength += hookSpeed;
+      //   } else if (lastDirection == JoystickDirection.upLeft) {
+      //     if (player.hookLength > 0) player.hookLength -= hookSpeed;
+      //   }
+      //   lastDirection = JoystickDirection.up;
+      //   break;
+      // case JoystickDirection.upRight:
+      //   if (lastDirection == JoystickDirection.right) {
+      //     player.hookLength += hookSpeed;
+      //   } else if (lastDirection == JoystickDirection.up) {
+      //     if (player.hookLength > 0) player.hookLength -= hookSpeed;
+      //   }
+      //   lastDirection = JoystickDirection.upRight;
+      //   break;
+      // case JoystickDirection.upLeft:
+      //   if (lastDirection == JoystickDirection.up) {
+      //     player.hookLength += hookSpeed;
+      //   } else if (lastDirection == JoystickDirection.left) {
+      //     if (player.hookLength > 0) player.hookLength -= hookSpeed;
+      //   }
+      //   lastDirection = JoystickDirection.upLeft;
+      //   break;
+      // case JoystickDirection.left:
+      //   if (lastDirection == JoystickDirection.upLeft) {
+      //     player.hookLength += hookSpeed;
+      //   } else if (lastDirection == JoystickDirection.downLeft) {
+      //     if (player.hookLength > 0) player.hookLength -= hookSpeed;
+      //   }
+      //   lastDirection = JoystickDirection.left;
+      //   break;
+      // case JoystickDirection.right:
+      //   if (lastDirection == JoystickDirection.downRight) {
+      //     player.hookLength += hookSpeed;
+      //   } else if (lastDirection == JoystickDirection.upRight) {
+      //     if (player.hookLength > 0) player.hookLength -= hookSpeed;
+      //   }
+      //   lastDirection = JoystickDirection.right;
+      //   break;
+      // case JoystickDirection.down:
+      //   if (lastDirection == JoystickDirection.downLeft) {
+      //     player.hookLength += hookSpeed;
+      //   } else if (lastDirection == JoystickDirection.downRight) {
+      //     if (player.hookLength > 0) player.hookLength -= hookSpeed;
+      //   }
+      //   lastDirection = JoystickDirection.down;
+      //   break;
+      // case JoystickDirection.downRight:
+      //   if (lastDirection == JoystickDirection.down) {
+      //     player.hookLength += hookSpeed;
+      //   } else if (lastDirection == JoystickDirection.right) {
+      //     if (player.hookLength > 0) player.hookLength -= hookSpeed;
+      //   }
+      //   lastDirection = JoystickDirection.downRight;
+      //   break;
+      // case JoystickDirection.downLeft:
+      //   if (lastDirection == JoystickDirection.left) {
+      //     player.hookLength += hookSpeed;
+      //   } else if (lastDirection == JoystickDirection.down) {
+      //     if (player.hookLength > 0) player.hookLength -= hookSpeed;
+      //   }
+      //   lastDirection = JoystickDirection.downLeft;
+      //   break;
+      // default:
+      //   lastDirection = JoystickDirection.idle;
+      //   break;
       case JoystickDirection.down:
-        if (lastDirection == JoystickDirection.downLeft) {
-          player.hookLength += hookSpeed;
-        } else if (lastDirection == JoystickDirection.downRight) {
-          if (player.hookLength > 0) player.hookLength -= hookSpeed;
-        }
-        lastDirection = JoystickDirection.down;
+        keyHandler.isJPressed = true;
+        keyHandler.isKPressed = false;
         break;
-      case JoystickDirection.downRight:
-        if (lastDirection == JoystickDirection.down) {
-          player.hookLength += hookSpeed;
-        } else if (lastDirection == JoystickDirection.right) {
-          if (player.hookLength > 0) player.hookLength -= hookSpeed;
-        }
-        lastDirection = JoystickDirection.downRight;
-        break;
-      case JoystickDirection.downLeft:
-        if (lastDirection == JoystickDirection.left) {
-          player.hookLength += hookSpeed;
-        } else if (lastDirection == JoystickDirection.down) {
-          if (player.hookLength > 0) player.hookLength -= hookSpeed;
-        }
-        lastDirection = JoystickDirection.downLeft;
+      case JoystickDirection.up:
+        keyHandler.isKPressed = true;
+        keyHandler.isJPressed = false;
         break;
       default:
-        lastDirection = JoystickDirection.idle;
+        keyHandler.isJPressed = false;
+        keyHandler.isKPressed = false;
         break;
     }
   }
 
-  void toggleGameState() {
+  void pauseGame() {
     if (gameState == GameState.playing) {
       gameState = GameState.paused;
+      setPauseGame();
     } else if (gameState == GameState.paused) {
       gameState = GameState.playing;
     }
@@ -289,8 +313,8 @@ class AtozGame extends FlameGame
     });
   }
 
-  void triggerGameOver(bool isGameLost) {
-    Flame.device.setPortrait();
+  void triggerGameOver(bool isGameLost) async {
+    await Flame.device.setPortrait();
     if (isGameLost) {
       switchScreen(0);
     } else {

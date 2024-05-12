@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:atoz_app/game/hud/text_popup.dart';
-import 'package:atoz_app/game/levels/level.dart';
 import 'package:atoz_app/game/objects/collision_block.dart';
 import 'package:atoz_app/game/objects/fish.dart';
 import 'package:atoz_app/game/objects/game_object.dart';
