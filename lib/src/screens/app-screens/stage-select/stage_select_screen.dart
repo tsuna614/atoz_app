@@ -1,5 +1,8 @@
+import 'package:atoz_app/src/screens/app-screens/game/game_over_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/game/game_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz/quiz_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class StageSelectScreen extends StatefulWidget {
   final int chapterIndex;
@@ -117,70 +120,70 @@ class _StageSelectScreenState extends State<StageSelectScreen>
               padding: const EdgeInsets.only(top: 0.0),
               child: OverlayPortal(
                 controller: _overlayController,
-                overlayChildBuilder: ((context) {
-                  return Positioned(
-                    left: _overlayChildPositionX - 125,
-                    top: _overlayChildPositionY + 20,
-                    child: ScaleTransition(
-                      scale: _animation as Animation<double>,
-                      // opacity: _animation as Animation<double>,
-                      child: Card(
-                        child: Container(
-                          width: 250,
-                          // height: 100,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    top: 8, left: 16, right: 16),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Icon(
-                                      Icons.star,
-                                      size: 50,
-                                      color: Colors.yellow.shade600,
-                                    ),
-                                    Icon(
-                                      Icons.star,
-                                      size: 50,
-                                      color: Colors.yellow.shade600,
-                                    ),
-                                    Icon(
-                                      Icons.star,
-                                      size: 50,
-                                      color: Colors.black.withOpacity(0.4),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              _buildStageDetails(context),
-                              Padding(
-                                padding: EdgeInsets.all(16),
-                                child: AnimatedButton1(
-                                  buttonText: "Start level",
-                                  height: 40,
-                                  onPressed: () {
-                                    _pushToLevel();
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                }),
+                overlayChildBuilder: (context) => _buildOverlayChild(context),
                 child: _buildNodeButtonColumn(context),
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildOverlayChild(BuildContext context) {
+    return Positioned(
+      left: _overlayChildPositionX - 125,
+      top: _overlayChildPositionY + 20,
+      child: ScaleTransition(
+        scale: _animation as Animation<double>,
+        // opacity: _animation as Animation<double>,
+        child: Card(
+          child: Container(
+            width: 250,
+            // height: 100,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: 8, left: 16, right: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Icon(
+                        Icons.star,
+                        size: 50,
+                        color: Colors.yellow.shade600,
+                      ),
+                      Icon(
+                        Icons.star,
+                        size: 50,
+                        color: Colors.yellow.shade600,
+                      ),
+                      Icon(
+                        Icons.star,
+                        size: 50,
+                        color: Colors.black.withOpacity(0.4),
+                      ),
+                    ],
+                  ),
+                ),
+                _buildStageDetails(context),
+                Padding(
+                  padding: EdgeInsets.all(16),
+                  child: AnimatedButton1(
+                    buttonText: "Start level",
+                    height: 40,
+                    onPressed: () {
+                      _pushToLevel();
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -210,7 +213,7 @@ class _StageSelectScreenState extends State<StageSelectScreen>
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
+          children: const [
             Text(
               "Clear time:",
               style: TextStyle(
@@ -282,41 +285,56 @@ class _StageSelectScreenState extends State<StageSelectScreen>
 
         return Stack(
           children: [
-            if (index + 1 % 10 == 0 && index != 0)
-              Padding(
+            Align(
+              child: Padding(
+                // padding: EdgeInsets.only(left: index.toDouble()),
                 padding: EdgeInsets.only(
                   top: 16.0,
                   bottom: 16.0,
-                  left: 4 * scale - paddingLeft,
-                  right: paddingLeft,
+                  left: paddingLeft,
+                  right: 4 * scale - paddingLeft,
                 ),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: GameNodeButton(
-                    index: index,
-                    userProgress: 100,
-                    toggleChildOverlay: _toggleOverlayChild,
-                  ),
-                ),
-              ),
-            Padding(
-              // padding: const EdgeInsets.symmetric(vertical: 16.0),
-              padding: EdgeInsets.only(
-                top: 16.0,
-                bottom: 16.0,
-                left: paddingLeft,
-                right: 4 * scale - paddingLeft,
-              ),
-              child: Align(
                 child: GameNodeButton(
-                  index: index,
-                  userProgress: 5,
-                  toggleChildOverlay: _toggleOverlayChild,
-                ),
+                    index: index,
+                    userProgress: 5,
+                    toggleChildOverlay: _toggleOverlayChild),
               ),
             ),
+            if (index % 5 == 0 && index != 0)
+              Padding(
+                padding: EdgeInsets.only(
+                  top: 16.0,
+                  left: index % 10 == 0
+                      ? MediaQuery.of(context).size.width - 150.0
+                      : 60.0,
+                ),
+                child: FishingNodeButton(),
+              ),
           ],
         );
+
+        // return Padding(
+        //   // padding: const EdgeInsets.symmetric(vertical: 16.0),
+        //   padding: EdgeInsets.only(
+        //     top: 16.0,
+        //     bottom: 16.0,
+        //     left: paddingLeft,
+        //     right: 4 * scale - paddingLeft,
+        //   ),
+        //   child: Align(
+        //     child: Stack(
+        //       children: [
+        //         index % 5 == 0 && index != 0
+        //             ? FishingNodeButton()
+        //             : GameNodeButton(
+        //                 index: index,
+        //                 userProgress: 7,
+        //                 toggleChildOverlay: _toggleOverlayChild,
+        //               ),
+        //       ],
+        //     ),
+        //   ),
+        // );
       },
     );
   }
@@ -414,7 +432,7 @@ class _GameNodeButtonState extends State<GameNodeButton> {
                   ? Icon(Icons.check, color: Colors.green, size: 35.0)
                   : widget.index == widget.userProgress
                       ? Text(
-                          widget.index.toString(),
+                          (widget.index + 1).toString(),
                           style: TextStyle(
                             color: Colors.blue,
                             fontWeight: FontWeight.bold,
@@ -422,6 +440,122 @@ class _GameNodeButtonState extends State<GameNodeButton> {
                           ),
                         )
                       : Icon(Icons.lock, color: Colors.grey, size: 35.0),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class FishingNodeButton extends StatefulWidget {
+  const FishingNodeButton({
+    super.key,
+  });
+
+  @override
+  State<FishingNodeButton> createState() => _FishingNodeButtonState();
+}
+
+class _FishingNodeButtonState extends State<FishingNodeButton> {
+  double _padding = 6;
+
+  double width = 70;
+  double height = 60;
+
+  void _switchScreen(int score) {
+    Navigator.of(context).pop();
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => GameOverScreen(score: score),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      // onTap: widget.index > widget.userProgress
+      //     ? null
+      //     : () {
+      //         Navigator.push(
+      //           context,
+      //           MaterialPageRoute(
+      //             builder: (context) => QuizScreen(
+      //               currentStage: widget.index - 1,
+      //             ),
+      //           ),
+      //         );
+      //       },
+      onTapDown: (_) {
+        setState(() {
+          _padding = 0;
+        });
+      },
+      onTapCancel: () {
+        setState(() {
+          _padding = 6;
+        });
+      },
+      onTapUp: (details) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => GameScreen(
+              switchScreen: _switchScreen,
+            ),
+          ),
+        );
+        setState(() {
+          _padding = 6;
+        });
+      },
+      child: AnimatedContainer(
+        padding: EdgeInsets.only(bottom: _padding),
+        margin: EdgeInsets.only(top: -(_padding - 6)),
+        decoration: BoxDecoration(
+          // color: widget.index < widget.userProgress
+          //     ? Colors.green
+          //     : widget.index == widget.userProgress
+          //         ? Colors.blue
+          //         : Colors.grey,
+          color: Colors.red,
+          borderRadius: BorderRadius.all(Radius.elliptical(width, height)),
+        ),
+        duration: Duration(milliseconds: 50),
+        child: Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(
+              // color: widget.index < widget.userProgress
+              //     ? Colors.green
+              //     : widget.index == widget.userProgress
+              //         ? Colors.blue
+              //         : Colors.grey,
+              color: Colors.red,
+            ),
+            borderRadius: BorderRadius.all(Radius.elliptical(width, height)),
+          ),
+          child: Center(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              // child: widget.index < widget.userProgress
+              //     ? Icon(Icons.check, color: Colors.green, size: 35.0)
+              //     : widget.index == widget.userProgress
+              //         ? Text(
+              //             widget.index.toString(),
+              //             style: TextStyle(
+              //               color: Colors.blue,
+              //               fontWeight: FontWeight.bold,
+              //               fontSize: 25,
+              //             ),
+              //           )
+              //         : Icon(Icons.lock, color: Colors.grey, size: 35.0),
+              child: Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: Icon(FontAwesomeIcons.gamepad,
+                      color: Colors.red, size: 35.0)),
             ),
           ),
         ),

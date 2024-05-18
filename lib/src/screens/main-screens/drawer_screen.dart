@@ -50,7 +50,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
           height: 20,
         ),
         Text(
-          'AToz',
+          'AToZ',
           style: TextStyle(
             fontFamily: 'Poppins',
             color: Colors.white,

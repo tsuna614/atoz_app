@@ -44,7 +44,9 @@ class _MainScreenState extends State<MainScreen> {
     // print(response.data[0]['userId']);
     setState(() {
       if (response.data.toString().contains('language')) {
-        appScreen = TabsScreen();
+        appScreen = TabsScreen(
+          alternateDrawer: alternateDrawer,
+        );
         // appScreen = LeaderboardScreen();
         // appScreen = SocialScreen();
         // appScreen = ProfileScreen();
@@ -105,7 +107,9 @@ class _MainScreenState extends State<MainScreen> {
     Future.delayed(Duration(milliseconds: 300), () {
       setState(() {
         if (screenIndex == 0) {
-          appScreen = TabsScreen();
+          appScreen = TabsScreen(
+            alternateDrawer: alternateDrawer,
+          );
         } else if (screenIndex == 1) {
           appScreen = ProfileScreen();
         } else if (screenIndex == 2) {

@@ -65,7 +65,7 @@ class AtozGame extends FlameGame
 
   // INITIALIZING INPUTS
   KeyHandler keyHandler = KeyHandler();
-  bool showJoysticks = true;
+  bool showJoysticks = false;
   JoystickDirection lastDirection = JoystickDirection.idle;
 
   @override
@@ -102,12 +102,12 @@ class AtozGame extends FlameGame
       _addJoysticks();
     }
 
-    // clear all audio
-    FlameAudio.bgm.stop();
+    // // clear all audio
+    // await FlameAudio.bgm.stop();
 
-    // play music
-    // FlameAudio.bgm.play('BlueBoyAdventure.wav', volume: volume );
-    // FlameAudio.play('BlueBoyAdventure.wav', volume: volume);
+    // // play music
+    // await FlameAudio.bgm.play('BlueBoyAdventure.wav', volume: volume);
+    // await FlameAudio.play('BlueBoyAdventure.wav', volume: volume);
 
     return super.onLoad();
   }
@@ -314,6 +314,7 @@ class AtozGame extends FlameGame
   }
 
   void triggerGameOver(bool isGameLost) async {
+    await FlameAudio.bgm.stop();
     await Flame.device.setPortrait();
     if (isGameLost) {
       switchScreen(0);
