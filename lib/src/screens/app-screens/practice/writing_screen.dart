@@ -55,6 +55,7 @@ class _WritingScreenState extends State<WritingScreen> {
         userScore: userScore,
         totalScore: question.length,
         oldUserStage: 0,
+        currentChapter: 0,
       );
       // clear question
       Future.delayed(Duration(seconds: 2), () {

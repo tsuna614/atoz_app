@@ -1,3 +1,4 @@
+import 'package:atoz_app/src/models/chapter_model.dart';
 import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,36 +12,86 @@ final _firebase = FirebaseAuth.instance;
 final dio = Dio();
 
 class ResultScreen extends StatelessWidget {
-  ResultScreen(
-      {super.key,
-      required this.userScore,
-      required this.totalScore,
-      required this.oldUserStage});
+  ResultScreen({
+    super.key,
+    required this.userScore,
+    required this.totalScore,
+    required this.oldUserStage,
+    required this.currentChapter,
+  });
 
   final int userScore;
   final int totalScore;
   final int oldUserStage;
+  final int currentChapter;
   // List<String> chosenAnswers;
 
+  List<List<Map<String, dynamic>>> convertStagesToJson(
+      List<List<StageDetails>> stages) {
+    return stages
+        .map((innerList) => innerList.map((stage) => stage.toJson()).toList())
+        .toList();
+  }
+
   void updateUserData(BuildContext context) async {
-    // get old user score and set new score
-    final oldUserScore = context.read<UserProvider>().userScore;
-    context.read<UserProvider>().setUserScore(oldUserScore + 20);
-    final oldUserProgression =
-        context.read<UserProvider>().userProgressionPoint;
-    context
-        .read<UserProvider>()
-        .setUserProgressionPoint(oldUserProgression + 20);
+    if (oldUserStage ==
+        context
+            .read<UserProvider>()
+            .currentUserProgress[currentChapter]
+            .length) {
+      context
+          .read<UserProvider>()
+          .currentUserProgress[currentChapter]
+          .add(StageDetails(
+            star: convertScoreToStar(),
+            clearTime: 90,
+          ));
+      // increment user score and progression by 20 only if user complete a new stage
+      context
+          .read<UserProvider>()
+          .setUserScore(context.read<UserProvider>().userScore + 20);
+      context.read<UserProvider>().setUserProgressionPoint(
+          context.read<UserProvider>().userProgressionPoint + 20);
+    } else {
+      // update the user's star and clear time if they complete the stage again with better score
+      if (convertScoreToStar() >
+          context
+              .read<UserProvider>()
+              .currentUserProgress[currentChapter][oldUserStage]
+              .star) {
+        context.read<UserProvider>().currentUserProgress[currentChapter]
+            [oldUserStage] = StageDetails(
+          star: convertScoreToStar(),
+          clearTime: 90,
+        );
+      }
+    }
+
+    // get the newly updated user progression to be ready to update the database
+    List<List<StageDetails>> newUserProgression =
+        context.read<UserProvider>().currentUserProgress;
 
     // update user's stage and score in database
     await dio.put(
       '${global_data.atozApi}/user/editUserById/${_firebase.currentUser!.uid}',
       data: {
-        'userStage': oldUserStage + 2,
-        'score': oldUserScore + 20,
-        'progression': oldUserProgression + 20,
+        'userStage': convertStagesToJson(newUserProgression),
+        'score': context.read<UserProvider>().userScore + 20,
+        'progression': context.read<UserProvider>().userProgressionPoint + 20,
       },
     );
+  }
+
+  int convertScoreToStar() {
+    if (userScore == totalScore) {
+      return 3;
+    } else if (userScore >= totalScore * 0.7) {
+      return 2;
+    } else if (userScore >= totalScore * 0.3) {
+      return 1;
+    } else {
+      return 0;
+    }
   }
 
   @override
@@ -93,14 +144,10 @@ class ResultScreen extends StatelessWidget {
                 // if user complete the current stage that they are in, only then the current user progress will be updated
                 // increment user progress (in provider) by 2, and update user progress in database
                 // i did this so it doesn't need to wait to load everytime user complete a stage
-                if (oldUserStage + 1 ==
-                    context.read<UserProvider>().currentUserProgress) {
-                  context
-                      .read<UserProvider>()
-                      .setCurrentUserProgress(oldUserStage + 2);
-                  updateUserData(context);
-                }
+
+                updateUserData(context);
                 Navigator.pop(context);
+                // Navigator.popUntil(context, (route) => route.isFirst);
                 await dio.post(
                   '${global_data.atozApi}/userScore/addUserScore',
                   data: {

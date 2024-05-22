@@ -52,7 +52,7 @@ class _DetailSignUpScreenState extends State<DetailSignUpScreen> {
           'firstName': enteredFirstName,
           'lastName': enteredLastName,
           'age': enteredAge,
-          'userStage': 1,
+          'userStage': [],
           'userFriends': [],
           'profileImage': 'profile',
         }).then((value) {

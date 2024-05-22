@@ -1,3 +1,4 @@
+import 'package:atoz_app/src/models/chapter_model.dart';
 import 'package:flutter/material.dart';
 
 // final questionsProvider = Provider((ref) {
@@ -9,7 +10,6 @@ class UserProvider extends ChangeNotifier {
   String userEmail = '';
   String userType = 'student';
   String userLanguage = 'English';
-  int currentUserProgress = 0;
   int userScore = 0;
   int userProgressionPoint = 0;
   int userRanking = 1;
@@ -27,7 +27,10 @@ class UserProvider extends ChangeNotifier {
   // list of user's friends' id
   List<String> userFriends = [];
 
-  bool isGameStart = false;
+  // to get the total number of stages that the current user has cleared: currentUserProgress.length
+  // to get the details of every stages in chapter 1: currentUserProgress[0]
+  // to get the total number of stages in chapter 1: currentUserProgress[0].length (but default it is 10)
+  List<List<StageDetails>> currentUserProgress = [];
 
   void setUserId(String id) {
     userId = id;
@@ -39,8 +42,21 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setCurrentUserProgress(int progress) {
-    currentUserProgress = progress;
+  void setUserCurrentProgress(List<List<dynamic>> progress) {
+    // số 3 ở đây là số chapter code cứng tạm thời
+    // vì mình chưa biết cách lấy chapters.length từ ChapterProvider (lol)
+    for (int i = 0; i < 3; i++) {
+      List<StageDetails> stages = [];
+      if (i < progress.length) {
+        for (int j = 0; j < progress[i].length; j++) {
+          stages.add(StageDetails(
+            star: progress[i][j]['star'],
+            clearTime: progress[i][j]['clearTime'],
+          ));
+        }
+      }
+      currentUserProgress.add(stages);
+    }
     notifyListeners();
   }
 
@@ -102,11 +118,6 @@ class UserProvider extends ChangeNotifier {
 
   void setUserState(String state) {
     userState = state;
-    notifyListeners();
-  }
-
-  void setGameStart(bool start) {
-    isGameStart = start;
     notifyListeners();
   }
 }

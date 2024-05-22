@@ -1,5 +1,5 @@
 import 'package:atoz_app/src/models/quiz_question.dart';
-import 'package:atoz_app/src/providers/question_provider.dart';
+import 'package:atoz_app/src/providers/chapter_provider.dart';
 import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz/games/game_connect_string.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz/games/game_drop_down.dart';
@@ -14,9 +14,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({super.key, required this.currentStage});
+  const QuizScreen({
+    super.key,
+    required this.currentSelectedChapter,
+    required this.currentChosenStage,
+  });
 
-  final int currentStage;
+  final int currentSelectedChapter;
+  final int currentChosenStage;
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
@@ -30,17 +35,25 @@ class _QuizScreenState extends State<QuizScreen> {
   late Widget chosenScreen;
 
   void getQuestions() {
-    // question =
-    //     context.read<QuestionProvider>().dummyEnglishQuizz[widget.currentStage];
     if (context.read<UserProvider>().userLanguage == 'English') {
       question = context
-          .read<QuestionProvider>()
-          .dummyEnglishQuizz[widget.currentStage];
-    } else if (context.read<UserProvider>().userLanguage == 'Japanese') {
+          .read<ChapterProvider>()
+          .chapters[widget.currentSelectedChapter]
+          .stages[widget.currentChosenStage]
+          .questions;
+    } else {
       question = context
-          .read<QuestionProvider>()
-          .dummyJapaneseQuizz[widget.currentStage];
+          .read<ChapterProvider>()
+          .chapters[widget.currentSelectedChapter]
+          .stages[widget.currentChosenStage]
+          .questions;
     }
+    // // Japanese and other languages is currently postponed and has not updated to the new chapter selecting system
+    // else if (context.read<UserProvider>().userLanguage == 'Japanese') {
+    //   question = context
+    //       .read<QuestionProvider>()
+    //       .dummyJapaneseQuizz[widget.currentChosenStage];
+    // }
   }
 
   void _handleAnswerClick(bool isCorrect) {
@@ -56,9 +69,9 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
     getQuestions();
+
+    super.initState();
   }
 
   @override
@@ -69,7 +82,8 @@ class _QuizScreenState extends State<QuizScreen> {
       chosenScreen = ResultScreen(
         userScore: userScore,
         totalScore: question.length,
-        oldUserStage: widget.currentStage,
+        oldUserStage: widget.currentChosenStage,
+        currentChapter: widget.currentSelectedChapter,
       );
       // clear question
       Future.delayed(Duration(seconds: 2), () {

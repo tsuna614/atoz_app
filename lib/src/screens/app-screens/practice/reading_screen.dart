@@ -115,6 +115,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
           userScore: isCorrect ? 1 : 0,
           totalScore: 1,
           oldUserStage: 0,
+          currentChapter: 0,
         ),
       ),
     );

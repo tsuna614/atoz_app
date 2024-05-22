@@ -1,5 +1,6 @@
 import 'package:atoz_app/game/atoz_game.dart';
 import 'package:atoz_app/src/models/quiz_question.dart';
+import 'package:atoz_app/src/providers/chapter_provider.dart';
 import 'package:atoz_app/src/providers/question_provider.dart';
 import 'package:atoz_app/src/providers/user_provider.dart';
 // import 'package:atoz_app/src/screens/app-screens/game_screens/game_screen.dart';
@@ -7,8 +8,6 @@ import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:atoz_app/src/screens/main-screens/loading_screen.dart';
 import 'package:atoz_app/src/screens/main-screens/main_screen.dart';
 import 'package:atoz_app/src/screens/authentication-screens/login_screen.dart';
-import 'package:atoz_app/src/screens/main-screens/test.dart';
-import 'package:atoz_app/src/test.dart';
 // import 'package:atoz_app/src/screens/main-screens/test.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flame/flame.dart';
@@ -20,7 +19,6 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
-import 'package:provider/provider.dart' as provider;
 
 final theme = ThemeData(
   // useMaterial3: true,
@@ -131,8 +129,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        provider.ChangeNotifierProvider(create: (_) => QuestionProvider()),
-        provider.ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => QuestionProvider()),
+        ChangeNotifierProvider(create: (_) => ChapterProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        // provider.ChangeNotifierProxyProvider<ChapterProvider>(
+        //   create: (_) => UserProvider(),
+        //   update: (_, chapterProvider, userProvider) {
+        //     userProvider!.setChapterProvider(chapterProvider);
+        //     return userProvider;
+        //   },
+        // ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

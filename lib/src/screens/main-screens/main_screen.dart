@@ -58,6 +58,14 @@ class _MainScreenState extends State<MainScreen> {
       }
     });
 
+    // making the entire progress list to setUserCurrentProgress
+    //because the stupid thing can't recognize
+    //List<List<dynamic>> from response.data[0]['userStage']
+    List<List<dynamic>> progress = [];
+    for (int i = 0; i < response.data[0]['userStage'].length; i++) {
+      progress.add(response.data[0]['userStage'][i]);
+    }
+
     // save user data to provider
     if (context.mounted && response.data.toString().contains('language')) {
       context
@@ -66,9 +74,7 @@ class _MainScreenState extends State<MainScreen> {
       context
           .read<UserProvider>()
           .setUserEmail(response.data[0]['email'].toString());
-      context
-          .read<UserProvider>()
-          .setCurrentUserProgress(response.data[0]['userStage']);
+      context.read<UserProvider>().setUserCurrentProgress(progress);
       context.read<UserProvider>().setUserScore(response.data[0]['score']);
       context
           .read<UserProvider>()
