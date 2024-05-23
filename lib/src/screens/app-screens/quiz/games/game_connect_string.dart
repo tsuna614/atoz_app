@@ -41,7 +41,6 @@ class _ConnectStringState extends State<ConnectString> {
         chosenLeftAnswers.add(selectedAnswer);
       });
     }
-    print(chosenLeftAnswers);
   }
 
   void handleRightAnswersClick(String selectedAnswer) {
@@ -54,7 +53,6 @@ class _ConnectStringState extends State<ConnectString> {
         chosenRightAnswers.add(selectedAnswer);
       });
     }
-    print(chosenRightAnswers);
   }
 
   void handleCheckClick() {

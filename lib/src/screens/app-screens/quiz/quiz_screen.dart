@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:atoz_app/src/models/quiz_question.dart';
 import 'package:atoz_app/src/providers/chapter_provider.dart';
 import 'package:atoz_app/src/providers/user_provider.dart';
@@ -10,6 +12,7 @@ import 'package:atoz_app/src/screens/app-screens/quiz/games/game_translate.dart'
 import 'package:atoz_app/src/screens/app-screens/quiz/games/game_words_distribution.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz/result_screen.dart';
 import 'package:atoz_app/src/screens/main-screens/loading_screen.dart';
+import 'package:atoz_app/src/utils/time_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -34,7 +37,7 @@ class _QuizScreenState extends State<QuizScreen> {
   List<QuizQuestion> question = [];
   late Widget chosenScreen;
 
-  void getQuestions() {
+  void _getQuestions() {
     if (context.read<UserProvider>().userLanguage == 'English') {
       question = context
           .read<ChapterProvider>()
@@ -67,11 +70,35 @@ class _QuizScreenState extends State<QuizScreen> {
     });
   }
 
+  late Timer _timer;
+  // int _totalTime = 0;
+  final ValueNotifier<int> _totalTime = ValueNotifier<int>(0);
+
+  void _startTimer() {
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (_totalTime.value >= 6039) {
+          timer.cancel();
+        } else {
+          _totalTime.value++;
+        }
+      },
+    );
+  }
+
   @override
   void initState() {
-    getQuestions();
-
+    _getQuestions();
+    _startTimer();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   @override
@@ -79,11 +106,13 @@ class _QuizScreenState extends State<QuizScreen> {
     double width = MediaQuery.of(context).size.width;
 
     if (currentQuestionIndex == question.length) {
+      _timer.cancel();
       chosenScreen = ResultScreen(
         userScore: userScore,
         totalScore: question.length,
         oldUserStage: widget.currentChosenStage,
         currentChapter: widget.currentSelectedChapter,
+        clearTime: _totalTime.value,
       );
       // clear question
       Future.delayed(Duration(seconds: 2), () {
@@ -155,19 +184,52 @@ class _QuizScreenState extends State<QuizScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        elevation: 0,
-        title: Text('Question ${currentQuestionIndex + 1}'),
-        leading: IconButton(
-          onPressed: () {
-            // clear question
-            question = [];
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.arrow_back_ios),
-        ),
-      ),
+      appBar: chosenScreen is ResultScreen
+          ? null
+          : AppBar(
+              backgroundColor: Colors.blue,
+              elevation: 0,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Question ${currentQuestionIndex + 1}',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  // Spacer(),
+                  // Text(
+                  //   formattedTime(timeInSecond: _totalTime),
+                  //   style: TextStyle(
+                  //     color: Colors.white,
+                  //   ),
+                  // ),
+                  ValueListenableBuilder<int>(
+                    valueListenable: _totalTime,
+                    builder: (context, value, child) {
+                      return Text(
+                        formattedTime(timeInSecond: value),
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+              leading: IconButton(
+                onPressed: () {
+                  // clear question
+                  question = [];
+                  Navigator.pop(context);
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.white,
+                ),
+              ),
+            ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(bottom: 8.0),

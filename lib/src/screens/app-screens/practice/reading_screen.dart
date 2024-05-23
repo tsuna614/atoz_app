@@ -116,6 +116,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
           totalScore: 1,
           oldUserStage: 0,
           currentChapter: 0,
+          clearTime: 0,
         ),
       ),
     );

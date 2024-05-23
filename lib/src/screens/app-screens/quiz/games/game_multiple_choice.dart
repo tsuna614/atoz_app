@@ -111,7 +111,6 @@ class _MultipleChoiceState extends ConsumerState<MultipleChoice> {
             // ),
             child: Image.network(
               widget.imageAsset,
-              height: 300,
               width: double.infinity,
               fit: BoxFit.cover,
             ),

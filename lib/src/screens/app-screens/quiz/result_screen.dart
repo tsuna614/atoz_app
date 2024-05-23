@@ -12,18 +12,20 @@ final _firebase = FirebaseAuth.instance;
 final dio = Dio();
 
 class ResultScreen extends StatelessWidget {
-  ResultScreen({
+  const ResultScreen({
     super.key,
     required this.userScore,
     required this.totalScore,
     required this.oldUserStage,
     required this.currentChapter,
+    required this.clearTime,
   });
 
   final int userScore;
   final int totalScore;
   final int oldUserStage;
   final int currentChapter;
+  final int clearTime;
   // List<String> chosenAnswers;
 
   List<List<Map<String, dynamic>>> convertStagesToJson(
@@ -34,38 +36,9 @@ class ResultScreen extends StatelessWidget {
   }
 
   void updateUserData(BuildContext context) async {
-    if (oldUserStage ==
-        context
-            .read<UserProvider>()
-            .currentUserProgress[currentChapter]
-            .length) {
-      context
-          .read<UserProvider>()
-          .currentUserProgress[currentChapter]
-          .add(StageDetails(
-            star: convertScoreToStar(),
-            clearTime: 90,
-          ));
-      // increment user score and progression by 20 only if user complete a new stage
-      context
-          .read<UserProvider>()
-          .setUserScore(context.read<UserProvider>().userScore + 20);
-      context.read<UserProvider>().setUserProgressionPoint(
-          context.read<UserProvider>().userProgressionPoint + 20);
-    } else {
-      // update the user's star and clear time if they complete the stage again with better score
-      if (convertScoreToStar() >
-          context
-              .read<UserProvider>()
-              .currentUserProgress[currentChapter][oldUserStage]
-              .star) {
-        context.read<UserProvider>().currentUserProgress[currentChapter]
-            [oldUserStage] = StageDetails(
-          star: convertScoreToStar(),
-          clearTime: 90,
-        );
-      }
-    }
+    // if user complete a new level, add it to the user progression
+    // if user re-do an old stage and get better score, update the star and clear time
+    updateStarAndClearTime(context);
 
     // get the newly updated user progression to be ready to update the database
     List<List<StageDetails>> newUserProgression =
@@ -82,6 +55,73 @@ class ResultScreen extends StatelessWidget {
     );
   }
 
+  void updateStarAndClearTime(BuildContext context) {
+    // if user complete a stage they haven't completed
+    if (oldUserStage ==
+        context
+            .read<UserProvider>()
+            .currentUserProgress[currentChapter]
+            .length) {
+      context
+          .read<UserProvider>()
+          .currentUserProgress[currentChapter]
+          .add(StageDetails(
+            star: convertScoreToStar(),
+            clearTime: clearTime,
+          ));
+      // increment user score and progression by 20 only if user complete a new stage
+      context
+          .read<UserProvider>()
+          .setUserScore(context.read<UserProvider>().userScore + 20);
+      context.read<UserProvider>().setUserProgressionPoint(
+          context.read<UserProvider>().userProgressionPoint + 20);
+    }
+    // update the user's star and clear time if they complete the stage again with better score
+    else {
+      if (convertScoreToStar() >
+          context
+              .read<UserProvider>()
+              .currentUserProgress[currentChapter][oldUserStage]
+              .star) {
+        // if the user's new clear time is also better than the previous one, update to the new one
+        if (clearTime <
+            context
+                .read<UserProvider>()
+                .currentUserProgress[currentChapter][oldUserStage]
+                .clearTime) {
+          context.read<UserProvider>().currentUserProgress[currentChapter]
+              [oldUserStage] = StageDetails(
+            star: convertScoreToStar(),
+            clearTime: clearTime,
+          );
+        } else {
+          // else, only update the star
+          context
+              .read<UserProvider>()
+              .currentUserProgress[currentChapter][oldUserStage]
+              .setStar(convertScoreToStar());
+        }
+      } else if (convertScoreToStar() ==
+          context
+              .read<UserProvider>()
+              .currentUserProgress[currentChapter][oldUserStage]
+              .star) {
+        // if the user's new clear time is better than the previous one, update to the new one
+        if (clearTime <
+            context
+                .read<UserProvider>()
+                .currentUserProgress[currentChapter][oldUserStage]
+                .clearTime) {
+          context.read<UserProvider>().currentUserProgress[currentChapter]
+              [oldUserStage] = StageDetails(
+            star: convertScoreToStar(),
+            clearTime: clearTime,
+          );
+        }
+      }
+    }
+  }
+
   int convertScoreToStar() {
     if (userScore == totalScore) {
       return 3;
@@ -96,70 +136,73 @@ class ResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Align(
-          alignment: Alignment.topCenter,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 50),
-            child: Text(
-              'Congratulations on completing the test!',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
+    return Scaffold(
+      body: Stack(
+        children: [
+          Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: Text(
+                'Congratulations on completing the test!',
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
-        ),
-        Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Your score:',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              SizedBox(height: 20),
-              CircularPercentIndicator(
-                radius: 100,
-                lineWidth: 10,
-                percent: userScore / totalScore,
-                animation: true,
-                animationDuration: 2000,
-                progressColor: Colors.blue,
-                center: Text(
-                  '${(userScore / totalScore * 100).toStringAsFixed(0)}%',
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
+          Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Your score:',
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                SizedBox(height: 20),
+                CircularPercentIndicator(
+                  radius: 100,
+                  lineWidth: 10,
+                  percent: userScore / totalScore,
+                  animation: true,
+                  animationDuration: 2000,
+                  progressColor: Colors.blue,
+                  center: Text(
+                    '${(userScore / totalScore * 100).toStringAsFixed(0)}%',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-            child: CheckButton(
-              onButtonPressed: () async {
-                // if user complete the current stage that they are in, only then the current user progress will be updated
-                // increment user progress (in provider) by 2, and update user progress in database
-                // i did this so it doesn't need to wait to load everytime user complete a stage
-
-                updateUserData(context);
-                Navigator.pop(context);
-                // Navigator.popUntil(context, (route) => route.isFirst);
-                await dio.post(
-                  '${global_data.atozApi}/userScore/addUserScore',
-                  data: {
-                    'userId': _firebase.currentUser!.uid,
-                    'score': 20,
-                  },
-                );
-              },
+              ],
             ),
           ),
-        ),
-      ],
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+              child: CheckButton(
+                onButtonPressed: () async {
+                  // if user complete the current stage that they are in, only then the current user progress will be updated
+                  // increment user progress (in provider) by 2, and update user progress in database
+                  // i did this so it doesn't need to wait to load everytime user complete a stage
+
+                  updateUserData(context);
+                  Navigator.pop(context);
+                  // Navigator.popUntil(context, (route) => route.isFirst);
+                  await dio.post(
+                    '${global_data.atozApi}/userScore/addUserScore',
+                    data: {
+                      'userId': _firebase.currentUser!.uid,
+                      'score': 20,
+                    },
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

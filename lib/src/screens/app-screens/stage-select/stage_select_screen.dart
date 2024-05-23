@@ -4,6 +4,7 @@ import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:atoz_app/src/screens/app-screens/game/game_over_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/game/game_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz/quiz_screen.dart';
+import 'package:atoz_app/src/utils/time_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -206,6 +207,10 @@ class _StageSelectScreenState extends State<StageSelectScreen>
                     buttonText: "Start level",
                     height: 40,
                     onPressed: () {
+                      if (_overlayController.isShowing) {
+                        _overlayController.hide();
+                        _animationController.reverse();
+                      }
                       _pushToLevel();
                     },
                   ),
@@ -216,14 +221,6 @@ class _StageSelectScreenState extends State<StageSelectScreen>
         ),
       ),
     );
-  }
-
-  String formattedTime({required int timeInSecond}) {
-    int sec = timeInSecond % 60;
-    int min = (timeInSecond / 60).floor();
-    String minute = min.toString().length <= 1 ? "0$min" : "$min";
-    String second = sec.toString().length <= 1 ? "0$sec" : "$sec";
-    return "$minute : $second";
   }
 
   Widget _buildStageDetails(BuildContext context,

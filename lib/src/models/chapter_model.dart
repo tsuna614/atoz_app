@@ -37,4 +37,12 @@ class StageDetails {
       'clearTime': clearTime,
     };
   }
+
+  void setStar(int star) {
+    star = star;
+  }
+
+  void setClearTime(int clearTime) {
+    clearTime = clearTime;
+  }
 }
