@@ -278,25 +278,11 @@ class ProgressBar extends StatelessWidget {
         AnimatedContainer(
           width: screenWidth * ratio,
           height: 20,
-          // margin: EdgeInsets.symmetric(
-          //   // horizontal: screenWidth * 0.05,
-          //   horizontal: screenWidth * 0.01,
-          //   // right: 20,
-          // ),
           decoration: BoxDecoration(
             color: Colors.blue,
             borderRadius: BorderRadius.circular(20),
           ),
           duration: Duration(milliseconds: 250),
-          // child: Container(
-          //   // width: 40,
-          //   // height: 20,
-          //   decoration: BoxDecoration(
-          //     color: Colors.blue,
-          //     border: Border.all(color: Colors.blue),
-          //     borderRadius: BorderRadius.circular(20),
-          //   ),
-          // ),
         ),
       ],
     );

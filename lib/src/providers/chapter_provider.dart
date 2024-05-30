@@ -135,6 +135,33 @@ List<List<QuizQuestion>> dummyEnglishQuizz = [
     // ),
   ],
   [
+    WordsDistributionQuestion(
+      question: 'Distribute the words into 2 groups',
+      answers: [
+        'Coffee',
+        'Water',
+        'Tea',
+        'Milk',
+        'Bread',
+        'Rice',
+        'Eggs',
+        'Butter',
+      ],
+      group1Name: 'Drinks',
+      group2Name: 'Foods',
+      correctAnswers1: [
+        'Coffee',
+        'Water',
+        'Tea',
+        'Milk',
+      ],
+      correctAnswers2: [
+        'Bread',
+        'Rice',
+        'Eggs',
+        'Butter',
+      ],
+    ),
     ConnectStringQuestion(
       question: 'Connect the word to its meaning',
       leftAnswers: [
@@ -213,33 +240,6 @@ List<List<QuizQuestion>> dummyEnglishQuizz = [
       correctAnswer: 'Morning',
       imageAsset:
           'https://st2.depositphotos.com/3745043/5334/v/950/depositphotos_53342633-stock-illustration-sunrise-at-early-morning-landscape.jpg',
-    ),
-    WordsDistributionQuestion(
-      question: 'Distribute the words into 2 groups',
-      answers: [
-        'Coffee',
-        'Water',
-        'Tea',
-        'Milk',
-        'Bread',
-        'Rice',
-        'Eggs',
-        'Butter',
-      ],
-      group1Name: 'Drinks',
-      group2Name: 'Foods',
-      correctAnswers1: [
-        'Coffee',
-        'Water',
-        'Tea',
-        'Milk',
-      ],
-      correctAnswers2: [
-        'Bread',
-        'Rice',
-        'Eggs',
-        'Butter',
-      ],
     ),
     ReadingQuestion(
       title: 'A summer day',

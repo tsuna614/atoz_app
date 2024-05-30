@@ -3,12 +3,14 @@ import 'package:atoz_app/src/models/quiz_question.dart';
 import 'package:atoz_app/src/providers/chapter_provider.dart';
 import 'package:atoz_app/src/providers/question_provider.dart';
 import 'package:atoz_app/src/providers/user_provider.dart';
+import 'package:cloudinary_url_gen/cloudinary.dart';
+import 'package:cloudinary_flutter/cloudinary_context.dart';
 // import 'package:atoz_app/src/screens/app-screens/game_screens/game_screen.dart';
 // import 'package:atoz_app/src/screens/app-screens/profile-screen/profile_screen.dart';
 import 'package:atoz_app/src/screens/main-screens/loading_screen.dart';
 import 'package:atoz_app/src/screens/main-screens/main_screen.dart';
 import 'package:atoz_app/src/screens/authentication-screens/login_screen.dart';
-// import 'package:atoz_app/src/screens/main-screens/test.dart';
+// import 'package:atoz_app/src/test.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
@@ -100,6 +102,9 @@ Future<void> main() async {
     runApp(GameWidget(game: game));
     // runApp(GameWidget(game: game));
   } else {
+    // ignore: deprecated_member_use
+    CloudinaryContext.cloudinary =
+        Cloudinary.fromCloudName(cloudName: 'dm3q8bw0w');
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
       // options: const FirebaseOptions(
@@ -132,21 +137,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => QuestionProvider()),
         ChangeNotifierProvider(create: (_) => ChapterProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
-        // provider.ChangeNotifierProxyProvider<ChapterProvider>(
-        //   create: (_) => UserProvider(),
-        //   update: (_, chapterProvider, userProvider) {
-        //     userProvider!.setChapterProvider(chapterProvider);
-        //     return userProvider;
-        //   },
-        // ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Atoz App',
-        // theme: ThemeData(
-        //   primarySwatch: Colors.green,
-        // ),
-        // theme: ThemeData(useMaterial3: true),
         theme: theme,
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
@@ -160,13 +154,7 @@ class MyApp extends StatelessWidget {
             return const LoginScreen();
           },
         ),
-        // home: TestScreen(),
-        // home: TabsScreen(),
-        // home: GameScreen(),
-        // home: ProfileScreen(
-        //   userId: FirebaseAuth.instance.currentUser!.uid,
-        //   isDirectedFromLeaderboard: false,
-        // ),
+        // home: ListeningScreen(),
       ),
     );
   }

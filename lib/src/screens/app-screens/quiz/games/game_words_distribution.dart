@@ -113,6 +113,7 @@ class _WordDistributionState extends State<WordDistribution> {
           DragTarget<Word>(
             builder: (context, candidateData, rejectedData) {
               return Card(
+                color: Colors.white,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Container(
@@ -140,6 +141,7 @@ class _WordDistributionState extends State<WordDistribution> {
           DragTarget<Word>(
             builder: (context, candidateData, rejectedData) {
               return Card(
+                color: Colors.white,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Container(

@@ -167,6 +167,20 @@ class ReadingMultipleChoiceQuestion {
   }
 }
 
+class ListeningQuestion extends QuizQuestion {
+  ListeningQuestion({
+    required this.fullSentence,
+    required this.answers,
+    required this.audioPublicId,
+    required this.quizType,
+  });
+
+  final String fullSentence;
+  final List<String> answers;
+  final String audioPublicId;
+  final int quizType;
+}
+
 /////////////////////////  Fishing question class  /////////////////////////
 /// This class is used for the fishing minigame.
 class FishingQuestion extends QuizQuestion {
