@@ -35,33 +35,41 @@ class _ListeningTestState extends State<ListeningTest> {
 
     shuffleAnswers();
 
-    // listen to states: playing, paused, stopped
-    player.onPlayerStateChanged.listen((state) {
-      setState(() {
-        isPlaying = state == PlayerState.playing;
+    if (context.mounted) {
+      // listen to states: playing, paused, stopped
+      player.onPlayerStateChanged.listen((state) {
+        setState(() {
+          isPlaying = state == PlayerState.playing;
+        });
       });
-    });
 
-    // listen to audio duration
-    player.onDurationChanged.listen((newDuration) {
-      setState(() {
-        duration = newDuration;
+      // listen to audio duration
+      player.onDurationChanged.listen((newDuration) {
+        setState(() {
+          duration = newDuration;
+        });
       });
-    });
 
-    // listen to audio position
-    player.onPositionChanged.listen((newDuration) {
-      setState(() {
-        position = newDuration;
+      // listen to audio position
+      player.onPositionChanged.listen((newDuration) {
+        setState(() {
+          position = newDuration;
+        });
       });
-    });
+    }
   }
 
-  // holy cow this took me a while to figure out
+  // holy cow this took me a fuck ton of time to figure out
   @override
   void didUpdateWidget(covariant ListeningTest oldWidget) {
     shuffleAnswers();
     super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // player.dispose();
   }
 
   void shuffleAnswers() {
@@ -113,10 +121,8 @@ class _ListeningTestState extends State<ListeningTest> {
 
   void onReorder(int oldIndex, int newIndex) {
     setState(() {
-      setState(() {
-        final element = userAnswers.removeAt(oldIndex);
-        userAnswers.insert(newIndex, element);
-      });
+      final element = userAnswers.removeAt(oldIndex);
+      userAnswers.insert(newIndex, element);
     });
   }
 
@@ -194,7 +200,7 @@ class WrapExample extends StatefulWidget {
 class _WrapExampleState extends State<WrapExample> {
   @override
   Widget build(BuildContext context) {
-    void _onReorder(int oldIndex, int newIndex) {
+    void onReorder(int oldIndex, int newIndex) {
       setState(() {
         widget.onReorder(oldIndex, newIndex);
       });
@@ -204,7 +210,7 @@ class _WrapExampleState extends State<WrapExample> {
       spacing: 8.0,
       runSpacing: 4.0,
       padding: const EdgeInsets.all(8),
-      onReorder: _onReorder,
+      onReorder: onReorder,
       // onNoReorder: (int index) {
       //   //this callback is optional
       //   debugPrint(

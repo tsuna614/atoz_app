@@ -1,6 +1,10 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:atoz_app/src/models/quiz_question.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz/games/game_listening_1.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz/games/game_listening_2.dart';
+import 'package:atoz_app/src/utils/time_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -20,6 +24,24 @@ class _ListeningScreenState extends State<ListeningScreen> {
 
   late Widget currentScreen;
 
+  late Timer _timer;
+  // int _totalTime = 0;
+  final ValueNotifier<int> _totalTime = ValueNotifier<int>(0);
+
+  void _startTimer() {
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (_totalTime.value >= 6039) {
+          timer.cancel();
+        } else {
+          _totalTime.value++;
+        }
+      },
+    );
+  }
+
   Future<void> initQuestionList() async {
     setState(() {
       isLoading = true;
@@ -33,10 +55,12 @@ class _ListeningScreenState extends State<ListeningScreen> {
       setState(() {
         listeningQuestions.add(
           ListeningQuestion(
-              fullSentence: response.data[i]['fullSentence'].toString(),
-              answers: response.data[i]['fullSentence'].toString().split(' '),
-              audioPublicId: response.data[i]['publicId'].toString(),
-              quizType: 2),
+            fullSentence: response.data[i]['fullSentence'].toString(),
+            answers: response.data[i]['fullSentence'].toString().split(' '),
+            audioPublicId: response.data[i]['publicId'].toString(),
+            quizType: Random().nextInt(2) + 1,
+            // quizType: 1,
+          ),
         );
         // listeningQuestions.add(
         //   ListeningTest(
@@ -62,7 +86,14 @@ class _ListeningScreenState extends State<ListeningScreen> {
   @override
   void initState() {
     initQuestionList();
+    _startTimer();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   @override
@@ -103,6 +134,17 @@ class _ListeningScreenState extends State<ListeningScreen> {
       appBar: AppBar(
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
+        title: ValueListenableBuilder<int>(
+          valueListenable: _totalTime,
+          builder: (context, value, child) {
+            return Text(
+              formattedTime(timeInSecond: value),
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            );
+          },
+        ),
       ),
       body: SafeArea(
         child: Padding(
@@ -116,7 +158,7 @@ class _ListeningScreenState extends State<ListeningScreen> {
                 ),
                 child: ProgressBar(
                     screenWidth: width - 80,
-                    ratio: listeningQuestions.length != 0
+                    ratio: listeningQuestions.isNotEmpty
                         ? currentQuestionIndex / listeningQuestions.length
                         : 1 / 1),
               ),

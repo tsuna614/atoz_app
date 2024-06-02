@@ -1132,8 +1132,14 @@
 //   }
 // }
 
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:record/record.dart';
+import 'package:atoz_app/src/data/global_data.dart' as globals;
 
 class TestScreen extends StatefulWidget {
   const TestScreen({super.key});
@@ -1143,7 +1149,93 @@ class TestScreen extends StatefulWidget {
 }
 
 class _TestScreenState extends State<TestScreen> {
-  final player = AudioPlayer();
+  late AudioPlayer player;
+  late AudioRecorder recorder;
+
+  bool isRecording = false;
+  String? audioPath;
+
+  @override
+  void initState() {
+    player = AudioPlayer();
+    recorder = AudioRecorder();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    player.dispose();
+    recorder.dispose();
+    super.dispose();
+  }
+
+  Future<void> startRecording() async {
+    try {
+      if (await recorder.hasPermission()) {
+        // String filePath = '/Users/khanhnguyenquoc/Desktop/test.wav';
+        final Directory tempDir = await getTemporaryDirectory();
+
+        String filePath = '${tempDir.path}/test.wav';
+
+        await recorder.start(
+          const RecordConfig(
+            encoder: AudioEncoder.wav, // Audio format
+            // bitRate: 128000, // Bit rate
+            // sampleRate: 44100, // Sampling rate
+          ),
+          path: filePath,
+        );
+        // await recorder.start(const RecordConfig(),
+        //     path: 'assets/audio/test.m4a');
+
+        setState(() {
+          isRecording = true;
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> stopRecording() async {
+    try {
+      audioPath = await recorder.stop();
+      setState(() {
+        isRecording = false;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> play() async {
+    try {
+      print(audioPath);
+      // Source urlSource = UrlSource(audioPath!);
+      // await player.play(DeviceFileSource(audioPath!));
+
+      FormData formData = FormData.fromMap({
+        "audio":
+            await MultipartFile.fromFile(audioPath!, filename: "recording.mp3"),
+      });
+
+      final dio = Dio();
+
+      Response response = await dio.post(
+        '${globals.atozApi}/user/upload-audio', // Replace with your API endpoint
+        data: formData,
+      );
+
+      if (response.statusCode == 200) {
+        print('Upload successful: ${response.data}');
+      } else {
+        print('Upload failed: ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -1152,22 +1244,13 @@ class _TestScreenState extends State<TestScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () {
-                String url =
-                    "https://res.cloudinary.com/dm3q8bw0w/video/upload/audio/powerUp_rgqxef.wav";
-                //     "https://res.cloudinary.com/dm3q8bw0w/video/upload/v1716538877/audio/BlueBoyAdventure.wav";
-                player.play(
-                  UrlSource(url),
-                );
-                // player.play(Source);
-              },
-              child: Text('Play'),
+              onPressed: isRecording ? stopRecording : startRecording,
+              child: Text(isRecording ? 'Stop Recording' : 'Start Recording'),
             ),
+            if (isRecording) Text('Recording...'),
             ElevatedButton(
-              onPressed: () {
-                player.pause();
-              },
-              child: Text('Pause'),
+              onPressed: !isRecording && audioPath != null ? play : null,
+              child: Text('Play'),
             ),
           ],
         ),

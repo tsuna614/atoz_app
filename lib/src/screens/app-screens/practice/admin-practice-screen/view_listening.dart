@@ -1,7 +1,6 @@
 import 'package:atoz_app/src/models/quiz_question.dart';
-import 'package:atoz_app/src/screens/app-screens/practice/admin-practice-screen/add_reading_question_screen.dart';
+import 'package:atoz_app/src/screens/app-screens/practice/admin-practice-screen/add_listening_question.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz/games/game_listening_1.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:atoz_app/src/data/global_data.dart' as global;
@@ -66,7 +65,7 @@ class _ViewListeningScreenState extends State<ViewListeningScreen> {
           Navigator.of(context)
               .push(
                 MaterialPageRoute(
-                  builder: (context) => AddReadingQuestionScreen(),
+                  builder: (context) => AddListeningQuestionScreen(),
                 ),
               )
               .then((value) => {
@@ -92,11 +91,17 @@ class _ViewListeningScreenState extends State<ViewListeningScreen> {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => Scaffold(
-                    body: ListeningTest(
-                        fullSentence: listeningQuestions[index].fullSentence,
-                        answers: listeningQuestions[index].answers,
-                        audioPublicId: listeningQuestions[index].audioPublicId,
-                        handleCheckButton: (e) {}),
+                    appBar: AppBar(
+                      title: Text('Listening Question Detail'),
+                    ),
+                    body: SafeArea(
+                      child: ListeningTest(
+                          fullSentence: listeningQuestions[index].fullSentence,
+                          answers: listeningQuestions[index].answers,
+                          audioPublicId:
+                              listeningQuestions[index].audioPublicId,
+                          handleCheckButton: (e) {}),
+                    ),
                   ),
                 ),
               );

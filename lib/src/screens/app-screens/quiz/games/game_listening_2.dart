@@ -32,26 +32,28 @@ class _ListeningTest2State extends State<ListeningTest2> {
   void initState() {
     super.initState();
 
-    // listen to states: playing, paused, stopped
-    player.onPlayerStateChanged.listen((state) {
-      setState(() {
-        isPlaying = state == PlayerState.playing;
+    if (context.mounted) {
+      // listen to states: playing, paused, stopped
+      player.onPlayerStateChanged.listen((state) {
+        setState(() {
+          isPlaying = state == PlayerState.playing;
+        });
       });
-    });
 
-    // listen to audio duration
-    player.onDurationChanged.listen((newDuration) {
-      setState(() {
-        duration = newDuration;
+      // listen to audio duration
+      player.onDurationChanged.listen((newDuration) {
+        setState(() {
+          duration = newDuration;
+        });
       });
-    });
 
-    // listen to audio position
-    player.onPositionChanged.listen((newDuration) {
-      setState(() {
-        position = newDuration;
+      // listen to audio position
+      player.onPositionChanged.listen((newDuration) {
+        setState(() {
+          position = newDuration;
+        });
       });
-    });
+    }
   }
 
   @override
@@ -61,6 +63,13 @@ class _ListeningTest2State extends State<ListeningTest2> {
       player.stop();
     }
     textController.clear();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // player.dispose();
+    textController.dispose();
   }
 
   void onCheckPressed() {
@@ -112,13 +121,6 @@ class _ListeningTest2State extends State<ListeningTest2> {
     player.play(
       UrlSource(url),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    player.dispose();
-    textController.dispose();
   }
 
   @override
