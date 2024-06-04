@@ -51,9 +51,11 @@ class _ListeningScreenState extends State<ListeningScreen> {
     final response =
         await dio.get('${global.atozApi}/listeningQuiz/getAllQuizzes');
 
+    List<ListeningQuestion> temp = [];
+
     for (int i = 0; i < response.data.length; i++) {
       setState(() {
-        listeningQuestions.add(
+        temp.add(
           ListeningQuestion(
             fullSentence: response.data[i]['fullSentence'].toString(),
             answers: response.data[i]['fullSentence'].toString().split(' '),
@@ -62,14 +64,16 @@ class _ListeningScreenState extends State<ListeningScreen> {
             // quizType: 1,
           ),
         );
-        // listeningQuestions.add(
-        //   ListeningTest(
-        //       fullSentence: response.data[i]['fullSentence'].toString(),
-        //       answers: response.data[i]['fullSentence'].toString().split(' '),
-        //       audioPublicId: response.data[i]['publicId'].toString(),
-        //       handleCheckButton: handleCheckButton),
-        // );
       });
+    }
+
+    // get 5 random questions and add to listeningQuestions list
+    temp.shuffle();
+    for (int i = 0; i < 5; i++) {
+      if (i >= temp.length) {
+        break;
+      }
+      listeningQuestions.add(temp[i]);
     }
 
     setState(() {

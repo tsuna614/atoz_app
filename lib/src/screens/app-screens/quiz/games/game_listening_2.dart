@@ -126,7 +126,7 @@ class _ListeningTest2State extends State<ListeningTest2> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.all(20),
       child: Column(
         children: [
           SizedBox(

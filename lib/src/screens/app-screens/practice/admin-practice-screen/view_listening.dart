@@ -128,6 +128,12 @@ class _ViewListeningScreenState extends State<ViewListeningScreen> {
                                 });
                                 if (context.mounted) {
                                   Navigator.pop(context);
+                                  // show snackbar
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Quiz Deleted'),
+                                    ),
+                                  );
                                 }
                               },
                               child: Text('Yes')),

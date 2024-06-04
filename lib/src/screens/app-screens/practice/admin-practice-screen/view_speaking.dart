@@ -14,18 +14,18 @@ class ViewSpeakingScreen extends StatefulWidget {
 }
 
 class _ViewSpeakingScreenState extends State<ViewSpeakingScreen> {
-  List<String> readingTitle = [];
-  List<String> readingId = [];
+  List<String> speakingTitle = [];
+  List<String> speakingId = [];
 
   void initQuestionList() async {
-    readingTitle.clear();
-    readingId.clear();
+    speakingTitle.clear();
+    speakingId.clear();
     Response response =
         await dio.get('${global.atozApi}/speakingQuiz/getAllQuizzes');
     for (int i = 0; i < response.data.length; i++) {
       setState(() {
-        readingTitle.add(response.data[i]['sentence'].toString());
-        readingId.add(response.data[i]['_id'].toString());
+        speakingTitle.add(response.data[i]['sentence'].toString());
+        speakingId.add(response.data[i]['_id'].toString());
       });
     }
   }
@@ -38,21 +38,30 @@ class _ViewSpeakingScreenState extends State<ViewSpeakingScreen> {
           title: Text('Delete this quiz?'),
           actions: [
             TextButton(
-                onPressed: () async {
-                  await dio.delete(
-                      '${global.atozApi}/readingQuiz/deleteQuizById/${readingId[index]}');
-                  setState(() {
-                    readingTitle.removeAt(index);
-                    readingId.removeAt(index);
-                  });
+              onPressed: () async {
+                await dio.delete(
+                    '${global.atozApi}/speakingQuiz/deleteQuizById/${speakingId[index]}');
+                setState(() {
+                  speakingTitle.removeAt(index);
+                  speakingId.removeAt(index);
+                });
+                if (context.mounted) {
                   Navigator.pop(context);
-                },
-                child: Text('Yes')),
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Quiz Deleted'),
+                    ),
+                  );
+                }
+              },
+              child: Text('Yes'),
+            ),
             TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('No')),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('No'),
+            ),
           ],
         );
       },
@@ -76,22 +85,22 @@ class _ViewSpeakingScreenState extends State<ViewSpeakingScreen> {
         backgroundColor: Colors.transparent,
         iconTheme: IconThemeData(color: Colors.black),
       ),
-      body: readingTitle.isEmpty
+      body: speakingTitle.isEmpty
           ? Center(
               child: Text('No Reading Question Found'),
             )
           : ListView.builder(
-              itemCount: readingTitle.length,
+              itemCount: speakingTitle.length,
               itemBuilder: (context, index) {
                 return Card(
                   child: ListTile(
-                    title: Text(readingTitle[index]),
-                    subtitle: Text(readingId[index]),
+                    title: Text(speakingTitle[index]),
+                    subtitle: Text(speakingId[index]),
                     onTap: () {
                       // Navigator.of(context).push(
                       //   MaterialPageRoute(
                       //     builder: (context) => DetailReadingQuestion(
-                      //       questionId: readingId[index],
+                      //       questionId: speakingId[index],
                       //     ),
                       //   ),
                       // );

@@ -181,6 +181,14 @@ class ListeningQuestion extends QuizQuestion {
   final int quizType;
 }
 
+class SpeakingQuestion extends QuizQuestion {
+  SpeakingQuestion({
+    required this.sentence,
+  });
+
+  final String sentence;
+}
+
 /////////////////////////  Fishing question class  /////////////////////////
 /// This class is used for the fishing minigame.
 class FishingQuestion extends QuizQuestion {

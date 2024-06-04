@@ -1222,7 +1222,7 @@ class _TestScreenState extends State<TestScreen> {
       final dio = Dio();
 
       Response response = await dio.post(
-        '${globals.atozApi}/user/upload-audio', // Replace with your API endpoint
+        '${globals.atozApi}/speakingQuiz/speech-to-text', // Replace with your API endpoint
         data: formData,
       );
 

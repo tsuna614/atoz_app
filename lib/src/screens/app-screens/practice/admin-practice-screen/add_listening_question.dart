@@ -54,20 +54,19 @@ class _AddListeningQuestionScreenState
       );
       return;
     }
-    final response = await dio.post(
+    await dio.post(
       '${global.atozApi}/listeningQuiz/generateQuiz',
       data: {
         'content': _title.text,
       },
     );
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-            'Question generated successfully with id ${response.data['_id']}'),
-      ),
-    );
     if (context.mounted) {
       Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Question generated successfully'),
+        ),
+      );
     }
   }
 
@@ -204,11 +203,17 @@ class CheckButton extends StatefulWidget {
 
 class _CheckButtonState extends State<CheckButton> {
   double _padding = 6;
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => widget.onCheckPressed(),
+      onTap: () {
+        widget.onCheckPressed();
+        setState(() {
+          _isLoading = true;
+        });
+      },
       onTapDown: (_) {
         setState(() {
           _padding = 0;
@@ -238,14 +243,18 @@ class _CheckButtonState extends State<CheckButton> {
             borderRadius: BorderRadius.circular(20),
           ),
           child: Center(
-            child: Text(
-              'Generate Question',
-              style: TextStyle(
-                  fontSize: 20,
-                  letterSpacing: 3,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
+            child: _isLoading
+                ? CircularProgressIndicator(
+                    color: Colors.white,
+                  )
+                : Text(
+                    'Generate Question',
+                    style: TextStyle(
+                        fontSize: 20,
+                        letterSpacing: 3,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
           ),
         ),
       ),

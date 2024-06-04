@@ -5,12 +5,9 @@ import 'package:atoz_app/src/providers/question_provider.dart';
 import 'package:atoz_app/src/providers/user_provider.dart';
 import 'package:cloudinary_url_gen/cloudinary.dart';
 import 'package:cloudinary_flutter/cloudinary_context.dart';
-// import 'package:atoz_app/src/screens/app-screens/game_screens/game_screen.dart';
-// import 'package:atoz_app/src/screens/app-screens/profile-screen/profile_screen.dart';
 import 'package:atoz_app/src/screens/main-screens/loading_screen.dart';
 import 'package:atoz_app/src/screens/main-screens/main_screen.dart';
 import 'package:atoz_app/src/screens/authentication-screens/login_screen.dart';
-// import 'package:atoz_app/src/test.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
@@ -154,6 +151,19 @@ class MyApp extends StatelessWidget {
             return const LoginScreen();
           },
         ),
+        // home: Scaffold(
+        //   appBar: AppBar(
+        //     foregroundColor: Colors.white,
+        //     backgroundColor: Colors.blue,
+        //   ),
+        //   body: SafeArea(
+        //     child: GameSpeaking(
+        //         fullSentence:
+        //             "Last week I went to a shopping mall. There, I met my sister hanging out with her friends.",
+        //         handleCheckButton: (value) {}),
+        //   ),
+        // ),
+        // home: TestScreen(),
       ),
     );
   }
