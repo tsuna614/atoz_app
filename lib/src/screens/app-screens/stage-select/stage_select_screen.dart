@@ -1,7 +1,6 @@
 import 'package:atoz_app/src/models/chapter_model.dart';
 import 'package:atoz_app/src/providers/chapter_provider.dart';
 import 'package:atoz_app/src/providers/user_provider.dart';
-import 'package:atoz_app/src/screens/app-screens/game/game_over_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/game/game_screen.dart';
 import 'package:atoz_app/src/screens/app-screens/quiz/quiz_screen.dart';
 import 'package:atoz_app/src/utils/time_utils.dart';
@@ -497,12 +496,8 @@ class _FishingNodeButtonState extends State<FishingNodeButton> {
   double height = 60;
 
   void _switchScreen(int score) {
+    print(score);
     Navigator.of(context).pop();
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => GameOverScreen(score: score),
-      ),
-    );
   }
 
   @override

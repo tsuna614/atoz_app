@@ -232,7 +232,7 @@ class _QuizScreenState extends State<QuizScreen> {
             ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
+          padding: const EdgeInsets.only(bottom: 28.0),
           child: Stack(
             children: [
               Padding(

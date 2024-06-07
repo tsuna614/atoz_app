@@ -130,6 +130,7 @@ class _WritingScreenState extends State<WritingScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
         elevation: 0,
         title: Text('Question ${currentQuestionIndex + 1}'),
         leading: IconButton(

@@ -3,6 +3,7 @@ import 'package:atoz_app/src/models/quiz_question.dart';
 import 'package:atoz_app/src/providers/question_provider.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class GameScreen extends StatefulWidget {
@@ -21,14 +22,16 @@ class _GameScreenState extends State<GameScreen> {
   late AtozGame game;
 
   bool isPaused = false;
+  bool isGameOver = false;
 
   @override
   void initState() {
     fishingQuests = context.read<QuestionProvider>().fishingQuests;
+
     game = AtozGame(
       question: fishingQuests[1],
       totalTime: 180,
-      switchScreen: _switchScreen,
+      switchScreen: _triggerGameOver,
       setPauseGame: () {
         setState(() {
           isPaused = true;
@@ -38,8 +41,11 @@ class _GameScreenState extends State<GameScreen> {
     super.initState();
   }
 
-  void _switchScreen(int score) {
-    widget.switchScreen(score);
+  void _triggerGameOver(int score) {
+    setState(() {
+      isPaused = false;
+      isGameOver = true;
+    });
   }
 
   @override
@@ -50,50 +56,101 @@ class _GameScreenState extends State<GameScreen> {
         children: [
           GameWidget(game: game),
           if (isPaused) _buildPauseMenu(context),
+          if (isGameOver) _buildGameOverScreen(context),
         ],
       ),
     );
   }
 
   Widget _buildPauseMenu(BuildContext context) {
-    return Expanded(
-      child: Container(
-        color: Colors.black.withOpacity(0.5),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    isPaused = false;
-                    game.pauseGame();
-                  });
-                },
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  textStyle: const TextStyle(fontSize: 20.0),
-                ),
-                child: Text(
-                  'RESUME',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
+    return Container(
+      color: Colors.black.withOpacity(0.5),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  isPaused = false;
+                  game.pauseGame();
+                });
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                textStyle: const TextStyle(fontSize: 20.0),
               ),
-              TextButton(
-                onPressed: () {
-                  game.triggerGameOver(true);
-                },
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  textStyle: const TextStyle(fontSize: 20.0),
-                ),
-                child: Text(
-                  'BACK TO MENU',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
+              child: Text(
+                'RESUME',
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
-            ],
-          ),
+            ),
+            TextButton(
+              onPressed: () {
+                game.triggerGameOver(true);
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                textStyle: const TextStyle(fontSize: 20.0),
+              ),
+              child: Text(
+                'BACK TO MENU',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGameOverScreen(BuildContext context) {
+    return Container(
+      color: Colors.black.withOpacity(0.5),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'GAME OVER',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              'Your score: ${game.score}',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                // fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            TextButton(
+              onPressed: () {
+                // Navigator.of(context).pop();
+
+                SystemChrome.setPreferredOrientations([]);
+                SystemChrome.setPreferredOrientations([
+                  DeviceOrientation.portraitUp,
+                  DeviceOrientation.portraitDown,
+                ]);
+                widget.switchScreen(game.score);
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                textStyle: const TextStyle(fontSize: 16.0),
+              ),
+              child: Text(
+                'BACK TO MENU',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -9,7 +9,6 @@ import 'package:atoz_app/src/screens/main-screens/loading_screen.dart';
 import 'package:atoz_app/src/screens/main-screens/main_screen.dart';
 import 'package:atoz_app/src/screens/authentication-screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +21,10 @@ import 'firebase_options.dart';
 final theme = ThemeData(
   // useMaterial3: true,
   // colorScheme: ColorScheme.fromSeed(
-  //   brightness: Brightness.light,
+  // brightness: Brightness.dark,
   //   seedColor: const Color.fromARGB(255, 0, 70, 149),
   // ),
+
   primaryColor: Color.fromARGB(255, 0, 70, 149),
   colorScheme: ThemeData().colorScheme.copyWith(
         primary: Color.fromARGB(255, 0, 70, 149),
@@ -86,9 +86,13 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (isGameStart) {
     //// set the orientation of the phone
-    await Flame.device.fullScreen();
-    await Flame.device.setLandscape();
+    // await Flame.device.fullScreen();
+    // await Flame.device.setLandscape();
     // await Flame.device.setPortrait();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);
 
     AtozGame game = AtozGame(
       question: question,
@@ -114,6 +118,8 @@ Future<void> main() async {
     );
 
     SystemChrome.setPreferredOrientations([
+      // DeviceOrientation.landscapeRight,
+      // DeviceOrientation.landscapeLeft,
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]).then((value) => runApp(MyApp()));
@@ -151,19 +157,6 @@ class MyApp extends StatelessWidget {
             return const LoginScreen();
           },
         ),
-        // home: Scaffold(
-        //   appBar: AppBar(
-        //     foregroundColor: Colors.white,
-        //     backgroundColor: Colors.blue,
-        //   ),
-        //   body: SafeArea(
-        //     child: GameSpeaking(
-        //         fullSentence:
-        //             "Last week I went to a shopping mall. There, I met my sister hanging out with her friends.",
-        //         handleCheckButton: (value) {}),
-        //   ),
-        // ),
-        // home: TestScreen(),
       ),
     );
   }

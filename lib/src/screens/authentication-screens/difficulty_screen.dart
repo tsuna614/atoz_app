@@ -388,7 +388,8 @@ class _DifficultyCardState extends State<DifficultyCard> {
               //     : null,
             ),
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -417,63 +418,5 @@ class _DifficultyCardState extends State<DifficultyCard> {
         ),
       ),
     );
-
-    //   return Padding(
-    //       padding: const EdgeInsets.all(8.0),
-    //       child: Container(
-    //         decoration: BoxDecoration(
-    //           color: Colors.white,
-    //           borderRadius: BorderRadius.circular(10),
-    //           boxShadow: [
-    //             chosenDifficulty == difficulty
-    //                 ? BoxShadow(
-    //                     color: Colors.blue,
-    //                     blurRadius: 0,
-    //                     offset: Offset(4, 4), // Shadow position
-    //                   )
-    //                 : BoxShadow()
-    //           ],
-    //           // border: chosenDifficulty == difficulty
-    //           //     ? Border.all(color: Colors.white, width: 3)
-    //           //     : null,
-    //         ),
-    //         child: Material(
-    //           color: Colors.transparent,
-    //           child: InkWell(
-    //             customBorder: RoundedRectangleBorder(
-    //               borderRadius: BorderRadius.circular(10),
-    //             ),
-    //             onTap: () {
-    //               onDifficultyPress(difficulty);
-    //             },
-    //             child: Container(
-    //               width: double.infinity,
-    //               child: Padding(
-    //                 padding: const EdgeInsets.all(16.0),
-    //                 child: Column(
-    //                   crossAxisAlignment: CrossAxisAlignment.start,
-    //                   children: [
-    //                     Text(
-    //                       difficulty,
-    //                       style: TextStyle(
-    //                           fontSize: 26,
-    //                           fontWeight: FontWeight.bold,
-    //                           color: Theme.of(context).primaryColor),
-    //                     ),
-    //                     Text(
-    //                       subText,
-    //                       style: TextStyle(
-    //                           fontSize: 16,
-    //                           fontWeight: FontWeight.normal,
-    //                           color: Theme.of(context).primaryColor),
-    //                     ),
-    //                   ],
-    //                 ),
-    //               ),
-    //             ),
-    //           ),
-    //         ),
-    //       ));
-    // }
   }
 }

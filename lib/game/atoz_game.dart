@@ -9,12 +9,12 @@ import 'package:atoz_app/game/utils/keyboard_handler.dart';
 import 'package:atoz_app/src/models/quiz_question.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
-import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flame/flame.dart';
 
 enum GameState { playing, paused, inDialogue }
 
@@ -81,12 +81,18 @@ class AtozGame extends FlameGame
   @override
   FutureOr<void> onLoad() async {
     await Flame.device.fullScreen();
-    await Flame.device.setLandscape();
+    // await Flame.device.setLandscape();
     // await Flame.device.setPortrait();
+
+    SystemChrome.setPreferredOrientations([]);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);
 
     // await return error when building android
     // maybe because of naming folder 'Current-Projects' ?
-    await images.loadAllImages();
+    images.loadAllImages();
 
     add(keyHandler);
 
@@ -112,6 +118,22 @@ class AtozGame extends FlameGame
     return super.onLoad();
   }
 
+  double getBiggerBetween(double a, double b) {
+    if (a > b) {
+      return a;
+    } else {
+      return b;
+    }
+  }
+
+  double getLessBetween(double a, double b) {
+    if (a < b) {
+      return a;
+    } else {
+      return b;
+    }
+  }
+
   void _loadLevel() {
     level = Level(
       player: player,
@@ -120,7 +142,7 @@ class AtozGame extends FlameGame
       scale: scale,
     );
 
-    Future.delayed(Duration(milliseconds: 500), () {
+    Future.delayed(Duration(milliseconds: 1000), () {
       worldWidth = level.level.width;
       worldHeight = level.level.height;
     });
@@ -128,8 +150,10 @@ class AtozGame extends FlameGame
     // size.x and y is the size of the entire screen within SafeArea (which is in the main)
     cam = CameraComponent.withFixedResolution(
       world: level,
-      width: size.x,
-      height: size.y,
+      width: getBiggerBetween(size.x, size.y),
+      height: getLessBetween(size.x, size.y),
+      // width: size.x,
+      // height: size.y,
     );
 
     cam.follow(player);
@@ -138,11 +162,13 @@ class AtozGame extends FlameGame
 
     addAll([cam, level]);
 
+    /* note: camera bounder is set in the background component */
+
     cam.priority =
         0; // set cam priority = 0 so the joystick is in front of the whole screen
 
     add(PauseButton(
-      position: Vector2(size.x - 50 - 30, 15),
+      position: Vector2(getBiggerBetween(size.x, size.y) - 50 - 30, 15),
       size: Vector2(50, 50),
     ));
   }
@@ -159,6 +185,10 @@ class AtozGame extends FlameGame
     }
     super.update(dt);
   }
+
+  // double getWorldWidth() {
+  //   return worldWidth;
+  // }
 
   void _addJoysticks() {
     joystickLeft = JoystickComponent(
@@ -315,7 +345,7 @@ class AtozGame extends FlameGame
 
   void triggerGameOver(bool isGameLost) async {
     await FlameAudio.bgm.stop();
-    await Flame.device.setPortrait();
+    // await Flame.device.setPortrait();
     if (isGameLost) {
       switchScreen(0);
     } else {

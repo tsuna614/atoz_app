@@ -16,35 +16,22 @@ class AddSpeakingQuestionScreen extends StatefulWidget {
 class _AddSpeakingQuestionScreenState extends State<AddSpeakingQuestionScreen> {
   final _title = TextEditingController();
 
-  bool isMoreThen100Characters = false;
-  bool containsPunctuation = false;
+  bool isMoreThen150Characters = false;
 
   void checkValidation() {
-    if (_title.text.trim().length > 100) {
+    if (_title.text.trim().length > 150) {
       setState(() {
-        isMoreThen100Characters = true;
+        isMoreThen150Characters = true;
       });
     } else {
       setState(() {
-        isMoreThen100Characters = false;
-      });
-    }
-
-    if (_title.text.contains(RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%0-9-]'))) {
-      setState(() {
-        containsPunctuation = true;
-      });
-    } else {
-      setState(() {
-        containsPunctuation = false;
+        isMoreThen150Characters = false;
       });
     }
   }
 
   void onCreatePressed(BuildContext context) async {
-    if (_title.text.trim().isEmpty ||
-        isMoreThen100Characters ||
-        containsPunctuation) {
+    if (_title.text.trim().isEmpty || isMoreThen150Characters) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Please fill in all necessary fields'),
@@ -144,7 +131,7 @@ class _AddSpeakingQuestionScreenState extends State<AddSpeakingQuestionScreen> {
                         children: [
                           Icon(
                             Icons.check_circle,
-                            color: isMoreThen100Characters
+                            color: isMoreThen150Characters
                                 ? Colors.red
                                 : Colors.green,
                           ),
@@ -152,33 +139,36 @@ class _AddSpeakingQuestionScreenState extends State<AddSpeakingQuestionScreen> {
                             width: 8,
                           ),
                           Text(
-                            'Less than 100 characters',
+                            'Less than 150 characters',
                             style: TextStyle(
                               fontSize: 16,
-                              color: isMoreThen100Characters
+                              color: isMoreThen150Characters
                                   ? Colors.red
                                   : Colors.green,
                             ),
                           ),
                         ],
                       ),
+                      SizedBox(
+                        height: 16,
+                      ),
                       Row(
-                        children: [
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
                           Icon(
-                            Icons.check_circle,
-                            color:
-                                containsPunctuation ? Colors.red : Colors.green,
+                            Icons.info,
+                            color: Colors.blue,
                           ),
                           SizedBox(
                             width: 8,
                           ),
-                          Text(
-                            'Does not contain punctuation except (. , \' ")',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: containsPunctuation
-                                  ? Colors.red
-                                  : Colors.green,
+                          Flexible(
+                            child: Text(
+                              'Make sure your sentence does not contain any typo or grammatical error.',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.blue,
+                              ),
                             ),
                           ),
                         ],

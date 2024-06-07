@@ -121,42 +121,42 @@ class LanguageSelectPage extends StatelessWidget {
                             children: [
                               CountryCard(
                                 language: 'Vietnamese',
-                                flagAssets: 'assets/images/vietnam.png',
+                                flagAssets: 'assets/images/app/vietnam.png',
                                 onLanguagePress: (selectedLanguage) {
                                   onLanguageSelect(context, selectedLanguage);
                                 },
                               ),
                               CountryCard(
                                 language: 'English',
-                                flagAssets: 'assets/images/uk.png',
+                                flagAssets: 'assets/images/app/uk.png',
                                 onLanguagePress: (selectedLanguage) {
                                   onLanguageSelect(context, selectedLanguage);
                                 },
                               ),
                               CountryCard(
                                 language: 'Japanese',
-                                flagAssets: 'assets/images/japan.png',
+                                flagAssets: 'assets/images/app/japan.png',
                                 onLanguagePress: (selectedLanguage) {
                                   onLanguageSelect(context, selectedLanguage);
                                 },
                               ),
                               CountryCard(
                                 language: 'German',
-                                flagAssets: 'assets/images/germany.png',
+                                flagAssets: 'assets/images/app/germany.png',
                                 onLanguagePress: (selectedLanguage) {
                                   onLanguageSelect(context, selectedLanguage);
                                 },
                               ),
                               CountryCard(
                                 language: 'French',
-                                flagAssets: 'assets/images/france.png',
+                                flagAssets: 'assets/images/app/france.png',
                                 onLanguagePress: (selectedLanguage) {
                                   onLanguageSelect(context, selectedLanguage);
                                 },
                               ),
                               CountryCard(
                                 language: 'Spanish',
-                                flagAssets: 'assets/images/spain.png',
+                                flagAssets: 'assets/images/app/spain.png',
                                 onLanguagePress: (selectedLanguage) {
                                   onLanguageSelect(context, selectedLanguage);
                                 },

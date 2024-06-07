@@ -62,28 +62,31 @@ class _DrawerScreenState extends State<DrawerScreen> {
         SizedBox(
           height: 100,
         ),
-        Column(
-          children: [
-            buildAnimatedButton(context, 0),
-            SizedBox(
-              height: 40,
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                buildAnimatedButton(context, 0),
+                SizedBox(
+                  height: 30,
+                ),
+                buildAnimatedButton(context, 1),
+                SizedBox(
+                  height: 30,
+                ),
+                buildAnimatedButton(context, 2),
+                SizedBox(
+                  height: 30,
+                ),
+                buildAnimatedButton(context, 3),
+                SizedBox(
+                  height: 30,
+                ),
+                buildAnimatedButton(context, 4),
+              ],
             ),
-            buildAnimatedButton(context, 1),
-            SizedBox(
-              height: 40,
-            ),
-            buildAnimatedButton(context, 2),
-            SizedBox(
-              height: 40,
-            ),
-            buildAnimatedButton(context, 3),
-            SizedBox(
-              height: 40,
-            ),
-            buildAnimatedButton(context, 4),
-          ],
+          ),
         ),
-        Expanded(child: Container()),
         GestureDetector(
           onTap: () {
             _dialogBuilder(context);
@@ -148,7 +151,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                               ? FontAwesomeIcons.medal
                               : FontAwesomeIcons.gear,
               color: Colors.white,
-              size: 16,
+              size: 14,
             ),
             SizedBox(
               width: 20,
@@ -165,7 +168,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                               : 'Settings',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 16,
+                fontSize: 14,
                 letterSpacing: 4,
               ),
             ),

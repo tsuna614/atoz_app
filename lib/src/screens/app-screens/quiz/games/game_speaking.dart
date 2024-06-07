@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dio/dio.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
@@ -23,15 +25,22 @@ class SpeakingTest extends StatefulWidget {
 }
 
 class _SpeakingTestState extends State<SpeakingTest> {
-  RecordingState recordingState = RecordingState.initial;
-  AudioRecorder recorder = AudioRecorder();
+  late RecordingState recordingState;
+  late AudioRecorder recorder;
+  late AudioPlayer player;
   String? audioPath;
   String userAnswer = '';
+  bool isLoading = false;
+  bool hasCheckedAnswer = false;
+  late List<bool> result;
 
   late Widget speakingSentence;
 
   @override
   void initState() {
+    recordingState = RecordingState.initial;
+    recorder = AudioRecorder();
+    player = AudioPlayer();
     speakingSentence = Text(
       widget.fullSentence,
       style: TextStyle(
@@ -47,7 +56,26 @@ class _SpeakingTestState extends State<SpeakingTest> {
   @override
   void dispose() {
     recorder.dispose();
+    player.dispose();
     super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant SpeakingTest oldWidget) {
+    // reinstantiate the recorder when the widget is updated
+    recordingState = RecordingState.initial;
+    recorder = AudioRecorder();
+    hasCheckedAnswer = false;
+    speakingSentence = Text(
+      widget.fullSentence,
+      style: TextStyle(
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+      ),
+      textAlign: TextAlign.center,
+    );
+    super.didUpdateWidget(oldWidget);
   }
 
   String formattedString(String str) {
@@ -113,6 +141,15 @@ class _SpeakingTestState extends State<SpeakingTest> {
     }
   }
 
+  Future<void> playAudio() async {
+    try {
+      await player.stop();
+      await player.play(DeviceFileSource(audioPath!));
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future<String> getUserSpeechToText() async {
     try {
       // Source urlSource = UrlSource(audioPath!);
@@ -144,74 +181,70 @@ class _SpeakingTestState extends State<SpeakingTest> {
   }
 
   void onCheckPressed() async {
-    userAnswer = await getUserSpeechToText();
+    if (!hasCheckedAnswer) {
+      setState(() {
+        isLoading = true;
+      });
 
-    // print(userAnswer);
-    // print(widget.fullSentence);
+      userAnswer = await getUserSpeechToText();
 
-    List<bool> result = compareStringsByWords(
-      sentence: formattedString(widget.fullSentence),
-      userAnswer: formattedString(userAnswer),
-    );
-
-    List<String> splittedSentence = widget.fullSentence.split(' ');
-
-    setState(() {
-      speakingSentence = Text.rich(
-        TextSpan(
-          children: [
-            for (int i = 0; i < splittedSentence.length; i++)
-              TextSpan(
-                text: i == 0 ? splittedSentence[i] : ' ${splittedSentence[i]}',
-                style: TextStyle(
-                  color: result[i] ? Colors.green : Colors.red,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                ),
-              ),
-          ],
-        ),
-        textAlign: TextAlign.center,
+      result = compareStringsByWords(
+        sentence: formattedString(widget.fullSentence),
+        userAnswer: formattedString(userAnswer),
       );
-    });
 
-    // String answer = widget.fullSentence;
-    // // remove the last period from the answer if the user didn't type it
-    // if (widget.fullSentence.endsWith('.') &&
-    //     !textController.text.endsWith('.')) {
-    //   answer = widget.fullSentence.substring(
-    //     0,
-    //     widget.fullSentence.length - 1,
-    //   );
-    // }
-    // if (textController.text.trim().toLowerCase() ==
-    //     answer.trim().toLowerCase()) {
-    //   AwesomeDialog(
-    //     context: context,
-    //     dialogType: DialogType.success,
-    //     animType: AnimType.rightSlide,
-    //     title: 'Correct',
-    //     btnOkText: 'Next',
-    //     btnOkOnPress: () {
-    //       // Navigator.pop(context);
-    //       widget.handleCheckButton(true);
-    //     },
-    //     dismissOnTouchOutside: false,
-    //   ).show();
-    // } else {
-    //   AwesomeDialog(
-    //     context: context,
-    //     dialogType: DialogType.error,
-    //     animType: AnimType.rightSlide,
-    //     title: 'Wrong',
-    //     btnCancelText: 'Next',
-    //     btnCancelOnPress: () {
-    //       // Navigator.pop(context);
-    //       widget.handleCheckButton(false);
-    //     },
-    //     dismissOnTouchOutside: false,
-    //   ).show();
-    // }
+      List<String> splittedSentence = widget.fullSentence.split(' ');
+
+      setState(() {
+        speakingSentence = Text.rich(
+          TextSpan(
+            children: [
+              for (int i = 0; i < splittedSentence.length; i++)
+                TextSpan(
+                  text:
+                      i == 0 ? splittedSentence[i] : ' ${splittedSentence[i]}',
+                  style: TextStyle(
+                    color: result[i] ? Colors.green : Colors.red,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                  ),
+                ),
+            ],
+          ),
+          textAlign: TextAlign.center,
+        );
+        isLoading = false;
+        hasCheckedAnswer = true;
+      });
+    } else {
+      if (result.every((element) => element == true)) {
+        AwesomeDialog(
+          context: context,
+          dialogType: DialogType.success,
+          animType: AnimType.rightSlide,
+          title: 'Correct',
+          btnOkText: 'Next',
+          btnOkOnPress: () {
+            // Navigator.pop(context);
+            widget.handleCheckButton(true);
+          },
+          dismissOnTouchOutside: false,
+        ).show();
+      } else {
+        AwesomeDialog(
+          context: context,
+          dialogType: DialogType.error,
+          animType: AnimType.rightSlide,
+          title: 'Wrong',
+          btnCancelText: 'Next',
+          btnCancelOnPress: () {
+            // Navigator.pop(context);
+            widget.handleCheckButton(false);
+          },
+          dismissOnTouchOutside: false,
+        ).show();
+      }
+    }
   }
 
   @override
@@ -221,18 +254,18 @@ class _SpeakingTestState extends State<SpeakingTest> {
       child: Column(
         children: [
           SizedBox(
-            height: 20,
+            height: 40,
           ),
           Align(
             alignment: Alignment(0, 0),
             child: Text(
-              'Press Start recording button and try to speak this sentence out loud.',
+              'Press \'Start recording\' button and try to speak this sentence out loud.',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.start,
+              textAlign: TextAlign.center,
             ),
           ),
           SizedBox(
-            height: 100,
+            height: 80,
           ),
           Expanded(
             child: Container(
@@ -244,28 +277,45 @@ class _SpeakingTestState extends State<SpeakingTest> {
                 ),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Center(
-                child: speakingSentence,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Center(
+                  child: speakingSentence,
+                ),
               ),
             ),
           ),
           SizedBox(
             height: 100,
           ),
-          AudioButton(
-            onCheckPressed: () {
-              if (recordingState == RecordingState.initial) {
-                startRecording();
-              } else if (recordingState == RecordingState.recording) {
-                stopRecording();
-              }
-            },
-            recordingState: recordingState,
+          Row(
+            children: [
+              AudioButton(
+                onCheckPressed: () {
+                  if (recordingState == RecordingState.initial) {
+                    startRecording();
+                  } else if (recordingState == RecordingState.recording) {
+                    stopRecording();
+                  }
+                },
+                recordingState: recordingState,
+              ),
+              Spacer(),
+              ReplayButton(
+                onCheckPressed: playAudio,
+                recordingState: recordingState,
+              ),
+            ],
           ),
           SizedBox(
             height: 20,
           ),
-          CheckButton(onCheckPressed: onCheckPressed),
+          CheckButton(
+            onCheckPressed: onCheckPressed,
+            recordingState: recordingState,
+            isLoading: isLoading,
+            hasCheckedAnswer: hasCheckedAnswer,
+          ),
           // SizedBox(
           //   height: 50,
           // ),
@@ -329,7 +379,7 @@ class _AudioButtonState extends State<AudioButton> {
         ),
         duration: Duration(milliseconds: 100),
         child: Container(
-          width: 180,
+          width: 160,
           // height: 100,
           decoration: BoxDecoration(
             color: Colors.white,
@@ -372,23 +422,33 @@ class _AudioButtonState extends State<AudioButton> {
   }
 }
 
-class CheckButton extends StatefulWidget {
-  const CheckButton({super.key, required this.onCheckPressed});
+class ReplayButton extends StatefulWidget {
+  const ReplayButton({
+    super.key,
+    required this.onCheckPressed,
+    required this.recordingState,
+  });
 
   final void Function() onCheckPressed;
+  final RecordingState recordingState;
 
   @override
-  State<CheckButton> createState() => _CheckButtonState();
+  State<ReplayButton> createState() => _ReplayButtonState();
 }
 
-class _CheckButtonState extends State<CheckButton> {
+class _ReplayButtonState extends State<ReplayButton> {
   double _padding = 6;
 
   @override
   Widget build(BuildContext context) {
+    MaterialColor color = widget.recordingState == RecordingState.finished
+        ? Colors.blue
+        : Colors.grey;
     return GestureDetector(
       onTap: () {
-        widget.onCheckPressed();
+        if (widget.recordingState == RecordingState.finished) {
+          widget.onCheckPressed();
+        }
       },
       onTapDown: (_) {
         setState(() {
@@ -409,7 +469,102 @@ class _CheckButtonState extends State<CheckButton> {
         padding: EdgeInsets.only(bottom: _padding),
         margin: EdgeInsets.only(top: -(_padding - 6)),
         decoration: BoxDecoration(
-          color: Colors.blue[700],
+          color: color[500],
+          borderRadius: BorderRadius.circular(20),
+        ),
+        duration: Duration(milliseconds: 100),
+        child: Container(
+          width: 160,
+          // height: 100,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(
+              color: color,
+            ),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.volume_up_rounded,
+                    color: color,
+                    size: 80,
+                  ),
+                  Text(
+                    'Replay Audio',
+                    style: TextStyle(
+                      fontSize: 16,
+                      letterSpacing: 1,
+                      fontWeight: FontWeight.bold,
+                      color: color,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CheckButton extends StatefulWidget {
+  const CheckButton({
+    super.key,
+    required this.onCheckPressed,
+    required this.recordingState,
+    required this.isLoading,
+    required this.hasCheckedAnswer,
+  });
+
+  final void Function() onCheckPressed;
+  final RecordingState recordingState;
+  final bool isLoading;
+  final bool hasCheckedAnswer;
+
+  @override
+  State<CheckButton> createState() => _CheckButtonState();
+}
+
+class _CheckButtonState extends State<CheckButton> {
+  double _padding = 6;
+
+  @override
+  Widget build(BuildContext context) {
+    MaterialColor color = widget.recordingState == RecordingState.finished
+        ? Colors.blue
+        : Colors.grey;
+
+    return GestureDetector(
+      onTap: () {
+        if (widget.recordingState == RecordingState.finished) {
+          widget.onCheckPressed();
+        }
+      },
+      onTapDown: (_) {
+        setState(() {
+          _padding = 0;
+        });
+      },
+      onTapCancel: () {
+        setState(() {
+          _padding = 6;
+        });
+      },
+      onTapUp: (_) {
+        setState(() {
+          _padding = 6;
+        });
+      },
+      child: AnimatedContainer(
+        padding: EdgeInsets.only(bottom: _padding),
+        margin: EdgeInsets.only(top: -(_padding - 6)),
+        decoration: BoxDecoration(
+          color: color[600],
           borderRadius: BorderRadius.circular(20),
         ),
         duration: Duration(milliseconds: 100),
@@ -417,23 +572,33 @@ class _CheckButtonState extends State<CheckButton> {
           width: double.infinity,
           height: 60,
           decoration: BoxDecoration(
-            color: Colors.blue,
-            border: Border.all(color: Colors.blue),
+            color: color,
+            border: Border.all(color: color),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Center(
-            // child: CircularProgressIndicator(
-            //   backgroundColor: Colors.blue[700],
-            //   color: Colors.white,
-            // ),
-            child: Text(
-              'Check answer',
-              style: TextStyle(
-                  fontSize: 24,
-                  letterSpacing: 5,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
+            child: widget.isLoading
+                ? CircularProgressIndicator(
+                    backgroundColor: color[700],
+                    color: Colors.white,
+                  )
+                : widget.hasCheckedAnswer
+                    ? Text(
+                        'Next question',
+                        style: TextStyle(
+                            fontSize: 24,
+                            letterSpacing: 5,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      )
+                    : Text(
+                        'Check answer',
+                        style: TextStyle(
+                            fontSize: 24,
+                            letterSpacing: 5,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
           ),
         ),
       ),

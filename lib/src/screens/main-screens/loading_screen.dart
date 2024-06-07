@@ -11,19 +11,21 @@ class LoadingScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            CircularProgressIndicator(
-              color: Colors.white,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Text(
-              'Loading...',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20.0),
+              // child: SizedBox.fromSize(
+              //   size: Size.fromHeight(400),
+              //   child: Image(
+              //     // image: AssetImage(widget.imageAsset),
+              //     image: Image.network(widget.imageAsset).image,
+              //   ),
+              // ),
+              child: Image.asset(
+                'assets/images/app/alogo.png',
+                height: 150,
+                fit: BoxFit.cover,
+              ),
             ),
           ],
         ),

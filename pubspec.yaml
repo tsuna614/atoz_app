@@ -99,6 +99,7 @@ flutter:
     - assets/images/HUD/Dialog/DialogInfo.png
     - assets/images/Items/
     # app assets
+    - assets/images/app/alogo.png
     - assets/images/app/logo2.png
     - assets/images/app/profile.jpg
     - assets/images/app/pfp.jpeg

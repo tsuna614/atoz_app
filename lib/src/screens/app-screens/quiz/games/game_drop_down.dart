@@ -99,35 +99,28 @@ class _DropDownGameState extends State<DropDownGame> {
   }
 
   Widget buildSentence(DropDownQuestionChild sentence, int index) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 20),
-      // child: Row(
-      //   children: [
-      //     Text(
-      //       '${index + 1}.       ${sentence.sentence1}',
-      //       style: TextStyle(fontSize: 20),
-      //     ),
-      //     SizedBox(width: 10),
-      //     buildDropDownButton(sentence.answers, index),
-      //     SizedBox(width: 10),
-      //     Text(
-      //       sentence.sentence2,
-      //       style: TextStyle(fontSize: 20),
-      //     ),
-      //   ],
-      // ),
-      // use TextSpan instead
-      child: RichText(
-        text: TextSpan(
-          style: TextStyle(fontSize: 20, color: Colors.black, height: 2),
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 30),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            TextSpan(text: '${index + 1}.       '),
-            TextSpan(text: '${sentence.sentence1}    '),
-            WidgetSpan(
-              child: buildDropDownButton(sentence.answers, index),
+            Text(
+              '${index.toString()}.     ',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            TextSpan(text: '    '),
-            TextSpan(text: sentence.sentence2),
+            Text(
+              sentence.sentence1,
+              style: TextStyle(fontSize: 20),
+            ),
+            SizedBox(width: 20),
+            buildDropDownButton(sentence.answers, index),
+            SizedBox(width: 20),
+            Text(
+              sentence.sentence2,
+              style: TextStyle(fontSize: 20),
+            ),
           ],
         ),
       ),
@@ -135,22 +128,49 @@ class _DropDownGameState extends State<DropDownGame> {
   }
 
   Widget buildDropDownButton(List<String> answers, int index) {
-    return DropdownButton(
-      value: userAnswers[index],
-      onChanged: (value) {
-        setState(() {
-          userAnswers[index] = value!;
-        });
-      },
-      items: answers.map((answer) {
-        return DropdownMenuItem(
-          value: answer,
-          child: Padding(
-            padding: const EdgeInsets.all(0),
-            child: Text(answer, style: TextStyle(fontSize: 20)),
-          ),
-        );
-      }).toList(),
+    // return DropdownButton(
+    //   value: userAnswers[index],
+    //   onChanged: (value) {
+    //     setState(() {
+    //       userAnswers[index] = value!;
+    //     });
+    //   },
+    //   items: answers.map((answer) {
+    //     return DropdownMenuItem(
+    //       value: answer,
+    //       child: Padding(
+    //         padding: const EdgeInsets.all(0),
+    //         child: Text(answer, style: TextStyle(fontSize: 20)),
+    //       ),
+    //     );
+    //   }).toList(),
+    // );
+    return Container(
+      height: 40,
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.blue, width: 2),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton(
+          value: userAnswers[index],
+          onChanged: (value) {
+            setState(() {
+              userAnswers[index] = value as String;
+            });
+          },
+          items: answers.map((answer) {
+            return DropdownMenuItem(
+              value: answer,
+              child: Padding(
+                padding: const EdgeInsets.all(0),
+                child: Text(answer, style: TextStyle(fontSize: 16)),
+              ),
+            );
+          }).toList(),
+        ),
+      ),
     );
   }
 }
