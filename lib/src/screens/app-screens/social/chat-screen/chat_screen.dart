@@ -18,12 +18,13 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final _messageController = TextEditingController();
 
-  late var _currentUserId;
-  late var _targetUserId;
+  late String _currentUserId;
+  late String _targetUserId;
+
+  int currentChosenMessage = -1;
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _messageController.dispose();
   }
@@ -47,32 +48,36 @@ class _ChatScreenState extends State<ChatScreen> {
         .where("users.$currentUserId", isEqualTo: true)
         .where("users.$targetUserId", isEqualTo: true)
         .get()
-        .then((value) {
-      // if a document is found, add the message to the messages collection of that document
-      if (value.docs.isNotEmpty) {
-        db.collection("chat").doc(value.docs[0].id).collection("messages").add({
-          "message": enteredMessage,
-          "createdAt": Timestamp.now(),
-          "userId": currentUserId,
-        });
-        // if no document was found, create new one, then add the message
-      } else {
-        db.collection("chat").add({
-          "users": {
-            currentUserId: true,
-            targetUserId: true,
-          },
-        }).then((value) {
-          db.collection("chat").doc(value.id).collection("messages").add({
+        .then(
+      (value) {
+        // if a document is found, add the message to the messages collection of that document
+        if (value.docs.isNotEmpty) {
+          db
+              .collection("chat")
+              .doc(value.docs[0].id)
+              .collection("messages")
+              .add({
             "message": enteredMessage,
             "createdAt": Timestamp.now(),
             "userId": currentUserId,
           });
-        });
-      }
-    });
-
-    // db.collection("abc").doc("adv").collection("collectionPath").
+          // if no document was found, create new one, then add the message
+        } else {
+          db.collection("chat").add({
+            "users": {
+              currentUserId: true,
+              targetUserId: true,
+            },
+          }).then((value) {
+            db.collection("chat").doc(value.id).collection("messages").add({
+              "message": enteredMessage,
+              "createdAt": Timestamp.now(),
+              "userId": currentUserId,
+            });
+          });
+        }
+      },
+    );
 
     _messageController.clear();
   }
@@ -126,7 +131,6 @@ class _ChatScreenState extends State<ChatScreen> {
                     Colors.blue.shade700,
                   ],
                 ),
-                // color: Colors.transparent,
               ),
             ),
           ),
@@ -203,6 +207,8 @@ class _ChatScreenState extends State<ChatScreen> {
     return chatId;
   }
 
+  final ValueNotifier<int> _notifier = ValueNotifier(-1);
+
   Future<Widget> buildTextMessages(BuildContext context) async {
     String chatId = "";
     chatId = await _getChatId();
@@ -215,7 +221,6 @@ class _ChatScreenState extends State<ChatScreen> {
             .orderBy('createdAt', descending: true)
             .snapshots(),
         builder: (context, chatSnapshots) {
-          print(chatId);
           if (chatSnapshots.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
@@ -236,18 +241,59 @@ class _ChatScreenState extends State<ChatScreen> {
 
           final loadedMessages = chatSnapshots.data!.docs;
 
-          return ListView.builder(
-            reverse: true,
-            itemCount: loadedMessages.length,
-            itemBuilder: (context, index) {
-              final chatMessage = loadedMessages[index].data();
+          // return ListView.builder(
+          //   reverse: true,
+          //   itemCount: loadedMessages.length,
+          //   itemBuilder: (context, index) {
+          //     final chatMessage = loadedMessages[index].data();
 
-              return MessageBubble(
-                message: chatMessage["message"],
-                isCurrentUser: chatMessage["userId"] == _currentUserId,
-              );
-            },
-          );
+          //     return GestureDetector(
+          //       onTap: () {
+          //         setState(() {
+          //           currentChosenMessage = index;
+          //         });
+          //       },
+          //       child: MessageBubble(
+          //         message: chatMessage["message"],
+          //         isCurrentUser: chatMessage["userId"] == _currentUserId,
+          //         isChosenMessage: currentChosenMessage == index,
+          //       ),
+          //     );
+          //   },
+          // );
+
+          return ValueListenableBuilder(
+              valueListenable: _notifier,
+              builder: ((context, value, child) {
+                return ListView.builder(
+                    reverse: true,
+                    itemCount: loadedMessages.length,
+                    itemBuilder: (context, index) {
+                      final chatMessage = loadedMessages[index].data();
+
+                      Timestamp timestamp = chatMessage["createdAt"];
+
+                      // convert timestamp to DateTime
+                      DateTime dateTime = timestamp.toDate();
+
+                      return GestureDetector(
+                        onTap: () {
+                          if (_notifier.value == index) {
+                            _notifier.value = -1;
+                          } else {
+                            _notifier.value = index;
+                          }
+                        },
+                        child: MessageBubble(
+                          message: chatMessage["message"],
+                          isCurrentUser:
+                              chatMessage["userId"] == _currentUserId,
+                          isChosenMessage: _notifier.value == index,
+                          createdTime: dateTime,
+                        ),
+                      );
+                    });
+              }));
         });
   }
 
@@ -287,31 +333,3 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 }
-
-// return ListView(
-          //   reverse: true,
-          //   // physics: NeverScrollableScrollPhysics(),
-          //   // crossAxisAlignment: CrossAxisAlignment.start,
-          //   // mainAxisAlignment: MainAxisAlignment.center,
-          //   children: const [
-          //     MessageBubble(
-          //       message:
-          //           "So, i'm going the the cafe downtown this evening, join me if you want to",
-          //       isCurrentUser: true,
-          //     ),
-          //     MessageBubble(
-          //       message:
-          //           "Oh really, I thought you were going to the gym every Thursday afternoon",
-          //       isCurrentUser: false,
-          //     ),
-          //     MessageBubble(
-          //       message:
-          //           "Can't join you tho, stuck with that deadline at the office til 9pm, maybe next time",
-          //       isCurrentUser: false,
-          //     ),
-          //     MessageBubble(
-          //       message: "No worries, I'll catch you later then",
-          //       isCurrentUser: true,
-          //     ),
-          //   ],
-          // );
