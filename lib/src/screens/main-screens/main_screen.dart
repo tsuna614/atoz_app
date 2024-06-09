@@ -9,13 +9,7 @@ import 'package:atoz_app/src/screens/main-screens/loading_screen.dart';
 import 'package:atoz_app/src/screens/main-screens/home_tabs_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:atoz_app/src/data/global_data.dart' as globals;
-import 'package:dio/dio.dart';
 import 'package:provider/provider.dart';
-
-final dio = Dio();
-
-final _firebase = FirebaseAuth.instance;
 
 final FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -36,14 +30,11 @@ class _MainScreenState extends State<MainScreen> {
     // print(id);
 
     // _firebase.signOut();
+    await Provider.of<UserProvider>(context, listen: false).fetchUserData(id);
 
-    Response response =
-        await dio.get('${globals.atozApi}/user/getUserById/$id');
-    // Response response = await dio.get(
-    //     'http://localhost:3000/v1/user/getUserById/EIKSUu6uBQOIv8Pnx9UZ2wA0trn2');
-    // print(response.data[0]['userId']);
     setState(() {
-      if (response.data.toString().contains('language')) {
+      if (Provider.of<UserProvider>(context, listen: false).userLanguage !=
+          '') {
         appScreen = TabsScreen(
           alternateDrawer: alternateDrawer,
         );
@@ -61,47 +52,6 @@ class _MainScreenState extends State<MainScreen> {
     // making the entire progress list to setUserCurrentProgress
     //because the stupid thing can't recognize
     //List<List<dynamic>> from response.data[0]['userStage']
-    List<List<dynamic>> progress = [];
-    for (int i = 0; i < response.data[0]['userStage'].length; i++) {
-      progress.add(response.data[0]['userStage'][i]);
-    }
-
-    // save user data to provider
-    if (context.mounted && response.data.toString().contains('language')) {
-      context
-          .read<UserProvider>()
-          .setUserId(response.data[0]['userId'].toString());
-      context
-          .read<UserProvider>()
-          .setUserEmail(response.data[0]['email'].toString());
-      context.read<UserProvider>().setUserCurrentProgress(progress);
-      context.read<UserProvider>().setUserScore(response.data[0]['score']);
-      context
-          .read<UserProvider>()
-          .setUserProgressionPoint(response.data[0]['progression']);
-      context
-          .read<UserProvider>()
-          .setUserLanguage(response.data[0]['language'].toString());
-      context.read<UserProvider>().setUserFirstName(
-            response.data[0]['firstName'].toString(),
-          );
-      context.read<UserProvider>().setUserLastName(
-            response.data[0]['lastName'].toString(),
-          );
-      context.read<UserProvider>().setProfileImage(
-            response.data[0]['profileImage'].toString(),
-          );
-      context.read<UserProvider>().setUserAge(response.data[0]['age']);
-      context
-          .read<UserProvider>()
-          .setUserFriends(response.data[0]['userFriends']);
-      context.read<UserProvider>().setUserState(response.data[0]['userState']);
-      if (response.data.toString().contains('userType')) {
-        context
-            .read<UserProvider>()
-            .setUserType(response.data[0]['userType'].toString());
-      }
-    }
   }
 
   void switchScreen(int screenIndex) {
@@ -152,10 +102,20 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     initScreen();
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  // @override
+  // void didChangeDependencies() {
+  //   initScreen();
+  //   super.didChangeDependencies();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -190,12 +150,19 @@ class _MainScreenState extends State<MainScreen> {
                 body: Stack(
                   children: [
                     appScreen,
+                    if (isDrawerOpen)
+                      SizedBox.expand(
+                        child: Container(
+                          color: Colors.black.withOpacity(0),
+                        ),
+                      ),
                   ],
                 ),
               ),
             ),
           ),
         ),
+
         // gesture detector for swiping to the right to open the drawer
         Positioned(
           left: 0,

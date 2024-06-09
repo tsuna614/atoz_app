@@ -36,11 +36,13 @@ class _ReadingScreenState extends State<ReadingScreen> {
     final userLanguage = context.read<UserProvider>().userLanguage;
     final userProgression = context.read<UserProvider>().userProgressionPoint;
 
-    final response = await dio
-        .get('${global.atozApi}/readingQuiz/getAllQuizzesWithCondition', data: {
-      'language': userLanguage,
-      'userProgression': userProgression,
-    });
+    final response = await dio.get(
+      '${global.atozApi}/readingQuiz/getAllQuizzesWithCondition',
+      data: {
+        'language': userLanguage,
+        'userProgression': userProgression,
+      },
+    );
     final data = response.data.length;
     int randomLevel = getRandomLevel(data);
     title = response.data[randomLevel]['title'];
@@ -50,7 +52,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
       paragraphsList
           .add(response.data[randomLevel]['paragraphsList'][i].toString());
     }
-    ;
+
     for (int i = 0;
         i < response.data[randomLevel]['questionsList'].length;
         i++) {
@@ -81,7 +83,6 @@ class _ReadingScreenState extends State<ReadingScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     initQuiz();
   }

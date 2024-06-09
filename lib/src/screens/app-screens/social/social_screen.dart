@@ -31,6 +31,8 @@ class _SocialScreenState extends State<SocialScreen> {
 
   List<dynamic> userFriendsData = [];
 
+  final ValueNotifier<String> _notifier = ValueNotifier('');
+
   Future<dynamic> getUserData(String userId) async {
     Dio dio = Dio();
     Response response =
@@ -114,15 +116,10 @@ class _SocialScreenState extends State<SocialScreen> {
         children: [
           Stack(
             children: [
-              userFriendsData.isEmpty
-                  ? Center(
-                      child:
-                          Text('No friends yet. Get out there and make some!'))
-                  : buildFriendList(context, userFriendsData),
               ClipPath(
                 clipper: AppBarClipPath(context: context, height: 1),
                 child: Container(
-                  height: 200.0,
+                  height: 194.0,
                   decoration: BoxDecoration(
                     // gradient
                     gradient: LinearGradient(
@@ -152,80 +149,17 @@ class _SocialScreenState extends State<SocialScreen> {
                     // avatar
                     Padding(
                       padding: const EdgeInsets.only(left: 20),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 25,
-                            backgroundImage: profileImagePath.isEmpty
-                                ? AssetImage('assets/images/profile.jpg')
-                                : AssetImage(
-                                    'assets/images/avatar/$profileImagePath.jpeg'),
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Flexible(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  userFullName,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    overflow: TextOverflow.ellipsis,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.circle,
-                                      color: userStatus == UserStatus.active
-                                          ? Colors.greenAccent
-                                          : userStatus == UserStatus.away
-                                              ? Colors.orange
-                                              : Colors.red,
-                                      size: 10,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      userStatus == UserStatus.active
-                                          ? 'Active now'
-                                          : userStatus == UserStatus.away
-                                              ? 'Away'
-                                              : 'Do not disturb',
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    GestureDetector(
-                                      onTapDown: (TapDownDetails details) {
-                                        showPopUpMenu(
-                                            context, details.globalPosition);
-                                      },
-                                      child: Icon(
-                                        Icons.keyboard_arrow_down,
-                                        color: Colors.white,
-                                        size: 20,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(child: Container()),
-                        ],
-                      ),
+                      child: buildUserProfileAndStatus(
+                          context, profileImagePath, userFullName),
                     ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    userFriendsData.isEmpty
+                        ? Center(
+                            child: Text(
+                                'No friends yet. Get out there and make some!'))
+                        : buildFriendList(context, userFriendsData),
                   ],
                 ),
               ),
@@ -251,6 +185,83 @@ class _SocialScreenState extends State<SocialScreen> {
           buildNotificationSideDrawer(context, xOffset, yOffset),
         ],
       ),
+    );
+  }
+
+  final _searchBarController = TextEditingController();
+
+  Widget buildUserProfileAndStatus(
+      BuildContext context, String profileImagePath, String userFullName) {
+    return Row(
+      children: [
+        CircleAvatar(
+          radius: 25,
+          backgroundImage: profileImagePath.isEmpty
+              ? AssetImage('assets/images/profile.jpg')
+              : AssetImage('assets/images/avatar/$profileImagePath.jpeg'),
+        ),
+        SizedBox(
+          width: 20,
+        ),
+        Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                userFullName,
+                style: TextStyle(
+                  color: Colors.white,
+                  overflow: TextOverflow.ellipsis,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Row(
+                children: [
+                  Icon(
+                    Icons.circle,
+                    color: userStatus == UserStatus.active
+                        ? Colors.greenAccent
+                        : userStatus == UserStatus.away
+                            ? Colors.orange
+                            : Colors.red,
+                    size: 10,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    userStatus == UserStatus.active
+                        ? 'Active now'
+                        : userStatus == UserStatus.away
+                            ? 'Away'
+                            : 'Do not disturb',
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  GestureDetector(
+                    onTapDown: (TapDownDetails details) {
+                      showPopUpMenu(context, details.globalPosition);
+                    },
+                    child: Icon(
+                      Icons.keyboard_arrow_down,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
+        ),
+        Expanded(child: Container()),
+      ],
     );
   }
 
@@ -295,9 +306,13 @@ class _SocialScreenState extends State<SocialScreen> {
               height: 60,
               width: MediaQuery.of(context).size.width * 0.8,
               child: TextField(
+                controller: _searchBarController,
                 decoration: InputDecoration.collapsed(
                   hintText: 'Search for friends',
                 ),
+                onChanged: (value) {
+                  _notifier.value = value;
+                },
               ),
             ),
           ),
@@ -547,8 +562,8 @@ class _SocialScreenState extends State<SocialScreen> {
     );
   }
 
-  buildListTile(BuildContext context, String notificationId, String senderId,
-      String receiverId, dynamic userData) {
+  Widget buildListTile(BuildContext context, String notificationId,
+      String senderId, String receiverId, dynamic userData) {
     String userImage = "profile.jpg";
     if (userData["profileImage"] != null) {
       userImage = "avatar/${userData["profileImage"]}.jpeg";
@@ -646,66 +661,81 @@ class _SocialScreenState extends State<SocialScreen> {
   }
 
   Widget buildFriendList(BuildContext context, List<dynamic> userFriendsData) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 150,
-        ),
-        Expanded(
-          child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: userFriendsData.length,
-            itemBuilder: (context, index) {
-              return InkWell(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ChatScreen(
-                      targerUserData: userFriendsData[index],
-                    ),
-                  ));
-                },
-                child: ListTile(
-                  leading: Stack(
-                    children: [
-                      CircleAvatar(
-                        radius: 25,
-                        backgroundImage: Image.asset(
-                                'assets/images/avatar/${userFriendsData[index]['profileImage']}.jpeg')
-                            .image,
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Icon(
-                          Icons.circle,
-                          color: userFriendsData[index]['userState'] == "Active"
-                              ? Colors.greenAccent
-                              : userFriendsData[index]['userState'] == "Away"
-                                  ? Colors.orange
-                                  : Colors.red,
-                          size: 15,
+    return Expanded(
+      child: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: userFriendsData.length,
+              itemBuilder: (context, index) {
+                return ValueListenableBuilder(
+                  valueListenable: _notifier,
+                  builder: ((context, value, child) {
+                    String fullName =
+                        '${userFriendsData[index]['firstName']} ${userFriendsData[index]['lastName']}';
+
+                    if (fullName
+                        .toLowerCase()
+                        .contains(_notifier.value.toLowerCase())) {
+                      return InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ChatScreen(
+                              targerUserData: userFriendsData[index],
+                            ),
+                          ));
+                        },
+                        child: ListTile(
+                          leading: Stack(
+                            children: [
+                              CircleAvatar(
+                                radius: 25,
+                                backgroundImage: Image.asset(
+                                        'assets/images/avatar/${userFriendsData[index]['profileImage']}.jpeg')
+                                    .image,
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: Icon(
+                                  Icons.circle,
+                                  color: userFriendsData[index]['userState'] ==
+                                          "Active"
+                                      ? Colors.greenAccent
+                                      : userFriendsData[index]['userState'] ==
+                                              "Away"
+                                          ? Colors.orange
+                                          : Colors.red,
+                                  size: 15,
+                                ),
+                              ),
+                            ],
+                          ),
+                          title: Text(
+                            '${userFriendsData[index]['firstName']} ${userFriendsData[index]['lastName']}',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          subtitle: Row(
+                            children: [
+                              Text("Hello there"),
+                              Expanded(child: Container()),
+                              Text("2 days ago")
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  title: Text(
-                    '${userFriendsData[index]['firstName']} ${userFriendsData[index]['lastName']}',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  subtitle: Row(
-                    children: [
-                      Text("Hello there"),
-                      Expanded(child: Container()),
-                      Text("2 days ago")
-                    ],
-                  ),
-                ),
-              );
-            },
+                      );
+                    } else {
+                      return Container();
+                    }
+                  }),
+                );
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
