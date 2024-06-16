@@ -20,6 +20,8 @@ class _AddListeningQuestionScreenState
   bool isMoreThen50Characters = false;
   bool containsPunctuation = false;
 
+  String? _radioValue = '';
+
   void checkValidation() {
     if (_title.text.trim().length > 50) {
       setState(() {
@@ -58,6 +60,7 @@ class _AddListeningQuestionScreenState
       '${global.atozApi}/listeningQuiz/generateQuiz',
       data: {
         'content': _title.text,
+        'voice': _radioValue,
       },
     );
     if (context.mounted) {
@@ -71,8 +74,13 @@ class _AddListeningQuestionScreenState
   }
 
   @override
+  void initState() {
+    _radioValue = "alloy";
+    super.initState();
+  }
+
+  @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _title.dispose();
   }
@@ -104,9 +112,7 @@ class _AddListeningQuestionScreenState
                           checkValidation();
                         },
                       ),
-                      SizedBox(
-                        height: 8,
-                      ),
+                      _buildRadioCheckBox(),
                       Row(
                         children: [
                           Icon(
@@ -188,6 +194,41 @@ class _AddListeningQuestionScreenState
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildRadioCheckBox() {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Radio<String>(
+              value: "alloy",
+              groupValue: _radioValue,
+              onChanged: (value) {
+                setState(() {
+                  _radioValue = value;
+                });
+              },
+            ),
+            Text("Male", style: TextStyle(fontSize: 16)),
+          ],
+        ),
+        Row(
+          children: [
+            Radio<String>(
+              value: "nova",
+              groupValue: _radioValue,
+              onChanged: (value) {
+                setState(() {
+                  _radioValue = value;
+                });
+              },
+            ),
+            Text("Female", style: TextStyle(fontSize: 16)),
+          ],
+        ),
+      ],
     );
   }
 }

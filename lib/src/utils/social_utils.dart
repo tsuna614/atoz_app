@@ -127,9 +127,10 @@ Future<void> showSocialPopUpMenu(
                           ? "Unfriend"
                           : "Send friend request",
                   style: TextStyle(
-                      color: userData['userId'] == currentUserId
-                          ? Colors.grey
-                          : Colors.black),
+                    color: userData['userId'] == currentUserId
+                        ? Colors.grey
+                        : Colors.black,
+                  ),
                 ),
               ],
             ),
